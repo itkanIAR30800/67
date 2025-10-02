@@ -34,4 +34,4 @@ public class IntakeArtifacts extends LinearOpMode {
 
     }
 }
-// 5 
+// 5
