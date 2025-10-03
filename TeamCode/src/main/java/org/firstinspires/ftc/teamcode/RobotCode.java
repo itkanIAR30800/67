@@ -39,10 +39,105 @@ public class RobotCode extends LinearOpMode {
         transferServoLeft = hardwareMap.get(Servo.class, "transferServoLeft");
         transferArm = hardwareMap.get(Servo.class, "transferArm");
 
+        for (int i = 0; i < amount_of_motors; i++)
+        {
+            motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
+        }
+
+        // ########################################################################################
+        // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
+        // ########################################################################################
+        // Most robots need the motors on one side to be reversed to drive forward.
+        // The motor reversals shown here are for a "direct drive" robot (the wheels turn the same direction as the motor shaft)
+        // If your robot has additional gear reductions or uses a right-angled drive, it's important to ensure
+        // that your motors are turning in the correct direction.  So, start out with the reversals here, BUT
+        // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
+        // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
+        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
+
+        for (int i = 0; i < 2; i++)
+        {
+            motors[i].setDirection(DcMotor.Direction.REVERSE);
+        }
+
+        for (int i = 2; i < amount_of_motors; i++)
+        {
+            motors[i].setDirection(DcMotor.Direction.FORWARD);
+        }
+        // Wait for the game to start (driver presses START)
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
         waitForStart();
+        runtime.reset();
 
         while (opModeIsActive())
         {
+            //START DRIVETRAIN -----------------------------------------------------------------------
+            double max;
+
+            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
+            double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral =  gamepad1.left_stick_x;
+            double yaw     =  gamepad1.right_stick_x;
+
+            // Combine the joystick requests for each axis-motion to determine each wheel's power.
+            // Set up a variable for each drive wheel to save the power level for telemetry.
+            double frontLeftPower  = axial + lateral + yaw;
+            double frontRightPower = axial - lateral - yaw;
+            double backLeftPower   = axial - lateral + yaw;
+            double backRightPower  = axial + lateral - yaw;
+
+            // Normalize the values so no wheel power exceeds 100%
+            // This ensures that the robot maintains the desired motion.
+            max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
+            max = Math.max(max, Math.abs(backLeftPower));
+            max = Math.max(max, Math.abs(backRightPower));
+
+            double[] powers = {frontLeftPower,
+                    backLeftPower,
+                    frontRightPower,
+                    backRightPower
+            };
+
+            if (max > 1.0) {
+
+                for (int i = 0; i < amount_of_motors; i++)
+                {
+                    powers[i] /= max;
+                }
+            }
+
+            // This is test code:
+            //
+            // Uncomment the following code to test your motor directions.
+            // Each button should make the corresponding motor run FORWARD.
+            //   1) First get all the motors to take to correct positions on the robot
+            //      by adjusting your Robot Configuration if necessary.
+            //   2) Then make sure they run in the correct direction by modifying the
+            //      the setDirection() calls above.
+            // Once the correct motors move in the correct direction re-comment this code.
+
+            /*
+            frontLeftPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+            backLeftPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+            frontRightPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+            backRightPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+            */
+
+            // Send calculated power to wheels
+            for (int i = 0; i < amount_of_motors; i++)
+            {
+                motors[i].setPower(powers[i]);
+            }
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower, frontRightPower);
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower);
+            telemetry.update();
+            //END DRIVETRAIN -----------------------------------------------------------------------
+            //START INTAKE -------------------------------------------------------------------------
             while(gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
             {
                 intakeMotor.setDirection((DcMotorSimple.Direction.FORWARD));
@@ -54,7 +149,8 @@ public class RobotCode extends LinearOpMode {
                 intakeMotor.setDirection((DcMotorSimple.Direction.REVERSE));
                 intakeMotor.setPower(0.5);
             }
-
+            //END INTAKE -------------------------------------------------------------------------
+            //START SHOOTER ----------------------------------------------------------------------
             while(gamepad1.right_bumper && !gamepad1.left_bumper)
             {
                 shooterLeftMotor.setDirection((DcMotorSimple.Direction.REVERSE));
@@ -86,6 +182,7 @@ public class RobotCode extends LinearOpMode {
                 shooterLeftMotor.setPower(1.0);
                 shooterRightMotor.setPower(1.0);
             }
+            //END SHOOTER ----------------------------------------------------------------------
 
         }
 
