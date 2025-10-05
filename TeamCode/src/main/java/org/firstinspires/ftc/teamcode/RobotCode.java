@@ -55,7 +55,7 @@ public class RobotCode extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) //left joystick is making robot go backwards when it is pressed forwards
         {
             motors[i].setDirection(DcMotor.Direction.REVERSE);
         }
@@ -108,6 +108,11 @@ public class RobotCode extends LinearOpMode {
                 }
             }
 
+            for (int i = 0; i < amount_of_motors; i++) //locks motors
+            {
+                motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.
@@ -138,50 +143,89 @@ public class RobotCode extends LinearOpMode {
             telemetry.update();
             //END DRIVETRAIN -----------------------------------------------------------------------
             //START INTAKE -------------------------------------------------------------------------
-            while(gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
+            if (gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f) //changed to if statements due to driving issue
             {
                 intakeMotor.setDirection((DcMotorSimple.Direction.FORWARD));
-                intakeMotor.setPower(0.5);
-            }
-
-            while(gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f)
+                intakeMotor.setPower(0.8); //last run intake was at .5, changed it
+            } else if (gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
             {
                 intakeMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                intakeMotor.setPower(0.5);
+                intakeMotor.setPower(0.8);
+            } else
+            {
+                intakeMotor.setPower(0.0);
             }
+
+//            while(gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f)
+//            {
+//                intakeMotor.setDirection((DcMotorSimple.Direction.FORWARD));
+//                intakeMotor.setPower(0.8); //last run intake was at .5, changed it
+//
+//            }
+//
+//            while(gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
+//            {
+//                intakeMotor.setDirection((DcMotorSimple.Direction.REVERSE));
+//                intakeMotor.setPower(0.8);
+//
+//            }
+//
+//            while(gamepad1.right_trigger == 0f && gamepad1.left_trigger == 0f)
+//            {
+//                intakeMotor.setPower(0.0);
+//
+//            }
             //END INTAKE -------------------------------------------------------------------------
             //START SHOOTER ----------------------------------------------------------------------
-            while(gamepad1.right_bumper && !gamepad1.left_bumper)
-            {
-                shooterLeftMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                shooterRightMotor.setDirection((DcMotorSimple.Direction.FORWARD));
-                transferServoRight.setPosition(1.0);
-                transferServoLeft.setPosition(1.0);
-                transferServoRight.setDirection((Servo.Direction.FORWARD));
-                transferServoLeft.setDirection((Servo.Direction.FORWARD));
-
-                transferArm.setPosition(0.5);
-                transferArm.setDirection((Servo.Direction.FORWARD));
-
-                shooterLeftMotor.setPower(1.0);
-                shooterRightMotor.setPower(1.0);
-            }
-
-            while(gamepad1.left_bumper && !gamepad1.right_bumper)
+            if (gamepad1.right_bumper && !gamepad1.left_bumper)
             {
                 shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
                 shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                transferServoRight.setPosition(0.0);
-                transferServoLeft.setPosition(0.0);
-                transferServoRight.setDirection((Servo.Direction.REVERSE));
-                transferServoLeft.setDirection((Servo.Direction.REVERSE));
-
-                transferArm.setPosition(0.0);
-                transferArm.setDirection((Servo.Direction.REVERSE));
-
                 shooterLeftMotor.setPower(1.0);
                 shooterRightMotor.setPower(1.0);
+
+                transferServoRight.setPosition(1.0);
+                transferServoLeft.setPosition(1.0);
+                transferServoRight.setDirection((Servo.Direction.REVERSE));
+                transferServoLeft.setDirection((Servo.Direction.FORWARD));
+            } else if (gamepad1.left_bumper && !gamepad1.right_bumper)
+            {
+                //transferServoRight.setPosition(0.0);
+                //transferServoLeft.setPosition(0.0);
+                transferServoRight.setDirection((Servo.Direction.FORWARD));
+                transferServoLeft.setDirection((Servo.Direction.REVERSE));
+
+//                transferArm.setPosition(0.0);
+//                transferArm.setDirection((Servo.Direction.REVERSE));
             }
+//            while(gamepad1.right_bumper && !gamepad1.left_bumper)  //shooters need to build speed. r1 is making it shoot forward, but in the code, leftmotor is set to go forward for right?
+//            {
+//                shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
+//                shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
+//                transferServoRight.setPosition(1.0);
+//                transferServoLeft.setPosition(1.0);
+//                transferServoRight.setDirection((Servo.Direction.REVERSE));
+//                transferServoLeft.setDirection((Servo.Direction.FORWARD));
+//
+//               // transferArm.setPosition(0.5);
+//                //transferArm.setDirection((Servo.Direction.FORWARD));
+//
+//                shooterLeftMotor.setPower(1.0);
+//                shooterRightMotor.setPower(1.0);
+//            }
+//
+//            while(gamepad1.left_bumper && !gamepad1.right_bumper) //transfers need to be crservos (continuous rotation) encoder is needed for that, as of now they are not running at all
+//            {
+//
+//                //transferServoRight.setPosition(0.0);
+//                //transferServoLeft.setPosition(0.0);
+//                transferServoRight.setDirection((Servo.Direction.FORWARD));
+//                transferServoLeft.setDirection((Servo.Direction.REVERSE));
+//
+////                transferArm.setPosition(0.0);
+////                transferArm.setDirection((Servo.Direction.REVERSE));
+//
+//            }
             //END SHOOTER ----------------------------------------------------------------------
 
         }
@@ -189,3 +233,16 @@ public class RobotCode extends LinearOpMode {
     }
 
 }
+//intake backspin (prob hardware) *******
+//shooter is shooting on l1 (supposed to be r1) ********
+//at the same time, button to turn off intake *****
+//transfer servos are not triggering at all
+//drive
+
+
+//all of these are buttons, should run when holding(true) and stop when released(false)
+//right trigger intake forward
+//left trigger intake reverse
+//right bumper shoot forward
+//left bumper transfer forward
+// transfer backward
