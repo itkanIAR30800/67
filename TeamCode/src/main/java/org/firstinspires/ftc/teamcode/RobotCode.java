@@ -180,8 +180,8 @@ public class RobotCode extends LinearOpMode {
             {
                 shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
                 shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                shooterLeftMotor.setPower(0.85);
-                shooterRightMotor.setPower(0.85);
+                shooterLeftMotor.setPower(1.0);
+                shooterRightMotor.setPower(1.0);
 
             }
             if (gamepad1.left_bumper)
