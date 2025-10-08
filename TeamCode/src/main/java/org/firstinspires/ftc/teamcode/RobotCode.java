@@ -108,11 +108,6 @@ public class RobotCode extends LinearOpMode {
                 }
             }
 
-            for (int i = 0; i < amount_of_motors; i++) //locks motors
-            {
-                motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.
@@ -154,6 +149,10 @@ public class RobotCode extends LinearOpMode {
             } else
             {
                 intakeMotor.setPower(0.0);
+                for (int i = 0; i < amount_of_motors; i++) //locks motors
+                {
+                    motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
             }
 
 //            while(gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f)
@@ -177,27 +176,51 @@ public class RobotCode extends LinearOpMode {
 //            }
             //END INTAKE -------------------------------------------------------------------------
             //START SHOOTER ----------------------------------------------------------------------
-            if (gamepad1.right_bumper && !gamepad1.left_bumper)
+            if (gamepad1.right_bumper)
             {
                 shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
                 shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                shooterLeftMotor.setPower(1.0);
-                shooterRightMotor.setPower(1.0);
+                shooterLeftMotor.setPower(0.85);
+                shooterRightMotor.setPower(0.85);
 
+            }
+            if (gamepad1.left_bumper)
+            {
+                transferArm.setDirection((Servo.Direction.FORWARD));
+                transferArm.setPosition(-0.67);
+            } else
+            {
+                transferArm.setDirection((Servo.Direction.REVERSE));
+                transferArm.setPosition(0.0);
+            }
+
+//            else if (!gamepad1.right_bumper && !gamepad1.left_bumper)
+//            {
+//                shooterLeftMotor.setPower(0.0);
+//                shooterRightMotor.setPower(0.0);
+//            }
+            if (gamepad1.dpad_up && !gamepad1.dpad_down)
+            {
                 transferServoRight.setPosition(1.0);
                 transferServoLeft.setPosition(1.0);
                 transferServoRight.setDirection((Servo.Direction.REVERSE));
                 transferServoLeft.setDirection((Servo.Direction.FORWARD));
-            } else if (gamepad1.left_bumper && !gamepad1.right_bumper)
+            } else if (gamepad1.dpad_down && !gamepad1.dpad_up)
             {
-                //transferServoRight.setPosition(0.0);
-                //transferServoLeft.setPosition(0.0);
+                transferServoRight.setPosition(-1.0);
+                transferServoLeft.setPosition(-1.0);
                 transferServoRight.setDirection((Servo.Direction.FORWARD));
                 transferServoLeft.setDirection((Servo.Direction.REVERSE));
-
-//                transferArm.setPosition(0.0);
-//                transferArm.setDirection((Servo.Direction.REVERSE));
+            } else
+            {
+                transferServoRight.setPosition(0.0);
+                transferServoLeft.setPosition(0.0);
             }
+
+
+
+
+
 //            while(gamepad1.right_bumper && !gamepad1.left_bumper)  //shooters need to build speed. r1 is making it shoot forward, but in the code, leftmotor is set to go forward for right?
 //            {
 //                shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
