@@ -163,7 +163,7 @@ public class autonomous extends LinearOpMode {
             transferServoLeft.setPosition(0.0);
             //push
             transferArm.setDirection((Servo.Direction.FORWARD));
-            transferArm.setPosition(-1.0);
+            transferArm.setPosition(-0.67);
             //shoot
             shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
             shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
@@ -203,9 +203,15 @@ public class autonomous extends LinearOpMode {
         {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
-            for (int i = 0; i < amount_of_motors; i++)
+            for (int i = 0; i < 3; i++)
+            {
+                motors[i*3].setPower(-FORWARD_SPEED);
+                motors[i*3].setDirection(DcMotorSimple.Direction.REVERSE);
+            }
+            for (int i = 1; i < 3; i++)
             {
                 motors[i].setPower(-FORWARD_SPEED);
+                motors[i].setDirection(DcMotorSimple.Direction.FORWARD);
             }
         }
 
