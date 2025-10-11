@@ -195,6 +195,13 @@ public class RobotCode extends LinearOpMode {
                 shooterRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
+            if (gamepad1.x)
+            {
+                shooterLeftMotor.setPower(0.0);
+                shooterRightMotor.setPower(0.0);
+                shooterLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                shooterRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
 //            else if (!gamepad1.right_bumper && !gamepad1.left_bumper)
 //            {
 //                shooterLeftMotor.setPower(0.0);
