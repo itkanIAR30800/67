@@ -150,6 +150,7 @@ public class autonomous extends LinearOpMode {
         {
             motors[i].setPower(0.0);
         }
+        sleep(1000);
 
         //secret step 76: 2 shooting cycles
         runtime.reset();
@@ -205,12 +206,12 @@ public class autonomous extends LinearOpMode {
             telemetry.update();
             for (int i = 0; i < 3; i++)
             {
-                motors[i*3].setPower(-FORWARD_SPEED);
+                motors[i*3].setPower(FORWARD_SPEED);
                 motors[i*3].setDirection(DcMotorSimple.Direction.REVERSE);
             }
             for (int i = 1; i < 3; i++)
             {
-                motors[i].setPower(-FORWARD_SPEED);
+                motors[i].setPower(FORWARD_SPEED);
                 motors[i].setDirection(DcMotorSimple.Direction.FORWARD);
             }
         }
