@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -56,9 +55,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Robot: Auto Drive By Time", group="Robot")
+@Autonomous(name="blue auton", group="Robot")
 //@Disabled
-public class autonomous extends LinearOpMode {
+public class blue_goal extends LinearOpMode {
 
     /* Declare OpMode members. *//*
     private DcMotor         leftDrive   = null;
@@ -80,7 +79,7 @@ public class autonomous extends LinearOpMode {
             "back_right_drive"};
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     FORWARD_SPEED = 0.46;
+    static final double     FORWARD_SPEED = 0.52;
     static final double     TURN_SPEED    = 0.5;
 
     @Override
@@ -98,10 +97,10 @@ public class autonomous extends LinearOpMode {
         {
             motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
         }
-        transferServoRight.setDirection((Servo.Direction.FORWARD));
-        transferServoLeft.setDirection((Servo.Direction.REVERSE));
-        transferServoRight.setPosition(1.0);
-        transferServoLeft.setPosition(0.0); //this is actually right??
+//        transferServoRight.setDirection((Servo.Direction.FORWARD));
+//        transferServoLeft.setDirection((Servo.Direction.REVERSE));
+//        transferServoRight.setPosition(1.0);
+//        transferServoLeft.setPosition(0.0); //this is actually right??
 
         /*leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");*/
@@ -158,18 +157,18 @@ public class autonomous extends LinearOpMode {
             telemetry.addData("shooting", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
             //transfer
-
-
-            transferServoRight.setPosition(1.0);
-            transferServoLeft.setPosition(0.0);
-            //push
-            transferArm.setDirection((Servo.Direction.FORWARD));
-            transferArm.setPosition(-0.67);
-            //shoot
             shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
             shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
             shooterLeftMotor.setPower(1.0);
             shooterRightMotor.setPower(1.0);
+//            transferServoRight.setPosition(1.0);
+//            transferServoLeft.setPosition(0.0);
+            //push
+            sleep(1000);
+            transferArm.setDirection((Servo.Direction.REVERSE));
+            transferArm.setPosition(1.0);
+            //shoot
+
             telemetry.addData("shots fired", "Leg 1: %4.1f S Elapsed", runtime.seconds());
         }
 
@@ -200,18 +199,18 @@ public class autonomous extends LinearOpMode {
         leftDrive.setPower(-FORWARD_SPEED);
         rightDrive.setPower(-FORWARD_SPEED);*/
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.5))
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) //TODO: if this is actually strafe, the directions need to be changed for blue goal
         {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
             for (int i = 0; i < 3; i++)
             {
-                motors[i*3].setPower(FORWARD_SPEED);
+                motors[i*3].setPower(-TURN_SPEED);
                 motors[i*3].setDirection(DcMotorSimple.Direction.REVERSE);
             }
             for (int i = 1; i < 3; i++)
             {
-                motors[i].setPower(FORWARD_SPEED);
+                motors[i].setPower(TURN_SPEED);
                 motors[i].setDirection(DcMotorSimple.Direction.FORWARD);
             }
         }
