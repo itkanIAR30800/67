@@ -176,7 +176,7 @@ public class RobotCode extends LinearOpMode {
 //            }
             //END INTAKE -------------------------------------------------------------------------
             //START SHOOTER ----------------------------------------------------------------------
-            if (gamepad1.right_bumper)
+            if (gamepad1.right_bumper) //shoot forward
             {
                 shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
                 shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
@@ -192,8 +192,17 @@ public class RobotCode extends LinearOpMode {
             {
                 transferArm.setDirection((Servo.Direction.REVERSE));
                 transferArm.setPosition(0.0);
+                shooterLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                shooterRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
+            if (gamepad1.x)
+            {
+                shooterLeftMotor.setPower(0.0);
+                shooterRightMotor.setPower(0.0);
+                shooterLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                shooterRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
 //            else if (!gamepad1.right_bumper && !gamepad1.left_bumper)
 //            {
 //                shooterLeftMotor.setPower(0.0);
