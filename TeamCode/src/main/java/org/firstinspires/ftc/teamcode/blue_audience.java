@@ -55,9 +55,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="red auton goal", group="Robot")
+@Autonomous(name="blue auton audience", group="Robot") //TODO: redo this so that it fits for blue audience auton start
 //@Disabled
-public class red_goal extends LinearOpMode {
+public class blue_audience extends LinearOpMode {
 
     /* Declare OpMode members. *//*
     private DcMotor         leftDrive   = null;
@@ -199,7 +199,7 @@ public class red_goal extends LinearOpMode {
         leftDrive.setPower(-FORWARD_SPEED);
         rightDrive.setPower(-FORWARD_SPEED);*/
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0))
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) //TODO: if this is actually strafe, the directions need to be changed for blue goal
         {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();

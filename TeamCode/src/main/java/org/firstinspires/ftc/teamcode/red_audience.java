@@ -55,9 +55,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="red auton goal", group="Robot")
+@Autonomous(name="red auton audience", group="Robot") //TODO: redo so that it is correct for red audience auton start
 //@Disabled
-public class red_goal extends LinearOpMode {
+public class red_audience extends LinearOpMode {
 
     /* Declare OpMode members. *//*
     private DcMotor         leftDrive   = null;

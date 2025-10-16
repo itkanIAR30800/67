@@ -55,7 +55,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="blue auton", group="Robot")
+@Autonomous(name="blue auton goal", group="Robot")
 //@Disabled
 public class blue_goal extends LinearOpMode {
 
@@ -132,11 +132,8 @@ public class blue_goal extends LinearOpMode {
 
         // Step 1:  back up for 0.75 seconds
 
-        /*leftDrive.setPower(FORWARD_SPEED);
-        rightDrive.setPower(FORWARD_SPEED);*/
-
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.75)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
             for (int i = 0; i < amount_of_motors; i++)
@@ -174,30 +171,24 @@ public class blue_goal extends LinearOpMode {
 
         // Step 2:  Spin left for 0.5 seconds (strafe)
 
-        /*
-        leftDrive.setPower(TURN_SPEED);
-        rightDrive.setPower(-TURN_SPEED);*/
-//        runtime.reset();
-//        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
-//            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-//            telemetry.update();
-//            for (int i = 0; i < 3; i++)
-//            {
-//                motors[i].setPower(-TURN_SPEED);
-//            }
-//
-//            for (int i = 2; i < 4; i++)
-//            {
-//                motors[i].setPower(TURN_SPEED);
-//            }
-//        }
-//        sleep(1000);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
+            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+            for (int i = 0; i < 3; i++)
+            {
+                motors[i].setPower(-TURN_SPEED);
+            }
+
+            for (int i = 2; i < 4; i++)
+            {
+                motors[i].setPower(TURN_SPEED);
+            }
+        }
+        sleep(1000);
 
         // Step 3:  Drive Backward for 1 Second
 
-        /*
-        leftDrive.setPower(-FORWARD_SPEED);
-        rightDrive.setPower(-FORWARD_SPEED);*/
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) //TODO: if this is actually strafe, the directions need to be changed for blue goal
         {
