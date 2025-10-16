@@ -30,9 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -54,38 +55,52 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Robot: Auto Drive By Time", group="Robot")
-@Disabled
-public class RobotAutoDriveByTime_Linear extends LinearOpModeDrivetrain {
+@Autonomous(name="blue auton", group="Robot")
+//@Disabled
+public class blue_goal extends LinearOpMode {
 
     /* Declare OpMode members. *//*
     private DcMotor         leftDrive   = null;
     private DcMotor         rightDrive  = null;*/
 
+    private DcMotor intakeMotor = null; //intake motor
+
+    //shooter variables
+    private DcMotor shooterRightMotor = null;
+    private DcMotor shooterLeftMotor = null;
+    private Servo transferServoLeft = null;
+    private Servo transferServoRight = null;
+    private Servo transferArm = null;
     int amount_of_motors = 4;
-
     private DcMotor[]motors = new DcMotor[amount_of_motors];
-
     private String[]motordirections = {"front_left_drive",
             "back_left_drive",
             "front_right_drive",
             "back_right_drive"};
-
-
     private ElapsedTime     runtime = new ElapsedTime();
 
-
-    static final double     FORWARD_SPEED = 0.6;
+    static final double     FORWARD_SPEED = 0.52;
     static final double     TURN_SPEED    = 0.5;
 
     @Override
-    public void runOpModeDrivetrain(String direction int time int requiredTime) {
+    public void runOpMode() {
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        shooterRightMotor = hardwareMap.get(DcMotor.class, "shooterRightMotor");
+        shooterLeftMotor = hardwareMap.get(DcMotor.class, "shooterLeftMotor");
+        transferServoRight = hardwareMap.get(Servo.class, "transferServoRight");
+        transferServoLeft = hardwareMap.get(Servo.class, "transferServoLeft");
+        transferArm = hardwareMap.get(Servo.class, "transferArm");
+
 
         // Initialize the drive system variables.
         for (int i = 0; i < amount_of_motors; i++)
         {
             motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
         }
+//        transferServoRight.setDirection((Servo.Direction.FORWARD));
+//        transferServoLeft.setDirection((Servo.Direction.REVERSE));
+//        transferServoRight.setPosition(1.0);
+//        transferServoLeft.setPosition(0.0); //this is actually right??
 
         /*leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");*/
@@ -95,12 +110,12 @@ public class RobotAutoDriveByTime_Linear extends LinearOpModeDrivetrain {
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         for (int i = 0; i < 2; i++)
         {
-            motors[i*3].setDirection(DcMotor.Direction.REVERSE);
+            motors[i].setDirection(DcMotor.Direction.FORWARD);
         }
 
-        for (int i = 1; i < 3; i++)
+        for (int i = 2; i < 4; i++)
         {
-            motors[i].setDirection(DcMotor.Direction.FORWARD);
+            motors[i].setDirection(DcMotor.Direction.REVERSE);
         }
 
         /*leftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -115,52 +130,89 @@ public class RobotAutoDriveByTime_Linear extends LinearOpModeDrivetrain {
 
         // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
 
-        // Step 1:  Drive forward for 3 seconds
-        for (int i = 0; i < amount_of_motors; i++)
-        {
-            motors[i].setPower(FORWARD_SPEED);
-        }
+        // Step 1:  back up for 0.75 seconds
+
         /*leftDrive.setPower(FORWARD_SPEED);
         rightDrive.setPower(FORWARD_SPEED);*/
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
+            for (int i = 0; i < amount_of_motors; i++)
+            {
+                motors[i].setPower(-FORWARD_SPEED);
+            }
         }
 
-        // Step 2:  Spin right for 1.3 seconds
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < amount_of_motors; i++)
         {
-            motors[i*3].setPower(TURN_SPEED);
+            motors[i].setPower(0.0);
+        }
+        sleep(1000);
+
+        //secret step 76: 2 shooting cycles
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 4.0)) {
+            telemetry.addData("shooting", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+            //transfer
+            shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
+            shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
+            shooterLeftMotor.setPower(1.0);
+            shooterRightMotor.setPower(1.0);
+//            transferServoRight.setPosition(1.0);
+//            transferServoLeft.setPosition(0.0);
+            //push
+            sleep(1000);
+            transferArm.setDirection((Servo.Direction.REVERSE));
+            transferArm.setPosition(1.0);
+            //shoot
+
+            telemetry.addData("shots fired", "Leg 1: %4.1f S Elapsed", runtime.seconds());
         }
 
-        for (int i = 1; i < 3; i++)
-        {
-            motors[i].setPower(-TURN_SPEED);
-        }
+        // Step 2:  Spin left for 0.5 seconds (strafe)
+
         /*
         leftDrive.setPower(TURN_SPEED);
         rightDrive.setPower(-TURN_SPEED);*/
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+//        runtime.reset();
+//        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
+//            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+//            telemetry.update();
+//            for (int i = 0; i < 3; i++)
+//            {
+//                motors[i].setPower(-TURN_SPEED);
+//            }
+//
+//            for (int i = 2; i < 4; i++)
+//            {
+//                motors[i].setPower(TURN_SPEED);
+//            }
+//        }
+//        sleep(1000);
 
         // Step 3:  Drive Backward for 1 Second
-        for (int i = 0; i < amount_of_motors; i++)
-        {
-            motors[i].setPower(-FORWARD_SPEED);
-        }
+
         /*
         leftDrive.setPower(-FORWARD_SPEED);
         rightDrive.setPower(-FORWARD_SPEED);*/
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0))
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) //TODO: if this is actually strafe, the directions need to be changed for blue goal
         {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
+            for (int i = 0; i < 3; i++)
+            {
+                motors[i*3].setPower(-TURN_SPEED);
+                motors[i*3].setDirection(DcMotorSimple.Direction.REVERSE);
+            }
+            for (int i = 1; i < 3; i++)
+            {
+                motors[i].setPower(TURN_SPEED);
+                motors[i].setDirection(DcMotorSimple.Direction.FORWARD);
+            }
         }
 
         // Step 4:  Stop
@@ -171,6 +223,12 @@ public class RobotAutoDriveByTime_Linear extends LinearOpModeDrivetrain {
 
         /*leftDrive.setPower(0);
         rightDrive.setPower(0);*/
+        intakeMotor.setPower(0.0);
+
+        for (int i = 0; i < amount_of_motors; i++) //locks motors
+        {
+            motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
