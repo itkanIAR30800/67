@@ -1,6 +1,13 @@
 plugins {
     id 'java-library'
 }
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url = 'https://maven.brott.dev/' }
+}
+
 java {
     sourceCompatibility JavaVersion.VERSION_11
     targetCompatibility JavaVersion.VERSION_11

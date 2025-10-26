@@ -1,12 +1,3 @@
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https.brott.dev' }
-        maven { url = 'https://maven.brott.dev/' }
-    }
-}
 include ':FtcRobotController'
 include ':TeamCode'
 include ':MeepMeepTesting'
