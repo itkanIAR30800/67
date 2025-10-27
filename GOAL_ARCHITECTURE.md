@@ -13,11 +13,13 @@ How it works (easy steps)
 4. Watch and adjust until it works well.
 
 What each part of `TeamCode` does (short)
-- control — small helpers (like PID controllers) that keep the robot steady.
-- opmode — the starting programs you press on the phone: one for autonomous, one for driver control.
-- roadrunner — code that turns paths into motor actions (helps the robot move along a planned route).
-- subsystem — parts of the robot (drivetrain, intake, lift) that have simple start/run functions.
-- hardware — low-level wrappers for motors and sensors.
+What each part of `TeamCode` does (short)
+- `control` \— small helpers (like PID controllers) that keep the robot steady.
+- `opmode` \— the starting programs you press on the phone: one for autonomous, one for driver control.
+- `roadrunner` \— code that turns paths into motor actions (helps the robot move along a planned route).
+- `subsystem` \— parts of the robot (drivetrain, intake, lift) that have simple start/run functions.
+- `hardware` \— low-level wrappers for motors and sensors.
+- `trajectory` \— pure physics/ballistics math (unit-testable). Computes shot setpoints (flywheel RPM, hood angle, flight time) and is called by `subsystem/Shooter.java`. Path/pose inputs come from roadrunner/`EditablePose`.
 
 Important ideas (simple)
 - Actions: small tasks the robot can do (move, intake, throw). You can chain them together.
