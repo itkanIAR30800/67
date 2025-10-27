@@ -1,4 +1,4 @@
-# Repo Overview — Simple Version 
+# Goal Architecture — Simple Version 
 
 This project helps a robot drive by combining three main parts:
 
