@@ -99,7 +99,7 @@ We’ll execute the first pass of the 7-point plan. Keep code simple, visible, a
 Deliverable (Sat):
 - Dashboard connected; custom PID class; drivetrain heading hold and/or straight-drive speed tuned and plotted on Dashboard.
 
-- Resources: See [PID video (general)](#pid-video-general), [GM0 – Control Loops](#gm0--control-loops), [CTRL ALT FTC – PID](#ctrl-alt-ftc--pid), and [@Config tuning video](#config-tuning-video).
+### Sunday
 1) Pinpoint Integration
 - Add GoBildaPinpointDriver.java; configure the device in RC app.
 - Set TICKS_PER_MM per your odometry pods, verify encoder directions (X forward, Y left), CCW heading positive.
@@ -116,11 +116,12 @@ Deliverable (Sat):
 - Use Pinpoint pose for decisions (e.g., stop when X ≈ target). Only LAUNCH when inside/overlapping LAUNCH LINE. Use drivetrain PID for heading/drive control; use launcher velocity PID only if it was tuned and the robot is inside the launch line.
 - Resources: [State machines video](https://www.youtube.com/watch?v=RweqIqouYqM); [Methods/Functions video](https://www.youtube.com/watch?v=UG6iSvgXxYg); [DECODE constraints](#decode-game-constraints-to-respect-this-weekend).
 - Resources: See [Pinpoint product page](#pinpoint-product-page), [Pinpoint driver code](#pinpoint-driver-code), [Pinpoint example OpMode](#pinpoint-example-opmode), and [Pose2d API reference](#pose2d-api-reference).
+
 Deliverable (Sun):
 - Pinpoint pose verified; robot shape rendered on field view; one short, reliable DECODE-aware state‑machine auto.
 
 ---
-- Resources: See [Field view docs](#field-view-docs) and [Pose2d API reference](#pose2d-api-reference).
+
 ## Later Sessions (Backlog)
 - Launcher velocity PID tuning and feedforward; integrate into state machine with safety interlocks (launch-line check).
 - Build a reusable state‑machine template (enter/execute/exit) and 2+ autonomous routines.
