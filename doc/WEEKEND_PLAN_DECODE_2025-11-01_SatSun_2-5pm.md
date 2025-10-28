@@ -126,7 +126,6 @@ Deliverable (Sun):
 - Launcher velocity PID tuning and feedforward; integrate into state machine with safety interlocks (launch-line check).
 - Build a reusable state‑machine template (enter/execute/exit) and 2+ autonomous routines.
 - Add heading hold and turn‑to‑angle PID using IMU yaw (refine with rate limiting and anti-windup).
-- Resources: See [State machines video – Brogan Pratt](#state-machines-video--brogan-pratt), [Methods/functions video – Brogan Pratt](#methodsfunctions-video--brogan-pratt), and [DECODE constraints](#decode-game-constraints-to-respect-this-weekend).
 - Create a quick calibration OpMode to validate TICKS_PER_MM and encoder polarities for odometry pods.
 - Improve logging: record gains, steady‑state error, overshoot, settling time.
 
@@ -141,17 +140,6 @@ Deliverable (Sun):
 - Each student opened at least one PR.
 
 ## Quick References
-- PID video: https://www.youtube.com/watch?v=6OH-wOsVVjg
-- GM0 – Control Loops: https://gm0.org/en/latest/docs/software/concepts/control-loops.html
-- CTRL ALT FTC – PID: https://www.ctrlaltftc.com/the-pid-controller
-- FTC Dashboard docs: https://acmerobotics.github.io/ftc-dashboard/
-- @Config tuning video: https://www.youtube.com/watch?v=vhLF6NVXLXI
-- Tuning methods (Z–N): https://www.ctrlaltftc.com/the-pid-controller/tuning-methods-of-a-pid-controller#ziegler-nichols-tuning
-- FTC Docs – IMU: https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html and https://gm0.org/ro/latest/docs/software/tutorials/mecanum-drive.html
-- FTC Docs – Encoders: https://gm0.org/en/latest/docs/software/tutorials/encoders.html
-- Pinpoint product: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/
-- Pinpoint driver: https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/GoBildaPinpointDriver.java
-- Pinpoint example: https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SensorGoBildaPinpointExample.java
 
 ### Learn Java for Robotics (FTC) – Brogan Pratt (playlist)
 https://www.youtube.com/playlist?list=PLRHdgFNRLyaPiZ5rvINwMmGMHEIL9usla
