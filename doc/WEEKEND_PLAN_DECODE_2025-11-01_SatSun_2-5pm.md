@@ -105,7 +105,7 @@ We’ll execute the first pass of the 7-point plan. Keep code simple, visible, a
 - HeadingHold: maintain a target heading using IMU yaw; tune Kp first, then Ki/Kd if needed. Test at standstill and while gently pushing the robot.
 - DriveStraight: command a constant forward speed using encoder average; hold heading using HeadingHold in parallel; tune speed loop gains.
 - Optional: TurnToHeading with a simple state machine (ENTER: set target; EXECUTE: apply heading PID; EXIT: when |error| < threshold for N ms).
-- Resources: GM0 – IMU (orientation/yaw): https://gm0.org/en/latest/docs/software/sensors/imu.html ; GM0 – Encoders: https://gm0.org/en/latest/docs/software/motors/encoders.html ; [@Config tuning video](https://www.youtube.com/watch?v=vhLF6NVXLXI); [PID video](https://www.youtube.com/watch?v=6OH-wOsVVjg); [GM0 Control Loops](https://gm0.org/en/latest/docs/software/concepts/control-loops.html).
+- Resources: FTC Docs – IMU: https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html and https://gm0.org/ro/latest/docs/software/tutorials/mecanum-drive.html ; FTC Docs – Encoders: https://gm0.org/en/latest/docs/software/tutorials/encoders.html ; [@Config tuning video](https://www.youtube.com/watch?v=vhLF6NVXLXI); [PID video](https://www.youtube.com/watch?v=6OH-wOsVVjg); [GM0 Control Loops](https://gm0.org/en/latest/docs/software/concepts/control-loops.html).
 
 Deliverable (Sat):
 - Dashboard connected; custom PID class; drivetrain heading hold and/or straight-drive speed tuned and plotted on Dashboard.
@@ -157,8 +157,8 @@ Deliverable (Sun):
 - FTC Dashboard docs: https://acmerobotics.github.io/ftc-dashboard/
 - @Config tuning video: https://www.youtube.com/watch?v=vhLF6NVXLXI
 - Tuning methods (Z–N): https://www.ctrlaltftc.com/the-pid-controller/tuning-methods-of-a-pid-controller#ziegler-nichols-tuning
-- GM0 – IMU: https://gm0.org/en/latest/docs/software/sensors/imu.html
-- GM0 – Encoders: https://gm0.org/en/latest/docs/software/motors/encoders.html
+- FTC Docs – IMU: https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html and https://gm0.org/ro/latest/docs/software/tutorials/mecanum-drive.html
+- FTC Docs – Encoders: https://gm0.org/en/latest/docs/software/tutorials/encoders.html
 - Pinpoint product: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/
 - Pinpoint driver: https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/GoBildaPinpointDriver.java
 - Pinpoint example: https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SensorGoBildaPinpointExample.java
