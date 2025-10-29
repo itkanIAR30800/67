@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITKAN FTC Curriculum Hub</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --border-color: #dddddd;
+            --hover-bg: #f0f7ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+
+        .resource-card h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resource-card .icon {
+            font-size: 1.8rem;
+        }
+
+        .resource-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .resource-card .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .resource-card a {
+            display: inline-block;
+            padding: 12px 20px;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card a:hover {
+            background: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .resource-card a.pdf-link {
+            background: var(--accent-color);
+        }
+
+        .resource-card a.pdf-link:hover {
+            background: #c0392b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+            border-top: 2px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 ITKAN FTC Curriculum Hub</h1>
+            <p>Comprehensive resources for FIRST Tech Challenge programming and robotics</p>
+        </header>
+
+        <div class="resources-grid">
+            <!-- FTC Curriculum: Basics to Advanced -->
+            <div class="resource-card">
+                <h2>
+                    <span class="icon">🚀</span>
+                    FTC Curriculum: Basics to Advanced
+                </h2>
+                <p>
+                    A comprehensive curriculum covering everything from fundamental programming concepts to advanced autonomous routines.
+                    Includes PID control, odometry, state machines, and real-world competition strategies.
+                </p>
+                <div class="links">
+                    <a href="FTCCurriculum_BasicsToAdvanced.html">View Curriculum →</a>
+                </div>
+            </div>
+
+            <!-- FTC Curriculum: Core -->
+            <div class="resource-card">
+                <h2>
+                    <span class="icon">📚</span>
+                    FTC Curriculum: Core
+                </h2>
+                <p>
+                    Essential FTC programming concepts and practices. Perfect for teams starting their journey or looking for
+                    a focused curriculum on core robotics programming principles.
+                </p>
+                <div class="links">
+                    <a href="FTCCurriculum.html">View Curriculum →</a>
+                </div>
+            </div>
+
+            <!-- Learn Java for FTC -->
+            <div class="resource-card">
+                <h2>
+                    <span class="icon">☕</span>
+                    Learn Java for FTC
+                </h2>
+                <p>
+                    Complete Java programming guide specifically tailored for FTC robotics. Master the language fundamentals,
+                    object-oriented concepts, and FTC-specific implementations.
+                </p>
+                <div class="links">
+                    <a href="LearnJavaForFTC.html">View HTML Version →</a>
+                    <a href="https://github.com/alan412/LearnJavaForFTC/blob/master/LearnJavaForFTC.pdf" class="pdf-link" target="_blank">View PDF on GitHub →</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 ITKAN FTC Team 67 | Built for excellence in robotics education</p>
+        </footer>
+    </div>
+</body>
+</html>
+
