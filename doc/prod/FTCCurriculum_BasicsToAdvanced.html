@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTC Robotics Curriculum Outline</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --text-color: #333333;
+            --code-bg: #f4f4f4;
+            --border-color: #dddddd;
+            --highlight-bg: #fff9e6;
+            --session-bg: #f0f7ff;
+            --task-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            padding-top: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            color: #2980b9;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: var(--accent-color);
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top-level list items (Sessions) */
+        ul > li {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--session-bg);
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        /* Second-level list items (Tasks) */
+        ul > li > ul {
+            margin-top: 1rem;
+        }
+
+        ul > li > ul > li {
+            margin: 1rem 0 1rem 1.5rem;
+            padding: 0.75rem;
+            background: var(--task-bg);
+            border-left: 3px solid #95a5a6;
+            border-radius: 4px;
+        }
+
+        /* Third-level list items (Task details like Goal, Time, Hardware, Resource) */
+        ul > li > ul > li > ul {
+            margin-top: 0.5rem;
+        }
+
+        ul > li > ul > li > ul > li {
+            margin: 0.25rem 0 0.25rem 1.5rem;
+            padding: 0.25rem 0;
+            background: transparent;
+            border: none;
+            list-style: disc;
+            list-style-position: outside;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        em {
+            color: #666;
+            font-style: italic;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid var(--border-color);
+            margin: 3rem 0;
+        }
+
+        .note {
+            background: var(--highlight-bg);
+            border-left: 4px solid #f39c12;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .list-content {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--secondary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s, background 0.3s;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.25rem;
+            }
+
+            h4 {
+                font-size: 1.1rem;
+            }
+
+            ul > li > ul > li {
+                margin-left: 0.5rem;
+            }
+
+            ul > li > ul > li > ul > li {
+                margin-left: 0.5rem;
+            }
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 1rem;
+            }
+            
+            .back-to-top {
+                display: none;
+            }
+            
+            ul > li {
+                page-break-inside: avoid;
+            }
+            
+            h1, h2, h3, h4 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+<h3><strong>FTC Robotics Curriculum Outline</strong></h3>
+<hr>
+<p>This curriculum is designed to be a guided, task-based program for First Tech Challenge (FTC) robotics. The goal is to provide students with a series of challenges that encourage independent problem-solving and collaboration, rather than direct instruction.</p>
+<hr>
+<h3><strong>Software</strong></h3>
+<p><strong>Primary Resource:</strong> <a href="LearnJavaForFTC.pdf">Learn Java for FTC (PDF)</a> | <a href="https://www.youtube.com/playlist?list=PLRHdgFNRLyaPiZ5rvINwMmGMHEIL9usla">Learn Java for Robotics (FTC) – Brogan Pratt (playlist)</a></p>
+<p><strong>Philosophy:</strong> This curriculum follows a fundamentals-first approach inspired by Brogan M. Pratt's teaching philosophy: build core understanding of control theory, custom implementations, and debugging before introducing helper libraries. Master the underlying principles first, then use tools that abstract them.</p>
+<h4><strong>Software.Course1: Introduction to Java for FTC (10 Sessions)</strong></h4>
+<p><strong>Goal:</strong> To establish a strong foundation in Java programming concepts, the basic structure of an FTC robot program, and essential team collaboration workflows.</p>
+<ul>
+<li><strong>Software.Course1.Session1 (Est. 2 hours):</strong> Introduction to the Development Environment and Hardware
+<ul>
+<li><strong>Task 1:</strong> Getting Started
+<ul>
+<li><strong>Goal:</strong> Successfully set up the development environment.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Laptop or desktop computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch1">Learn Java for FTC - Introduction</a> and <a href="LearnJavaForFTC.html#ch1-3">Now you try</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Understand the Driver Station
+<ul>
+<li><strong>Goal:</strong> Learn how the Driver Station (Android phone) interacts with the Control Hub and displays telemetry.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone with the app installed.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch1-1-3">Learn Java for FTC - Driver Station</a> and <a href="LearnJavaForFTC.html#ch1-2-4">Hello, World</a>. (Resource: <a href="https://ftc-docs.firstinspires.org/en/latest/control_hard_compon/ds_components/index.html">FTC-docs</a>)
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Variables and Data
+<ul>
+<li><strong>Goal:</strong> Create variables for motor power and sensor readings, and display their values on the Driver Station.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch2">Learn Java for FTC - Variables and Data Types</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session2 (Est. 2.5 hours):</strong> Basic Programming Concepts
+<ul>
+<li><strong>Task 1:</strong> Perform calculations
+<ul>
+<li><strong>Goal:</strong> Write code to scale a sensor reading to a desired motor power value.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch3-1">Learn Java for FTC - Basic Math</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Basic Control Flow
+<ul>
+<li><strong>Goal:</strong> Use an <code>if/else</code> statement to change the robot's behavior based on a condition, such as a gamepad button press.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch4">Learn Java for FTC - Making decisions</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session3 (Est. 2.5 hours):</strong> Gamepad Control
+<ul>
+<li><strong>Task 1:</strong> Create a loop
+<ul>
+<li><strong>Goal:</strong> Use a <code>while</code> loop to continuously read and update sensor values or motor power while the OpMode is running.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch4-4">Learn Java for FTC - While</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Gamepad and Tele-Op
+<ul>
+<li><strong>Goal:</strong> Write a program that reads input from the gamepad's joysticks and buttons and displays the values on the telemetry.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch3">Learn Java for FTC - Gamepad and basic math</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session4 (Est. 1.5 hours):</strong> Controlling a Single Motor
+<ul>
+<li><strong>Task 1:</strong> Control a single motor
+<ul>
+<li><strong>Goal:</strong> Use gamepad input to control the speed and direction of one motor.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad, Control Hub, one motor.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch7">Learn Java for FTC - Motors</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session5 (Est. 1.5 hours):</strong> Motors and Hardware Mapping
+<ul>
+<li><strong>Task 1:</strong> Motors and Hardware Mapping
+<ul>
+<li><strong>Goal:</strong> Create a <code>HardwareMap</code> to correctly identify and access your robot's motors, servos, and sensors.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch6-1">Learn Java for FTC - Configuration file</a> and <a href="LearnJavaForFTC.html#ch6-2">HardwareMap</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session6 (Est. 3 hours):</strong> Drivetrain and <code>LinearOpMode</code>
+<ul>
+<li><strong>Task 1:</strong> Control a four-motor drivetrain
+<ul>
+<li><strong>Goal:</strong> Use gamepad input to control the speed and direction of a standard four-motor tank or arcade drive.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 2 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad, Control Hub, four motors.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch20-2">Learn Java for FTC - 4 motor mecanum drive</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Driving Basics and LinearOpMode
+<ul>
+<li><strong>Goal:</strong> Write a program that uses motor encoders to drive the robot a specific distance.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad, Control Hub, four motors with encoders.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch7-4">Learn Java for FTC - Motor as Sensor</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session7 (Est. 2.5 hours):</strong> Subsystems and Servos
+<ul>
+<li><strong>Task 1:</strong> Understand <code>LinearOpMode</code>
+<ul>
+<li><strong>Goal:</strong> Convert a basic OpMode into a <code>LinearOpMode</code> and understand the differences in structure and flow.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#appendix-b">Learn Java for FTC - Linear OpMode</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Introduction to Subsystems
+<ul>
+<li><strong>Goal:</strong> Write a class that abstracts the control of a simple mechanism (e.g., a single servo claw) and its associated motors or servos.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch5">Learn Java for FTC - Class Members and Methods</a> and <a href="LearnJavaForFTC.html#ch5-4">Creating your own classes</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Servos and Sensors
+<ul>
+<li><strong>Goal:</strong> Write an OpMode that uses a gamepad button to move a servo between two predefined positions.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad, Control Hub, one servo.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch8">Learn Java for FTC - Servos</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session8 (Est. 2.5 hours):</strong> Integrating and Testing
+<ul>
+<li><strong>Task 1:</strong> Integrate your subsystem
+<ul>
+<li><strong>Goal:</strong> Add the subsystem you created into your main tele-op program and control it with the gamepad.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad, Control Hub, at least one motor and servo.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch6-2">Learn Java for FTC - Mechanisms</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Read a sensor
+<ul>
+<li><strong>Goal:</strong> Use a color, distance, or touch sensor to make a decision in your code (e.g., stop the robot when it is a certain distance from a wall).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, a sensor (color, distance, or touch).
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch9">Learn Java for FTC - Analog Sensors</a> and <a href="LearnJavaForFTC.html#ch10">Color and Distance Sensors</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session9 (Est. 3 hours):</strong> Autonomous Fundamentals and State Machines
+<ul>
+<li><strong>Task 1:</strong> Autonomous Fundamentals
+<ul>
+<li><strong>Goal:</strong> Write a simple autonomous program that uses <code>getRuntime()</code> to move the robot forward for a set amount of time.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, motors.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch12-3">Learn Java for FTC - It's all relative</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Understanding State Machines
+<ul>
+<li><strong>Goal:</strong> Learn the concept of state machines and how they help organize complex sequential behaviors.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=RweqIqouYqM">State Machines – Brogan Pratt</a> and <a href="LearnJavaForFTC.html#ch12">Learn Java for FTC - Dealing with State</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Implement a Basic State Machine
+<ul>
+<li><strong>Goal:</strong> Create a simple state machine using enums to control a sequence of autonomous actions (e.g., DRIVE_FORWARD → TURN → STOP).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, motors.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch12-2">Learn Java for FTC - Autonomous state</a> and <a href="LearnJavaForFTC.html#ch12-2-1">Using the switch statement</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course1.Session10 (Est. 3 hours):</strong> Git Workflow and Code Review
+<ul>
+<li><strong>Task 1:</strong> Git Basics and Branching
+<ul>
+<li><strong>Goal:</strong> Initialize a Git repository, create a personal branch, make commits, and push to a remote repository. Understand the GitHub Flow workflow.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with Android Studio and Git installed.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://docs.github.com/en/get-started/quickstart/github-flow">GitHub Flow</a>, <a href="https://ftc-docs.firstinspires.org/en/latest/programming_resources/tutorial_specific/android_studio/fork_and_clone_github_repository/Fork-and-Clone-From-GitHub.html">FTC Docs – Fork & Clone</a>, and <a href="https://www.youtube.com/watch?v=F8Z-sSXklOg">Android Studio Git Basics</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Code Review and Pull Requests
+<ul>
+<li><strong>Goal:</strong> Open a pull request with your changes, review a teammate's code, and understand best practices for code organization and documentation.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">About Pull Requests</a>, <a href="https://medium.com/@andresguedes/how-to-review-pull-requests-using-android-studio-c42589b2332c">Review PRs in Android Studio</a>, <a href="LearnJavaForFTC.html#ch1-4">Learn Java for FTC - Comments</a>, and <a href="LearnJavaForFTC.html#ch17">Javadoc</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Debugging Practice
+<ul>
+<li><strong>Goal:</strong> Intentionally introduce an error into your code and use the debugger to find and fix it.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch1-6">Learn Java for FTC - Gotchas</a>.
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4><strong>Software.Course2: Advanced Robotics Programming (10 Sessions)</strong></h4>
+<p><strong>Goal:</strong> To master advanced programming techniques through fundamentals-first learning: custom PID control, FTC Dashboard tuning, odometry integration, field visualization, and advanced state machines. After building these skills from scratch, students will learn industry-standard libraries (Road Runner, MeepMeep, FTCLib) that abstract these concepts.</p>
+<p><strong>Core Philosophy:</strong> Practice the underlying principles of RR, MeepMeep, and FTCLib before using them. Build custom implementations to understand how they work, then leverage libraries for efficiency.</p>
+<ul>
+<li><strong>Software.Course2.Session1 (Est. 3 hours):</strong> Mecanum Drive Fundamentals
+<ul>
+<li><strong>Task 1:</strong> Understanding Mecanum Drive Theory
+<ul>
+<li><strong>Goal:</strong> Learn how Mecanum wheels work, the physics behind holonomic movement, and how to calculate motor powers for robot-centric and field-centric control.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, whiteboard/paper for vector diagrams.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch20-2">Learn Java for FTC - 4 motor mecanum drive</a>, <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">GM0 - Mecanum Drive Tutorial</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Implement Custom Mecanum Drive
+<ul>
+<li><strong>Goal:</strong> Write a tele-op program from scratch that calculates motor powers for strafing, forward/backward, and rotation. Manually implement the math without using libraries.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 2 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Gamepad, Control Hub, four Mecanum wheels with motors.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch20-2-1">Learn Java for FTC - Mecanum Mechanism</a>, <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">GM0 - Mecanum Drive</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session2 (Est. 3 hours):</strong> PID Control Theory and Implementation
+<ul>
+<li><strong>Task 1:</strong> Understanding PID Control
+<ul>
+<li><strong>Goal:</strong> Learn the theory behind PID controllers: Proportional, Integral, and Derivative terms, how they work together, and when to use each component.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=6OH-wOsVVjg">PID Control Explained</a>, <a href="https://gm0.org/en/latest/docs/software/concepts/control-loops.html">GM0 - Control Loops</a>, <a href="https://www.ctrlaltftc.com/the-pid-controller">CTRL ALT FTC - PID</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Build a Custom PID Class
+<ul>
+<li><strong>Goal:</strong> Implement a reusable PID class from scratch with Kp, Ki, Kd gains, integral windup protection, and optional feedforward (kG). Do NOT use any library—build it yourself.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=zrMFEw8qxLc">Implementing PID in FTC</a>, <a href="https://www.ctrlaltftc.com/the-pid-controller">CTRL ALT FTC - PID</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Test PID on a Simple Motor
+<ul>
+<li><strong>Goal:</strong> Apply your custom PID controller to hold a motor at a target encoder position or velocity. Observe how changing Kp, Ki, and Kd affects behavior.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, motor with encoder.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch7-4">Learn Java for FTC - Motor as Sensor</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session3 (Est. 3 hours):</strong> FTC Dashboard Setup and Live Tuning
+<ul>
+<li><strong>Task 1:</strong> Install and Configure FTC Dashboard
+<ul>
+<li><strong>Goal:</strong> Add the FTC Dashboard dependency to your project, initialize it, and connect via Wi-Fi to view live telemetry in a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://acmerobotics.github.io/ftc-dashboard/">FTC Dashboard Documentation</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Use @Config for Live Variable Tuning
+<ul>
+<li><strong>Goal:</strong> Add <code>@Config</code> annotation to your PID class to expose Kp, Ki, Kd as live-tunable variables. Create telemetry graphs to visualize target, current value, error, and output.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=vhLF6NVXLXI">FTC Dashboard @Config Tuning</a>, <a href="https://acmerobotics.github.io/ftc-dashboard/">FTC Dashboard Docs</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Tune Drivetrain PID Controllers
+<ul>
+<li><strong>Goal:</strong> Apply PID tuning methods (Ziegler-Nichols or manual) to tune heading hold and drive straight controllers for your drivetrain. Use Dashboard graphs to observe system response.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, drivetrain with encoders and IMU.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.ctrlaltftc.com/the-pid-controller/tuning-methods-of-a-pid-controller#ziegler-nichols-tuning">Tuning Methods (Ziegler-Nichols)</a>, <a href="https://gm0.org/en/latest/docs/software/concepts/control-loops.html">GM0 - Control Loops</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session4 (Est. 3 hours):</strong> IMU and Odometry Integration
+<ul>
+<li><strong>Task 1:</strong> IMU-Based Heading Control
+<ul>
+<li><strong>Goal:</strong> Use the robot's IMU to read heading (yaw) and implement a heading-hold PID controller. Test by commanding the robot to maintain a heading while being pushed.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub with IMU, drivetrain.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch11">Learn Java for FTC - Gyro (IMU)</a>, <a href="https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html">FTC Docs - IMU</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Integrate Pinpoint Odometry Computer
+<ul>
+<li><strong>Goal:</strong> Add the GoBilda Pinpoint driver to your project, configure the device, set TICKS_PER_MM, and verify encoder directions. Get accurate X, Y, and Heading pose updates.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, GoBilda Pinpoint Odometry Computer with two odometry pods.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/">Pinpoint Product Page</a>, <a href="https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/GoBildaPinpointDriver.java">Pinpoint Driver</a>, <a href="https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SensorGoBildaPinpointExample.java">Pinpoint Example OpMode</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Validate Pose Tracking
+<ul>
+<li><strong>Goal:</strong> Run an OpMode that continuously updates and displays the robot's Pose2d (X, Y, Heading). Manually push the robot and verify the pose changes correctly.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, Pinpoint odometry.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://acmerobotics.github.io/road-runner/core/0.4.5/javadoc/com/acmerobotics/roadrunner/geometry/Pose2d.html">Pose2d API Reference</a> (Note: Pose2d is just a data class—it doesn't control motion).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session5 (Est. 3 hours):</strong> Field Visualization and Path Debugging
+<ul>
+<li><strong>Task 1:</strong> Draw Robot on Field View
+<ul>
+<li><strong>Goal:</strong> Use FTC Dashboard's field view to render the robot's position and orientation as a rectangle on a virtual field. Update the drawing in real-time using Pose2d from Pinpoint.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, Pinpoint odometry.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://acmerobotics.github.io/ftc-dashboard/fieldview">FTC Dashboard - Field View</a>, <a href="https://acmerobotics.github.io/road-runner/core/0.4.5/javadoc/com/acmerobotics/roadrunner/geometry/Pose2d.html">Pose2d API</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Visualize Planned vs Actual Paths
+<ul>
+<li><strong>Goal:</strong> Draw a planned autonomous path (e.g., waypoints or simple line segments) on the field view, then overlay the robot's actual movement to debug trajectory following.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, Pinpoint odometry.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://acmerobotics.github.io/ftc-dashboard/fieldview">FTC Dashboard - Field View</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Test and Refine Visualization
+<ul>
+<li><strong>Goal:</strong> Run the robot through a test autonomous routine and verify that the field visualization accurately represents the robot's position and orientation.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, Pinpoint odometry, drivetrain.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> FTC Dashboard field view examples.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session6 (Est. 3 hours):</strong> Advanced State Machines and Autonomous
+<ul>
+<li><strong>Task 1:</strong> Build Reusable State Machine Template
+<ul>
+<li><strong>Goal:</strong> Create a robust state machine framework with ENTER, EXECUTE, and EXIT phases for each state. Use enum states with switch statements for clarity and maintainability.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=RweqIqouYqM">State Machines - Brogan Pratt</a>, <a href="LearnJavaForFTC.html#ch12">Learn Java for FTC - Dealing with State</a>, <a href="LearnJavaForFTC.html#ch12-2-1">Using the switch statement</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Implement Multi-Step Autonomous with Pose Feedback
+<ul>
+<li><strong>Goal:</strong> Write an autonomous program that uses your state machine to navigate to multiple waypoints using Pose2d feedback (e.g., DRIVE_TO_WAYPOINT_1 → TURN_TO_HEADING → DRIVE_TO_WAYPOINT_2 → STOP).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, drivetrain, Pinpoint odometry.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=UG6iSvgXxYg">Methods/Functions - Brogan Pratt</a>, state machine resources from Session 1.9.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Integrate Subsystems into Autonomous
+<ul>
+<li><strong>Goal:</strong> Add subsystem control (e.g., intake, lift, launcher) into your state machine states, with proper sequencing and safety checks.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, subsystem motors/servos.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch6-2">Learn Java for FTC - Mechanisms</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session7 (Est. 3 hours):</strong> Vision Processing and AprilTags
+<ul>
+<li><strong>Task 1:</strong> Computer Vision Fundamentals
+<ul>
+<li><strong>Goal:</strong> Learn the basics of computer vision: cameras, image processing, and how vision is used in FTC for game element detection and localization.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, webcam or phone camera.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch16">Learn Java for FTC - Computer Vision</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Implement AprilTag Detection
+<ul>
+<li><strong>Goal:</strong> Use the FTC SDK's built-in AprilTag detection to identify tags on the field and read their position/orientation data.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone with camera, Control Hub, AprilTag printouts.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="LearnJavaForFTC.html#ch16-1">Learn Java for FTC - AprilTags</a>, <a href="https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/visionportal_overview/visionportal-overview.html">FTC Docs - VisionPortal</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Use Vision Data in Autonomous
+<ul>
+<li><strong>Goal:</strong> Integrate AprilTag detection into your autonomous state machine to make decisions (e.g., navigate to different waypoints based on detected tag ID).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone with camera, Control Hub, drivetrain.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> State machine resources, AprilTag examples.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session8 (Est. 3 hours):</strong> Introduction to Road Runner (After Fundamentals)
+<ul>
+<li><strong>Task 1:</strong> Understanding Road Runner's Purpose
+<ul>
+<li><strong>Goal:</strong> Now that you've built custom PID, odometry integration, and path following, learn how Road Runner automates these tasks with motion profiling and trajectory generation.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 45 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://rr.brott.dev/docs/">Road Runner Documentation</a>, <a href="https://learnroadrunner.com/">LearnRoadRunner.com</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Install and Configure Road Runner
+<ul>
+<li><strong>Goal:</strong> Integrate the Road Runner library into your FTC project, configure drive constants, and understand the tuning process (but note: you already understand what it's doing under the hood!).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.25 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://rr.brott.dev/docs/">Road Runner Docs</a>, Road Runner Quickstart guide.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Create a Simple TrajectorySequence
+<ul>
+<li><strong>Goal:</strong> Use Road Runner's TrajectorySequence builder to program a simple autonomous path (straight line, turn, curve). Compare the effort to your custom implementation.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, drivetrain with odometry.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://rr.brott.dev/docs/">Road Runner Docs</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session9 (Est. 3 hours):</strong> MeepMeep and Advanced Trajectories
+<ul>
+<li><strong>Task 1:</strong> Visualize Paths with MeepMeep
+<ul>
+<li><strong>Goal:</strong> Use MeepMeep to visually design and test complex autonomous trajectories with splines, turns, and multiple waypoints before deploying to the robot.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://learnroadrunner.com/tool/meepmeep.html">MeepMeep Tool</a>, <a href="https://github.com/NoahBres/MeepMeep">MeepMeep GitHub</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Transfer and Test Trajectories
+<ul>
+<li><strong>Goal:</strong> Convert MeepMeep-designed trajectories into your robot code using Road Runner. Test and refine on the physical robot.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, drivetrain.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://rr.brott.dev/docs/">Road Runner Docs</a>, MeepMeep examples.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Build a Competition-Ready Autonomous
+<ul>
+<li><strong>Goal:</strong> Create a full autonomous routine that combines Road Runner trajectories, state machine logic, subsystem control, and vision feedback for a complete competition strategy.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Driver Station phone, Control Hub, full robot.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> All previous session resources.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Software.Course2.Session10 (Est. 3 hours):</strong> Introduction to FTCLib (After Fundamentals)
+<ul>
+<li><strong>Task 1:</strong> Understanding FTCLib's Role
+<ul>
+<li><strong>Goal:</strong> Learn how FTCLib provides command-based programming, advanced motor controllers, and utility classes that abstract concepts you've already implemented (PID, subsystems, etc.).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 45 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://docs.ftclib.org/ftclib">FTCLib Documentation</a>, <a href="https://docs.ftclib.org/ftclib/command-base/command-system">FTCLib Command System</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Integrate FTCLib into Your Project
+<ul>
+<li><strong>Goal:</strong> Add FTCLib dependency and refactor one subsystem (e.g., drivetrain or lift) to use FTCLib's motor wrappers and command-based structure.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.25 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, Driver Station phone, Control Hub.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://docs.ftclib.org/ftclib">FTCLib Docs</a>, <a href="https://docs.ftclib.org/ftclib/features/hardware">FTCLib Hardware</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Compare Custom vs Library Implementations
+<ul>
+<li><strong>Goal:</strong> Reflect on the trade-offs: custom code gives you full control and deep understanding, while libraries (RR, MeepMeep, FTCLib) save time and reduce bugs. Discuss when to use each approach.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Team discussion, review of code examples from previous sessions.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><strong>Software Resources</strong></h3>
+<p><strong>Primary Learning Resources:</strong></p>
+<ul>
+<li><a href="LearnJavaForFTC.pdf">Learn Java for FTC (PDF)</a> – Comprehensive Java programming guide for FTC</li>
+<li><a href="https://www.youtube.com/playlist?list=PLRHdgFNRLyaPiZ5rvINwMmGMHEIL9usla">Learn Java for Robotics (FTC) – Brogan Pratt (Playlist)</a> – Video series covering Java fundamentals for FTC</li>
+<li><a href="https://www.youtube.com/playlist?list=PLRHdgFNRLyaM6TmNVVHKqVnnyntDDYDNt">Robot Building Tutorials – Brogan Pratt (Playlist)</a> – Hardware and mechanical design fundamentals</li>
+<li><a href="https://www.youtube.com/playlist?list=PLRHdgFNRLyaNX9714HfqBoMCusDBnfXbw">FTC DECODE (Game-Specific) – Brogan Pratt (Playlist)</a> – Current season game strategy and implementation</li>
+<li><a href="https://www.codearobot.org/">Code a Robot</a> – Hardware to software primer</li>
+</ul>
+<p><strong>Control Theory and PID:</strong></p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=6OH-wOsVVjg">PID Control Explained (General)</a></li>
+<li><a href="https://www.youtube.com/watch?v=zrMFEw8qxLc">Implementing PID in FTC</a></li>
+<li><a href="https://gm0.org/en/latest/docs/software/concepts/control-loops.html">GM0 – Control Loops</a></li>
+<li><a href="https://www.ctrlaltftc.com/the-pid-controller">CTRL ALT FTC – PID Controller</a></li>
+<li><a href="https://www.ctrlaltftc.com/the-pid-controller/tuning-methods-of-a-pid-controller#ziegler-nichols-tuning">Tuning Methods (Ziegler-Nichols)</a></li>
+</ul>
+<p><strong>FTC Dashboard and Visualization:</strong></p>
+<ul>
+<li><a href="https://acmerobotics.github.io/ftc-dashboard/">FTC Dashboard Documentation</a></li>
+<li><a href="https://www.youtube.com/watch?v=vhLF6NVXLXI">@Config Tuning with FTC Dashboard</a></li>
+<li><a href="https://acmerobotics.github.io/ftc-dashboard/fieldview">FTC Dashboard – Field View</a></li>
+</ul>
+<p><strong>Odometry and Localization:</strong></p>
+<ul>
+<li><a href="https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/">GoBilda Pinpoint Odometry Computer</a></li>
+<li><a href="https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/GoBildaPinpointDriver.java">Pinpoint Driver Code</a></li>
+<li><a href="https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SensorGoBildaPinpointExample.java">Pinpoint Example OpMode</a></li>
+<li><a href="https://acmerobotics.github.io/road-runner/core/0.4.5/javadoc/com/acmerobotics/roadrunner/geometry/Pose2d.html">Pose2d API Reference</a></li>
+</ul>
+<p><strong>State Machines and Code Organization:</strong></p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=RweqIqouYqM">State Machines – Brogan Pratt</a></li>
+<li><a href="https://www.youtube.com/watch?v=UG6iSvgXxYg">Methods/Functions – Brogan Pratt</a></li>
+</ul>
+<p><strong>Git and Version Control:</strong></p>
+<ul>
+<li><a href="https://docs.github.com/en/get-started/quickstart/github-flow">GitHub Flow Quickstart</a></li>
+<li><a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">About Pull Requests</a></li>
+<li><a href="https://ftc-docs.firstinspires.org/en/latest/programming_resources/tutorial_specific/android_studio/fork_and_clone_github_repository/Fork-and-Clone-From-GitHub.html">FTC Docs – Fork & Clone from GitHub</a></li>
+<li><a href="https://www.youtube.com/watch?v=F8Z-sSXklOg">YouTube – Android Studio Git Basics</a></li>
+<li><a href="https://medium.com/@andresguedes/how-to-review-pull-requests-using-android-studio-c42589b2332c">Review Pull Requests Using Android Studio</a></li>
+</ul>
+<p><strong>Official FTC Documentation:</strong></p>
+<ul>
+<li><a href="https://ftc-docs.firstinspires.org/">FTC Docs (Official)</a></li>
+<li><a href="https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html">FTC Docs – IMU</a></li>
+<li><a href="https://gm0.org/en/latest/docs/software/tutorials/encoders.html">FTC Docs – Encoders</a></li>
+<li><a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">GM0 – Mecanum Drive Tutorial</a></li>
+<li><a href="https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/visionportal_overview/visionportal-overview.html">FTC Docs – VisionPortal & AprilTags</a></li>
+</ul>
+<p><strong>Advanced Libraries (Use AFTER learning fundamentals):</strong></p>
+<ul>
+<li><a href="https://rr.brott.dev/docs/">Road Runner Documentation</a></li>
+<li><a href="https://learnroadrunner.com/">LearnRoadRunner.com</a></li>
+<li><a href="https://learnroadrunner.com/tool/meepmeep.html">MeepMeep Trajectory Visualization</a></li>
+<li><a href="https://github.com/NoahBres/MeepMeep">MeepMeep GitHub Repository</a></li>
+<li><a href="https://docs.ftclib.org/ftclib">FTCLib Documentation</a></li>
+<li><a href="https://docs.ftclib.org/ftclib/command-base/command-system">FTCLib Command System</a></li>
+<li><a href="https://docs.ftclib.org/ftclib/features/hardware">FTCLib Hardware Classes</a></li>
+</ul>
+<p><strong>Community Resources:</strong></p>
+<ul>
+<li><a href="https://gm0.org/">Game Manual 0 (GM0)</a> – Community-maintained FTC knowledge base</li>
+<li><a href="https://www.ctrlaltftc.com/">CTRL ALT FTC</a> – Advanced FTC programming concepts</li>
+</ul>
+<hr>
+<h3><strong>CAD</strong></h3>
+<p><strong>Resource:</strong> The provided Onshape links.</p>
+<h4><strong>CAD.Course1: Introduction to Onshape (10 Sessions)</strong></h4>
+<p><strong>Goal:</strong> To become proficient with the Onshape interface and the fundamental principles of CAD for robotics.</p>
+<ul>
+<li><strong>CAD.Course1.Session1 (Est. 1 hour):</strong> Onshape Basics and Interface
+<ul>
+<li><strong>Task 1:</strong> Onshape Basics
+<ul>
+<li><strong>Goal:</strong> Successfully set up a free Onshape account and navigate the dashboard.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Learn the interface
+<ul>
+<li><strong>Goal:</strong> Create a new document, learn to navigate the 3D space, and understand the basic tools like Sketch, Extrude, and Revolve.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Learning Path: <code>Introduction to Onshape</code> (<a href="https://learn.onshape.com/courses/intro-to-onshape">https://learn.onshape.com/courses/intro-to-onshape</a>) and <code>Intro to Onshape</code> (<a href="https://learn.onshape.com/learn/article/intro-to-onshape">https://learn.onshape.com/learn/article/intro-to-onshape</a>)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session2 (Est. 2 hours):</strong> Basic Part Modeling
+<ul>
+<li><strong>Task 1:</strong> Basic Part Modeling
+<ul>
+<li><strong>Goal:</strong> Use sketch tools to create a simple shape like a square or a circle with specific dimensions.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Learning Path: <code>Introduction to CAD</code> (<a href="https://learn.onshape.com/learning-paths/introduction-to-cad">https://learn.onshape.com/learning-paths/introduction-to-cad</a>)
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Turn your sketch into a 3D part
+<ul>
+<li><strong>Goal:</strong> Use the <strong>Extrude</strong> feature to give depth to your 2D sketch, creating a simple 3D part.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Learning Path: <code>Introduction to CAD</code> (<a href="https://learn.onshape.com/learning-paths/introduction-to-cad">https://learn.onshape.com/learning-paths/introduction-to-cad</a>)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session3 (Est. 2 hours):</strong> Complex Parts and Features
+<ul>
+<li><strong>Task 1:</strong> More Complex Parts
+<ul>
+<li><strong>Goal:</strong> Create a part that requires multiple sketches and extrusions on different planes.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=mJXmWGeyud8">Learning the basics of working with multiple sketches in Onshape CAD</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Use the <code>Hole</code> and <code>Fillet</code> features
+<ul>
+<li><strong>Goal:</strong> Add holes and rounded edges to your part for a more finished look.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://cad.onshape.com/help/Content/hole.htm">Onshape Hole Feature Help</a> and <a href="https://cad.onshape.com/help/Content/fillet.htm">Onshape Fillet Feature Help</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session4 (Est. 2.5 hours):</strong> Introduction to Assemblies
+<ul>
+<li><strong>Task 1:</strong> First Assembly
+<ul>
+<li><strong>Goal:</strong> Use the <code>Insert</code> feature to add standard FTC components from the Onshape FTC library into a new assembly.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>FTC Catalog</code> (<a href="https://learn.onshape.com/catalog?query=ftc">https://learn.onshape.com/catalog?query=ftc</a>)
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Use <code>Mate</code> connectors
+<ul>
+<li><strong>Goal:</strong> Use <code>Mate</code> features like "Fasten" and "Revolute" to connect two parts together.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>Assemble a Robot</code> (<a href="https://learn.onshape.com/learn/article/assemble-a-robot">https://learn.onshape.com/learn/article/assemble-a-robot</a>)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session5 (Est. 2.5 hours):</strong> Mates and Simulation
+<ul>
+<li><strong>Task 1:</strong> Understanding Mates
+<ul>
+<li><strong>Goal:</strong> Experiment with different mate types (<code>Revolute</code>, <code>Slider</code>, <code>Cylindrical</code>) to understand how they restrict movement.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>Assemble a Robot</code> (<a href="https://learn.onshape.com/learn/article/assemble-a-robot">https://learn.onshape.com/learn/article/assemble-a-robot</a>)
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Simulate a simple mechanism
+<ul>
+<li><strong>Goal:</strong> Create an assembly of two parts that can move relative to each other using a <code>Mate</code> connector.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://cad.onshape.com/help/Content/simulation.htm">Onshape Assembly Simulation Help</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session6 (Est. 3 hours):</strong> Drivetrain CAD \- Chassis
+<ul>
+<li><strong>Task 1:</strong> Drivetrain CAD \- Chassis
+<ul>
+<li><strong>Goal:</strong> Create a new Part Studio and design the main frame of a four-wheeled drivetrain.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.onshape.com/en/solutions/robotics">Onshape for Robotics \- Design of a Robot Chassis</a> and <a href="https://www.reddit.com/r/Onshape/comments/1m27m72/onshape_robot_tutorial_for_absolute_beginners/">Onshape Robot Tutorial for Absolute Beginners</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Assemble the chassis
+<ul>
+<li><strong>Goal:</strong> Assemble the chassis components you designed and make sure they are properly mated.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=KdytrbNVKnE">Onshape Strafer Chassis Tutorial</a> and <a href="https://learn.onshape.com/courses/assemble-a-robot">CAD for Robotics \- Assemble a Drivetrain</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session7 (Est. 3 hours):</strong> Drivetrain CAD \- Motors and Wheels
+<ul>
+<li><strong>Task 1:</strong> Drivetrain CAD \- Motors and Wheels
+<ul>
+<li><strong>Goal:</strong> Add motors from the FTC Onshape library and mate them correctly to your chassis.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=KdytrbNVKnE">Onshape Strafer Chassis Tutorial</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Add wheels
+<ul>
+<li><strong>Goal:</strong> Add standard FTC wheels and mate them to the motor output shafts.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.chiefdelphi.com/t/ftc-drivetrain-cad-feedback/459854">FTC Drivetrain CAD feedback \- Chief Delphi</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session8 (Est. 2 hours):</strong> Subsystem Design
+<ul>
+<li><strong>Task 1:</strong> Subsystem Concepts
+<ul>
+<li><strong>Goal:</strong> Choose a simple FTC subproblem (e.g., a simple lift or a claw) and sketch out a design concept.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://gm0.org/en/latest/docs/design-skills/design-strategy.html">FTC Game Manual 0: Design Strategy</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Design a custom bracket
+<ul>
+<li><strong>Goal:</strong> Create a simple custom bracket in Onshape to connect two parts of your planned subsystem.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>Creating Custom Components</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-creating-custom-components">https://learn.onshape.com/learn/article/cad-for-robotics-creating-custom-components</a>)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session9 (Est. 2 hours):</strong> Collaboration
+<ul>
+<li><strong>Task 1:</strong> Sharing and Collaboration
+<ul>
+<li><strong>Goal:</strong> Share an Onshape document with a teammate and grant them editing permissions.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>CAD for Robotics Collaboration</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-collaboration">https://learn.onshape.com/learn/article/cad-for-robotics-collaboration</a>)
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Comment on a design
+<ul>
+<li><strong>Goal:</strong> Use the comment feature in Onshape to provide feedback on a teammate's design.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 30 minutes
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>CAD for Robotics Collaboration</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-collaboration">https://learn.onshape.com/learn/article/cad-for-robotics-collaboration</a>)
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Manufacturing and Documentation
+<ul>
+<li><strong>Goal:</strong> Create a basic drawing and Bill of Materials (BOM) for a custom part.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>Communicating Your Design</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design">https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design</a>)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course1.Session10 (Est. 2 hours):</strong> Prepare for Manufacturing
+<ul>
+<li><strong>Task 1:</strong> Prepare for manufacturing
+<ul>
+<li><strong>Goal:</strong> Export a part file in a format suitable for manufacturing (e.g., DXF for laser cutting, STL for 3D printing).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 2 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Article: <code>Manufacturing</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-manufacturing">https://learn.onshape.com/learn/article/cad-for-robotics-manufacturing</a>)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4><strong>CAD.Course2: Advanced CAD (10 Sessions)</strong></h4>
+<p><strong>Goal:</strong> To learn advanced modeling techniques, design for manufacturing, and professional collaboration workflows.</p>
+<ul>
+<li><strong>CAD.Course2.Session1 (Est. 3 hours):</strong> Design for Manufacturing
+<ul>
+<li><strong>Task 1:</strong> Design for Manufacturing (DFM)
+<ul>
+<li><strong>Goal:</strong> Explain the basic principles of DFM, focusing on how design choices affect manufacturing processes like 3D printing and laser cutting.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://gm0.org/en/latest/docs/design-skills/design-strategy.html">FTC Game Manual 0: Design Strategy</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Create a laser-cut part
+<ul>
+<li><strong>Goal:</strong> Design a custom part (e.g., a chassis plate) that can be easily laser-cut from a flat sheet of material.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Create a 3D-printed part
+<ul>
+<li><strong>Goal:</strong> Design a custom part that uses features like overhangs and support structures appropriate for 3D printing.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session2 (Est. 2.5 hours):</strong> Advanced Features
+<ul>
+<li><strong>Task 1:</strong> Use Advanced Features \- <code>Sweep</code>
+<ul>
+<li><strong>Goal:</strong> Use the <code>Sweep</code> feature to create a part with a profile that follows a complex curve.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Use Advanced Features \- <code>Loft</code>
+<ul>
+<li><strong>Goal:</strong> Use the <code>Loft</code> feature to create a part by blending two or more profiles together.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session3 (Est. 2.5 hours):</strong> Pattern and Move
+<ul>
+<li><strong>Task 1:</strong> Use Advanced Features \- <code>Pattern</code>
+<ul>
+<li><strong>Goal:</strong> Use the <code>Pattern</code> feature (linear or circular) to quickly create multiple instances of a feature or part.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Use Advanced Features \- <code>Move Face</code>
+<ul>
+<li><strong>Goal:</strong> Use the <code>Move Face</code> tool to make quick edits to an existing part without having to change the original sketches.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session4 (Est. 2 hours):</strong> Assembly Simulation
+<ul>
+<li><strong>Task 1:</strong> Assembly Simulation \- Motion
+<ul>
+<li><strong>Goal:</strong> Create a simple gear train assembly and use <code>Mate</code> connectors to simulate its motion.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 2 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://cad.onshape.com/help/Content/simulation.htm">Onshape Assembly Simulation Help</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session5 (Est. 3 hours):</strong> Featurescripts and Versioning
+<ul>
+<li><strong>Task 1:</strong> Use Featurescripts
+<ul>
+<li><strong>Goal:</strong> Find and use a Featurescript from the Onshape community to automate a complex task, such as generating gears or sprockets.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape Learning Center: <a href="https://learn.onshape.com/courses/featurescript-fundamentals">FeatureScript Fundamentals</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Create a Version
+<ul>
+<li><strong>Goal:</strong> Create a named version of your CAD model at a major milestone (e.g., "Drivetrain Complete").
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Versions and History</code> (<a href="https://www.google.com/search?q=https://learn.onshape.com/learn/article/introduction-to-onshape-versions-and-history">https://learn.onshape.com/learn/article/introduction-to-onshape-versions-and-history</a>).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session6 (Est. 2.5 hours):</strong> Documentation
+<ul>
+<li><strong>Task 1:</strong> Bill of Materials (BOM)
+<ul>
+<li><strong>Goal:</strong> Generate a detailed Bill of Materials for your final robot assembly.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Communicating Your Design</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design">https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design</a>).
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Create a Technical Drawing
+<ul>
+<li><strong>Goal:</strong> Create a 2D technical drawing of a custom part with dimensions, tolerances, and a title block.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Communicating Your Design</code> (<a href="https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design">https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design</a>).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session7 (Est. 2.5 hours):</strong> Configurations and Subsystems
+<ul>
+<li><strong>Task 1:</strong> Use the Onshape <code>Configurations</code> tool
+<ul>
+<li><strong>Goal:</strong> Create a configurable part or assembly that can be easily modified (e.g., a chassis with different lengths).
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Configurations Help</code> (<a href="https://cad.onshape.com/help/Content/configurations.htm">https://cad.onshape.com/help/Content/configurations.htm</a>).
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Design an Intake Mechanism
+<ul>
+<li><strong>Goal:</strong> Design and model a subsystem, such as an intake or a lift, from scratch in a new Part Studio.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.instructables.com/Designing-Our-FTC-Bot-2023-2024-1/">Designing Our FTC Bot 2023-2024 \- Instructables</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session8 (Est. 2.5 hours):</strong> Assembly Visualization
+<ul>
+<li><strong>Task 1:</strong> Assemble the Intake
+<ul>
+<li><strong>Goal:</strong> Assemble the intake subsystem with the drivetrain, ensuring all mates work correctly.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Create Exploded View
+<ul>
+<li><strong>Goal:</strong> Create an exploded view of a complex assembly to show how the parts fit together.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Exploded Views Help</code> (<a href="https://www.google.com/search?q=https://cad.onshape.com/help/Content/exploded-views.htm">https://cad.onshape.com/help/Content/exploded-views.htm</a>).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session9 (Est. 2.5 hours):</strong> Rendering and Collaboration
+<ul>
+<li><strong>Task 1:</strong> Render an Assembly
+<ul>
+<li><strong>Goal:</strong> Create a high-quality rendered image of your robot assembly for presentation or a design notebook.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Renderings Help</code> (<a href="https://www.google.com/search?q=https://cad.onshape.com/help/Content/renderings.htm">https://cad.onshape.com/help/Content/renderings.htm</a>).
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Collaborate with <code>Branches</code> and <code>Merge</code>
+<ul>
+<li><strong>Goal:</strong> Create a branch to work on a new feature and then merge it back into the main workspace.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 hour
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> Onshape <code>Branches and Merge Help</code> (<a href="https://www.google.com/search?q=https://cad.onshape.com/help/Content/branches.htm">https://cad.onshape.com/help/Content/branches.htm</a>).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD.Course2.Session10 (Est. 3 hours):</strong> Design Review and Documentation
+<ul>
+<li><strong>Task 1:</strong> Robot Design Review
+<ul>
+<li><strong>Goal:</strong> Present your complete CAD model to your team and judges for a design review, explaining your design choices and trade-offs.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://gm0.org/en/latest/docs/design-skills/design-strategy.html">FTC Game Manual 0: Design Strategy</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Robot Design Documentation
+<ul>
+<li><strong>Goal:</strong> Create a comprehensive design document that includes your CAD models, BOM, and a narrative of your design process.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 hours
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.firstinspires.org/resource-library/ftc/design-award-resources">FTC Design Award Resources</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><strong>Combined CAD-CODE-COMPETE</strong></h3>
+<p><strong>Goal:</strong> To synthesize all skills by designing, building, and programming a complete robot for a past FTC game.</p>
+<ul>
+<li><strong>Combined.Session1 (Est. 3 days):</strong> Robot Concept and CAD
+<ul>
+<li><strong>Task 1:</strong> Game Analysis
+<ul>
+<li><strong>Goal:</strong> Break down the rules and objectives of a past FTC game. Identify key scoring elements, field hazards, and robot requirements.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 day
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> None.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.youtube.com/watch?v=p0O9iQno-AM">Analyzing and Breaking Down the 2026 FTC Game</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Integrated Robot Concept
+<ul>
+<li><strong>Goal:</strong> As a team, create a single document outlining the robot's design concept, including a sketch of the chassis and a description of the planned mechanisms.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 day
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> None.
+</li>
+</ul>
+<ul>
+<li><strong>Resource:</strong> <a href="https://www.instructables.com/Designing-Our-FTC-Bot-2023-2024-1/">Designing Our FTC Bot 2023-2024 \- Instructables</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 3:</strong> Full Robot CAD
+<ul>
+<li><strong>Goal:</strong> The CAD team must design the complete robot in Onshape, including the drivetrain and all subsystems, ensuring they fit together correctly and can be built with available parts.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1 day
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer with a web browser.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Combined.Session2 (Est. 3 days):</strong> Full Robot Code
+<ul>
+<li><strong>Task 1:</strong> Full Robot Code
+<ul>
+<li><strong>Goal:</strong> The software team must write a comprehensive program for the robot, including a robust tele-op and an autonomous mode that uses Road Runner and state machines to complete game objectives.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 3 days
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> Computer, Driver Station phone, Gamepad, Control Hub.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Combined.Session3 (Est. 2 days):</strong> Build and Test
+<ul>
+<li><strong>Task 1:</strong> Final Build and Test
+<ul>
+<li><strong>Goal:</strong> As a team, assemble the physical robot from the CAD models and test all its functions.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 1.5 days
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> A complete set of physical robot parts, tools, computer, Control Hub, Driver Station phone, Gamepad.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Task 2:</strong> Final Competition Simulation
+<ul>
+<li><strong>Goal:</strong> Run the robot through a mock competition to evaluate its performance and prepare for a real event.
+</li>
+</ul>
+<ul>
+<li><strong>Time Estimate:</strong> 0.5 days
+</li>
+</ul>
+<ul>
+<li><strong>Hardware Needed:</strong> A complete robot, a full FTC field, computer, Control Hub, Driver Station phone, Gamepad.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><strong>Complete List of Resources</strong></h3>
+<ul>
+<li><strong>Software Resources:</strong>
+<ul>
+<li><a href="LearnJavaForFTC.pdf">Learn Java for FTC (PDF)</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://rr.brott.dev/docs/">Road Runner Docs</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://learnroadrunner.com/introduction.html#frequently-asked-questions">Road Runner FAQs</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">GM0.org Mecanum Drive Tutorial</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://github.com/FIRST-Tech-Challenge/FtcRobotController/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples">FTC SDK Samples on GitHub</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://ftcsim.org/#frontpageCourses">FTC-Sim Courses</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://learnroadrunner.com/tool/meepmeep.html">MeepMeep Trajectory Tool</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://ftc-docs.firstinspires.org/en/latest/programming_resources/index.html">FIRST Tech Challenge Programming Resources</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://ftc-docs.firstinspires.org/en/latest/control_hard_compon/ds_components/index.html">FTC Driver Station Components</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>CAD Resources:</strong>
+<ul>
+<li><a href="https://learn.onshape.com/">Onshape Learning Center</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://learn.onshape.com/learning-paths/introduction-to-cad">Onshape Introduction to CAD Learning Path</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://learn.onshape.com/courses/intro-to-onshape">Onshape Intro to Onshape Course</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://learn.onshape.com/catalog?query=ftc">Onshape FTC Catalog</a>
+</li>
+</ul>
+<ul>
+<li><a href="https://www.google.com/search?q=%5Bhttps://learn.onshape.com/learn/article/intro-to-onshape%5D\(https://learn.onshape.com/learn/article/intro-to-onshape\">Onshape Article: <code>Intro to Onshape</code></a>)
+</li>
+</ul>
+<ul>
+<li><a href="https://www.google.com/search?q=%5Bhttps://learn.onshape.com/learn/article/assemble-a-robot%5D\(https://learn.onshape.com/learn/article/assemble-a-robot\">Onshape Article: <code>Assemble a Robot</code></a>)
+</li>
+</ul>
+<ul>
+<li><a href="https://www.google.com/search?q=%5Bhttps://learn.onshape.com/learn/article/cad-for-robotics-collaboration%5D\(https://learn.onshape.com/learn/article/cad-for-robotics-collaboration\">Onshape Article: <code>CAD for Robotics Collaboration</code></a>)
+</li>
+</ul>
+<ul>
+<li><a href="https://www.google.com/search?q=%5Bhttps://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design%5D\(https://learn.onshape.com/learn/article/cad-for-robotics-communicating-your-design\">Onshape Article: <code>Communicating Your Design</code></a>)
+</li>
+</ul>
+<ul>
+<li><a href="https://www.google.com/search?q=%5Bhttps://learn.onshape.com/learn/article/cad-for-robotics-creating-custom-components%5D\(https://learn.onshape.com/learn/article/cad-for-robotics-creating-custom-components\">Onshape Article: <code>Creating Custom Components</code></a>)
+</li>
+</ul>
+<ul>
+<li><a href="https://www.google.com/search?q=%5Bhttps://learn.onshape.com/learn/article/cad-for-robotics-manufacturing%5D\(https://learn.onshape.com/learn/article/cad-for-robotics-manufacturing\">Onshape Article: <code>Manufacturing</code></a>) I have updated the <code>Software.Course1</code> to have 10 sessions as you requested. I split the 3-hour session "Controlling Motors" into two new sessions: "Controlling a Single Motor" and "Motors and Hardware Mapping", and renumbered all subsequent sessions to maintain a logical progression.
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+
+    <a href="#top" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scrolling
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
