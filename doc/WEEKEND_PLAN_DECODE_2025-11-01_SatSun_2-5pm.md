@@ -5,14 +5,21 @@ Team-facing plan aligned with Brogan M. Pratt's fundamentals-first philosophy. N
 ---
 
 ## Before the Session (Do this)
-- Watch the PID video and skim GM0 Control Loops; skim CTRL ALT FTC on PID. Links: https://www.youtube.com/watch?v=6OH-wOsVVjg, https://gm0.org/en/latest/docs/software/concepts/control-loops.html, https://www.ctrlaltftc.com/the-pid-controller
-- Watch the FTC-focused PID implementation video: https://www.youtube.com/watch?v=zrMFEw8qxLc
-- Skim FTC Dashboard docs and the @Config tuning video: https://acmerobotics.github.io/ftc-dashboard/, https://www.youtube.com/watch?v=vhLF6NVXLXI
+## Before Saturday
 - Read GitHub Flow and About Pull Requests: https://docs.github.com/en/get-started/quickstart/github-flow, https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
 - Install Android Studio, clone the team repo, open the project, and build once on your laptop. Make sure you can run a sample OpMode.
 - Set up Git on your laptop and sign in to GitHub so you can push a branch during the session.
-- Optional but recommended: State Machines and Methods/Functions videos: https://www.youtube.com/watch?v=RweqIqouYqM, https://www.youtube.com/watch?v=bRZ0UDDiIWj0
+- Skim FTC Dashboard docs and the @Config tuning video: https://acmerobotics.github.io/ftc-dashboard/, https://www.youtube.com/watch?v=vhLF6NVXLXI
+
+## Before Sunday
+- Watch the PID video and skim GM0 Control Loops; skim CTRL ALT FTC on PID. Links: https://www.youtube.com/watch?v=6OH-wOsVVjg, https://gm0.org/en/latest/docs/software/concepts/control-loops.html, https://www.ctrlaltftc.com/the-pid-controller
+- Watch the FTC-focused PID implementation video: https://www.youtube.com/watch?v=zrMFEw8qxLc
+- State Machines and Methods/Functions videos: https://www.youtube.com/watch?v=RweqIqouYqM, https://www.youtube.com/watch?v=bRZ0UDDiIWj0
+- 
+## Later (optional)
 - Optional: Pinpoint product page and driver/example code: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/, https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/GoBildaPinpointDriver.java, https://github.com/goBILDA-Official/FtcRobotController-Add-Pinpoint/blob/goBILDA-Odometry-Driver/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SensorGoBildaPinpointExample.java
+
+## Didn't do software before?
 - Anyone else just joining software can do before of the above:
     - [Code a Robot](https://www.codearobot.org/) – hardware to software primer
     - Watch Java for Robotics (FTC) playlist: https://www.youtube.com/playlist?list=PLRHdgFNRLyaPiZ5rvINwMmGMHEIL9usla
