@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.acmerobotics.roadrunner.Pose2d;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -71,12 +72,10 @@ public class blue_goal extends LinearOpMode {
     private Servo transferServoLeft = null;
     private Servo transferServoRight = null;
     private Servo transferArm = null;
-    int amount_of_motors = 4;
-    private DcMotor[]motors = new DcMotor[amount_of_motors];
-    private String[]motordirections = {"front_left_drive",
-            "back_left_drive",
-            "front_right_drive",
-            "back_right_drive"};
+    private DcMotor frontLeftDrive = null;
+    private DcMotor backLeftDrive = null;
+    private DcMotor frontRightDrive = null;
+    private DcMotor backRightDrive = null;
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     FORWARD_SPEED = 0.52;
@@ -91,32 +90,25 @@ public class blue_goal extends LinearOpMode {
         transferServoLeft = hardwareMap.get(Servo.class, "transferServoLeft");
         transferArm = hardwareMap.get(Servo.class, "transferArm");
 
+        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
+        //TODO: make a function for strafing that takes speed in as input
 
-        // Initialize the drive system variables.
-        for (int i = 0; i < amount_of_motors; i++)
-        {
-            motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
-        }
-//        transferServoRight.setDirection((Servo.Direction.FORWARD));
-//        transferServoLeft.setDirection((Servo.Direction.REVERSE));
-//        transferServoRight.setPosition(1.0);
-//        transferServoLeft.setPosition(0.0); //this is actually right??
-
-        /*leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");*/
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        for (int i = 0; i < 2; i++)
-        {
-            motors[i].setDirection(DcMotor.Direction.FORWARD);
-        }
+        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        for (int i = 2; i < 4; i++)
-        {
-            motors[i].setDirection(DcMotor.Direction.REVERSE);
-        }
 
         /*leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);*/
@@ -133,21 +125,39 @@ public class blue_goal extends LinearOpMode {
         // Step 1:  back up for 0.75 seconds
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.75)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.75)) { //use variable not numbers
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
-            for (int i = 0; i < amount_of_motors; i++)
-            {
-                motors[i].setPower(-FORWARD_SPEED);
-            }
+            frontLeftDrive.setPower(-FORWARD_SPEED);
+            backLeftDrive.setPower(-FORWARD_SPEED);
+            frontRightDrive.setPower(-FORWARD_SPEED);
+            backRightDrive.setPower(-FORWARD_SPEED);
         }
 
-        for (int i = 0; i < amount_of_motors; i++)
-        {
-            motors[i].setPower(0.0);
-        }
+        frontLeftDrive.setPower(0.0);
+        backLeftDrive.setPower(0.0);
+        frontRightDrive.setPower(0.0);
+        backRightDrive.setPower(0.0);
         sleep(1000);
 
+//
+//        class motor_data{
+//            int speed;
+//            int power;
+//            int time_to_sleep;
+//
+//        };
+//
+//        motor_data handle_game(){
+//            static int game_state = 0;
+//            motor_data
+//            switch (game_state){
+//                case 0:
+//                    while (opModeIsActive() && (runtime.seconds() < 0.75)){
+//                        return
+//                    }
+//            }
+//        }
         //secret step 76: 2 shooting cycles
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 4.0)) {
@@ -172,18 +182,22 @@ public class blue_goal extends LinearOpMode {
         // Step 2:  Spin left for 0.5 seconds (strafe)
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-            for (int i = 0; i < 3; i++)
-            {
-                motors[i].setPower(-TURN_SPEED);
-            }
+        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+            frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
 
-            for (int i = 2; i < 4; i++)
-            {
-                motors[i].setPower(TURN_SPEED);
-            }
+            frontLeftDrive.setPower(FORWARD_SPEED);
+            frontRightDrive.setPower(FORWARD_SPEED);
+            backLeftDrive.setPower(-FORWARD_SPEED);
+            backRightDrive.setPower(-FORWARD_SPEED);
+
+            frontLeftDrive.setPower(0.0);
+            backLeftDrive.setPower(0.0);
+            frontRightDrive.setPower(0.0);
+            backRightDrive.setPower(0.0);
+
         }
         sleep(1000);
 
@@ -194,35 +208,36 @@ public class blue_goal extends LinearOpMode {
         {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
-            for (int i = 0; i < 3; i++)
-            {
-                motors[i*3].setPower(-TURN_SPEED);
-                motors[i*3].setDirection(DcMotorSimple.Direction.REVERSE);
-            }
-            for (int i = 1; i < 3; i++)
-            {
-                motors[i].setPower(TURN_SPEED);
-                motors[i].setDirection(DcMotorSimple.Direction.FORWARD);
-            }
+
+
+            frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            frontLeftDrive.setPower(-TURN_SPEED);
+            frontRightDrive.setPower(-TURN_SPEED);
+
+
+
+            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            frontLeftDrive.setPower(TURN_SPEED);
+            frontRightDrive.setPower(TURN_SPEED);
+
         }
 
         // Step 4:  Stop
-        for (int i = 0; i < amount_of_motors; i++)
-        {
-            motors[i].setPower(0);
-        }
 
-        /*leftDrive.setPower(0);
-        rightDrive.setPower(0);*/
+        frontLeftDrive.setPower(0.0);
+        backLeftDrive.setPower(0.0);
+        frontRightDrive.setPower(0.0);
+        backRightDrive.setPower(0.0);
+
+
         intakeMotor.setPower(0.0);
-
-        for (int i = 0; i < amount_of_motors; i++) //locks motors
-        {
-            motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-
+        
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);
     }
+
 }
+

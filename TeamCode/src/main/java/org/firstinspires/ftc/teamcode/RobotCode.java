@@ -188,7 +188,8 @@ public class RobotCode extends LinearOpMode {
             {
                 transferArm.setDirection((Servo.Direction.FORWARD));
                 transferArm.setPosition(-0.67);
-            } else
+            }
+            else
             {
                 transferArm.setDirection((Servo.Direction.REVERSE));
                 transferArm.setPosition(0.0);
@@ -214,13 +215,15 @@ public class RobotCode extends LinearOpMode {
                 transferServoLeft.setPosition(1.0);
                 transferServoRight.setDirection((Servo.Direction.REVERSE));
                 transferServoLeft.setDirection((Servo.Direction.FORWARD));
-            } else if (gamepad1.dpad_down && !gamepad1.dpad_up)
+            }
+            else if (gamepad1.dpad_down && !gamepad1.dpad_up)
             {
                 transferServoRight.setPosition(-1.0);
                 transferServoLeft.setPosition(-1.0);
                 transferServoRight.setDirection((Servo.Direction.FORWARD));
                 transferServoLeft.setDirection((Servo.Direction.REVERSE));
-            } else
+            }
+            else
             {
                 transferServoRight.setPosition(0.0);
                 transferServoLeft.setPosition(0.0);
