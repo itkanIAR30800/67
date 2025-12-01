@@ -7,18 +7,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="Robot Code", group="Robot")
-public class RobotCode extends LinearOpMode {
+@TeleOp(name="Other Robot Code", group="Robot")
+public class RobotCodeV2 extends LinearOpMode {
 
-    private DcMotor intakeMotor = null; //intake motor
+    private DcMotorSimple intake = null; //intake motor
+    private DcMotor shooting = null;
+
+    private Servo hood = null;
 
     //shooter variables
-    private DcMotor shooterRightMotor = null;
-    private DcMotor shooterLeftMotor = null;
-    private Servo transferServoLeft = null;
-    private Servo transferServoRight = null;
-    private Servo transferArm = null;
 
+    //3 controls: intake motor, shooter motor, hood servo
     //drivetrain variables
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -32,12 +31,14 @@ public class RobotCode extends LinearOpMode {
 
     //logic
     public void runOpMode() throws InterruptedException{
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        shooterRightMotor = hardwareMap.get(DcMotor.class, "shooterRightMotor");
-        shooterLeftMotor = hardwareMap.get(DcMotor.class, "shooterLeftMotor");
-        transferServoRight = hardwareMap.get(Servo.class, "transferServoRight");
-        transferServoLeft = hardwareMap.get(Servo.class, "transferServoLeft");
-        transferArm = hardwareMap.get(Servo.class, "transferArm");
+        intake = hardwareMap.get(DcMotor.class, "intakeMotor");
+        shooting = hardwareMap.get(DcMotor.class, "shootingMotor");
+        hood = hardwareMap.get(Servo.class, "hoodServo");
+
+
+        shooting.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
 
         for (int i = 0; i < amount_of_motors; i++)
         {
@@ -140,15 +141,15 @@ public class RobotCode extends LinearOpMode {
             //START INTAKE -------------------------------------------------------------------------
             if (gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f) //changed to if statements due to driving issue
             {
-                intakeMotor.setDirection((DcMotorSimple.Direction.FORWARD));
-                intakeMotor.setPower(0.8); //last run intake was at .5, changed it
+                intake.setDirection((DcMotorSimple.Direction.FORWARD));
+                intake.setPower(0.8); //last run intake was at .5, changed it
             } else if (gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
             {
-                intakeMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                intakeMotor.setPower(0.8);
+                intake.setDirection((DcMotorSimple.Direction.REVERSE));
+                intake.setPower(0.8);
             } else
             {
-                intakeMotor.setPower(0.0);
+                intake.setPower(0.0);
                 for (int i = 0; i < amount_of_motors; i++) //locks motors
                 {
                     motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -178,31 +179,26 @@ public class RobotCode extends LinearOpMode {
             //START SHOOTER ----------------------------------------------------------------------
             if (gamepad1.right_bumper) //shoot forward
             {
-                shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
-                shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-                shooterLeftMotor.setPower(1.0);
-                shooterRightMotor.setPower(1.0);
+                shooting.setDirection(DcMotor.Direction.REVERSE);
+                shooting.setPower(1.0);
 
             }
-            if (gamepad1.left_bumper)
-            {
-                transferArm.setDirection((Servo.Direction.FORWARD));
-                transferArm.setPosition(-0.67);
-            }
+//            if (gamepad1.left_bumper)
+//            {
+//                hood.setDirection((Servo.Direction.FORWARD));
+//                hood.setPosition(-0.67);
+//            }
             else
             {
-                transferArm.setDirection((Servo.Direction.REVERSE));
-                transferArm.setPosition(0.0);
-                shooterLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                shooterRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                shooting.setPower(0.0);
             }
 
             if (gamepad1.x)
             {
-                shooterLeftMotor.setPower(0.0);
-                shooterRightMotor.setPower(0.0);
-                shooterLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                shooterRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                shooting.setPower(0.0);
+
+
             }
 //            else if (!gamepad1.right_bumper && !gamepad1.left_bumper)
 //            {
@@ -211,22 +207,18 @@ public class RobotCode extends LinearOpMode {
 //            }
             if (gamepad1.dpad_up && !gamepad1.dpad_down)
             {
-                transferServoRight.setPosition(1.0);
-                transferServoLeft.setPosition(1.0);
-                transferServoRight.setDirection((Servo.Direction.REVERSE));
-                transferServoLeft.setDirection((Servo.Direction.FORWARD));
+                hood.setPosition(1.0);
+                hood.setDirection((Servo.Direction.REVERSE));
             }
             else if (gamepad1.dpad_down && !gamepad1.dpad_up)
             {
-                transferServoRight.setPosition(-1.0);
-                transferServoLeft.setPosition(-1.0);
-                transferServoRight.setDirection((Servo.Direction.FORWARD));
-                transferServoLeft.setDirection((Servo.Direction.REVERSE));
+                hood.setPosition(-1.0);
+                hood.setDirection((Servo.Direction.FORWARD));
+
             }
-                else
+            else
             {
-                transferServoRight.setPosition(0.0);
-                transferServoLeft.setPosition(0.0);
+                hood.setPosition(0.0);
             }
 
 

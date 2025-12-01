@@ -63,20 +63,17 @@ public class tuff extends LinearOpMode {
     private DcMotor         leftDrive   = null;
     private DcMotor         rightDrive  = null;*/
 
-    private DcMotor intakeMotor = null; //intake motor
 
-    //shooter variables
-    private DcMotor shooterRightMotor = null;
-    private DcMotor shooterLeftMotor = null;
-    private Servo transferServoLeft = null;
-    private Servo transferServoRight = null;
-    private Servo transferArm = null;
     int amount_of_motors = 4;
     private DcMotor[]motors = new DcMotor[amount_of_motors];
     private DcMotor frontLeftDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
+
+    private DcMotor intakeMotor = null;
+    private DcMotor shootingMotor = null;
+
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     FORWARD_SPEED = 0.52;
@@ -85,16 +82,38 @@ public class tuff extends LinearOpMode {
     @Override
     public void runOpMode() {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        shooterRightMotor = hardwareMap.get(DcMotor.class, "shooterRightMotor");
-        shooterLeftMotor = hardwareMap.get(DcMotor.class, "shooterLeftMotor");
-        transferServoRight = hardwareMap.get(Servo.class, "transferServoRight");
-        transferServoLeft = hardwareMap.get(Servo.class, "transferServoLeft");
-        transferArm = hardwareMap.get(Servo.class, "transferArm");
+        shootingMotor = hardwareMap.get(DcMotor.class, "shootingMotor");
 
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
+
+
+        //TODO: determine what shooting velocity and angle is  optimal for shooter
+        //TODO: read and take notes on the chatgpt thing + the websites from aaban
+
+
+        //intake
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setPower(0.5);
+        sleep(3000);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        sleep(3000);
+        intakeMotor.setPower(0.0);
+
+        sleep(1000);
+
+        shootingMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        shootingMotor.setPower(0.5);
+        sleep(3000);
+        shootingMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        sleep(3000);
+        shootingMotor.setPower(0.0);
+
+        waitForStart();
+
+
 
 
         // Initialize the drive system variables.
@@ -103,19 +122,19 @@ public class tuff extends LinearOpMode {
 //            motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
 //        }
 
-        frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        frontLeftDrive.setPower(1.0);
-        backLeftDrive.setPower(-1.0);
-        frontRightDrive.setPower(1.0);
-        backRightDrive.setPower(-1.0);
-        sleep(2000);
-        frontLeftDrive.setPower(0.0);
-        backLeftDrive.setPower(0.0);
-        frontRightDrive.setPower(0.0);
-        backRightDrive.setPower(0.0);
+//        frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//
+//        frontLeftDrive.setPower(1.0);
+//        backLeftDrive.setPower(-1.0);
+//        frontRightDrive.setPower(1.0);
+//        backRightDrive.setPower(-1.0);
+//        sleep(2000);
+//        frontLeftDrive.setPower(0.0);
+//        backLeftDrive.setPower(0.0);
+//        frontRightDrive.setPower(0.0);
+//        backRightDrive.setPower(0.0);
     }
 }
