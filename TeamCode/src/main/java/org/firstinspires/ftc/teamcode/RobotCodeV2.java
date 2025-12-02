@@ -21,12 +21,19 @@ public class RobotCodeV2 extends LinearOpMode {
     //drivetrain variables
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
-    int amount_of_motors = 4;
-    private DcMotor[] motors = new DcMotor[amount_of_motors];
-    private String[] motordirections = {"front_left_drive",
-            "back_left_drive",
-            "front_right_drive",
-            "back_right_drive"};
+
+    private DcMotor leftFront = null;
+    private DcMotor leftBack = null;
+    private DcMotor rightFront = null;
+    private DcMotor rightBack = null;
+
+
+//    int amount_of_motors = 4;
+//    private DcMotor[] motors = new DcMotor[amount_of_motors];
+//    private String[] motordirections = {"front_left_drive",
+//            "back_left_drive",
+//            "front_right_drive",
+//            "back_right_drive"};
 
 
     //logic
@@ -39,11 +46,15 @@ public class RobotCodeV2 extends LinearOpMode {
         shooting.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
+        leftBack = hardwareMap.get(DcMotor.class, "leftBackMotor");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFrontMotor");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBackMotor");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFrontMotor");
 
-        for (int i = 0; i < amount_of_motors; i++)
-        {
-            motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
-        }
+//        for (int i = 0; i < amount_of_motors; i++)
+//        {
+//            motors[i] = hardwareMap.get(DcMotor.class, motordirections[i]);
+//        }
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -56,15 +67,20 @@ public class RobotCodeV2 extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 
-        for (int i = 0; i < 2; i++) //left joystick is making robot go backwards when it is pressed forwards
-        {
-            motors[i].setDirection(DcMotor.Direction.REVERSE);
-        }
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        for (int i = 2; i < amount_of_motors; i++)
-        {
-            motors[i].setDirection(DcMotor.Direction.FORWARD);
-        }
+//        for (int i = 0; i < 2; i++) //left joystick is making robot go backwards when it is pressed forwards
+//        {
+//            motors[i].setDirection(DcMotor.Direction.REVERSE);
+//        }
+
+//        for (int i = 2; i < amount_of_motors; i++)
+//        {
+//            motors[i].setDirection(DcMotor.Direction.FORWARD);
+//        }
         // Wait for the game to start (driver presses START)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -95,19 +111,29 @@ public class RobotCodeV2 extends LinearOpMode {
             max = Math.max(max, Math.abs(backLeftPower));
             max = Math.max(max, Math.abs(backRightPower));
 
-            double[] powers = {frontLeftPower,
-                    backLeftPower,
-                    frontRightPower,
-                    backRightPower
-            };
+//            double[] powers = {frontLeftPower,
+//                    backLeftPower,
+//                    frontRightPower,
+//                    backRightPower
+//            };
+            double leftFrontPower = 0.0;
+            double leftBackPower = 0.0;
+            double rightFrontPower = 0.0;
+            double rightBackPower = 0.0;
 
             if (max > 1.0) {
 
-                for (int i = 0; i < amount_of_motors; i++)
-                {
-                    powers[i] /= max;
-                }
+                leftFrontPower /= max;
+                leftBackPower /= max;
+                rightFrontPower /= max;
+                rightBackPower /= max;
+
+//                for (int i = 0; i < amount_of_motors; i++)
+//                {
+//                    powers[i] /= max;
+//                }
             }
+
 
             // This is test code:
             //
@@ -126,11 +152,15 @@ public class RobotCodeV2 extends LinearOpMode {
             backRightPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
             */
 
+            leftFront.setPower(leftFrontPower);
+            leftBack.setPower(leftBackPower);
+            rightFront.setPower(rightFrontPower);
+            rightBack.setPower(rightBackPower);
             // Send calculated power to wheels
-            for (int i = 0; i < amount_of_motors; i++)
-            {
-                motors[i].setPower(powers[i]);
-            }
+//            for (int i = 0; i < amount_of_motors; i++)
+//            {
+//                motors[i].setPower(powers[i]);
+//            }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -150,10 +180,14 @@ public class RobotCodeV2 extends LinearOpMode {
             } else
             {
                 intake.setPower(0.0);
-                for (int i = 0; i < amount_of_motors; i++) //locks motors
-                {
-                    motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                }
+                leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//                for (int i = 0; i < amount_of_motors; i++) //locks motors
+//                {
+//                    motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//                }
             }
 
 //            while(gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f)
