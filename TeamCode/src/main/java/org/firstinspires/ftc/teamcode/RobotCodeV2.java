@@ -142,11 +142,11 @@ public class RobotCodeV2 extends LinearOpMode {
             if (gamepad1.left_trigger > 0f && gamepad1.right_trigger == 0f) //changed to if statements due to driving issue
             {
                 intake.setDirection((DcMotorSimple.Direction.FORWARD));
-                intake.setPower(0.8); //last run intake was at .5, changed it
+                intake.setPower(1.0); //last run intake was at .5, changed it
             } else if (gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
             {
                 intake.setDirection((DcMotorSimple.Direction.REVERSE));
-                intake.setPower(0.8);
+                intake.setPower(1.0);
             } else
             {
                 intake.setPower(0.0);
@@ -179,7 +179,7 @@ public class RobotCodeV2 extends LinearOpMode {
             //START SHOOTER ----------------------------------------------------------------------
             if (gamepad1.right_bumper) //shoot forward
             {
-                shooting.setDirection(DcMotor.Direction.REVERSE);
+                shooting.setDirection(DcMotor.Direction.FORWARD);
                 shooting.setPower(1.0);
 
             }
