@@ -46,10 +46,10 @@ public class RobotCodeV2 extends LinearOpMode {
         shooting.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        leftBack = hardwareMap.get(DcMotor.class, "leftBackMotor");
-        leftFront = hardwareMap.get(DcMotor.class, "leftFrontMotor");
-        rightBack = hardwareMap.get(DcMotor.class, "rightBackMotor");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+        leftBack = hardwareMap.get(DcMotor.class, "back_left_drive");
+        leftFront = hardwareMap.get(DcMotor.class, "front_left_drive");
+        rightBack = hardwareMap.get(DcMotor.class, "back_right_drive");
+        rightFront = hardwareMap.get(DcMotor.class, "front_right_drive");
 
 //        for (int i = 0; i < amount_of_motors; i++)
 //        {
@@ -68,8 +68,8 @@ public class RobotCodeV2 extends LinearOpMode {
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
 
 //        for (int i = 0; i < 2; i++) //left joystick is making robot go backwards when it is pressed forwards
@@ -116,17 +116,17 @@ public class RobotCodeV2 extends LinearOpMode {
 //                    frontRightPower,
 //                    backRightPower
 //            };
-            double leftFrontPower = 0.0;
-            double leftBackPower = 0.0;
-            double rightFrontPower = 0.0;
-            double rightBackPower = 0.0;
+//            double leftFrontPower = 0.0;
+//            double leftBackPower = 0.0;
+//            double rightFrontPower = 0.0;
+//            double rightBackPower = 0.0;
 
             if (max > 1.0) {
 
-                leftFrontPower /= max;
-                leftBackPower /= max;
-                rightFrontPower /= max;
-                rightBackPower /= max;
+               frontLeftPower /= max;
+                backLeftPower /= max;
+                frontRightPower /= max;
+                backRightPower /= max;
 
 //                for (int i = 0; i < amount_of_motors; i++)
 //                {
@@ -152,10 +152,10 @@ public class RobotCodeV2 extends LinearOpMode {
             backRightPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
             */
 
-            leftFront.setPower(leftFrontPower);
-            leftBack.setPower(leftBackPower);
-            rightFront.setPower(rightFrontPower);
-            rightBack.setPower(rightBackPower);
+            leftFront.setPower(frontLeftPower);
+            leftBack.setPower(backLeftPower);
+            rightFront.setPower(frontRightPower);
+            rightBack.setPower(backRightPower);
             // Send calculated power to wheels
 //            for (int i = 0; i < amount_of_motors; i++)
 //            {
