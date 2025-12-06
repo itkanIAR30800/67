@@ -214,7 +214,7 @@ public class RobotCodeV2 extends LinearOpMode {
             if (gamepad1.right_bumper) //shoot forward
             {
                 shooting.setDirection(DcMotor.Direction.FORWARD);
-                shooting.setPower(1.0);
+                shooting.setPower(0.8);
 
             }
 //            if (gamepad1.left_bumper)
