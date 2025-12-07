@@ -37,41 +37,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.acmerobotics.roadrunner.Pose2d;
 
-/*
- * This OpMode illustrates the concept of driving a path based on time.
- * The code is structured as a LinearOpMode
- *
- * The code assumes that you do NOT have encoders on the wheels,
- *   otherwise you would use: RobotAutoDriveByEncoder;
- *
- *   The desired path in this example is:
- *   - Drive forward for 3 seconds
- *   - Spin right for 1.3 seconds
- *   - Drive Backward for 1 Second
- *
- *  The code is written in a simple form with no optimizations.
- *  However, there are several ways that this type of sequence could be streamlined,
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- */
-
 @Autonomous(name="blue auton goal", group="Robot")
 //@Disabled
 public class blue_goal extends LinearOpMode {
 
-    /* Declare OpMode members. *//*
-    private DcMotor         leftDrive   = null;
-    private DcMotor         rightDrive  = null;*/
+    private DcMotor intakeMotor = null; //first intake motor
+    private DcMotor intakeTransferMotor = null; //second intake motor
+    private DcMotor shooterMotor = null;
+    private Servo hoodServo = null;
+    private DcMotor turretMotor = null;
 
-    private DcMotor intakeMotor = null; //intake motor
-
-    //shooter variables
-    private DcMotor shooterRightMotor = null;
-    private DcMotor shooterLeftMotor = null;
-    private Servo transferServoLeft = null;
-    private Servo transferServoRight = null;
-    private Servo transferArm = null;
     private DcMotor frontLeftDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor frontRightDrive = null;
@@ -84,13 +59,7 @@ public class blue_goal extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        //get power of motors for function?
-        for (int i = 0; i < 4; i++) {
-            motors[i].setPower(motors[i].getPower());
-        }
-        
         hardwareInit();
-        //TODO: make a function for strafing that takes speed in as input
 
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -106,9 +75,6 @@ public class blue_goal extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
 
-        /*leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);*/
-
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
@@ -119,7 +85,6 @@ public class blue_goal extends LinearOpMode {
         // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
 
         // Step 1:  back up for 0.75 seconds
-
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 0.75)) { //use variable not numbers
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
@@ -136,47 +101,20 @@ public class blue_goal extends LinearOpMode {
         backRightDrive.setPower(0.0);
         sleep(1000);
 
-//
-//        class motor_data{
-//            int speed;
-//            int power;
-//            int time_to_sleep;
-//
-//        };
-//
-//        motor_data handle_game(){
-//            static int game_state = 0;
-//            motor_data
-//            switch (game_state){
-//                case 0:
-//                    while (opModeIsActive() && (runtime.seconds() < 0.75)){
-//                        return
-//                    }
-//            }
-//        }
-        //secret step 76: 2 shooting cycles
+        // Step 2:   2 shooting cycles
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 4.0)) {
             telemetry.addData("shooting", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
             //transfer
-            shooterLeftMotor.setDirection((DcMotorSimple.Direction.FORWARD));
-            shooterRightMotor.setDirection((DcMotorSimple.Direction.REVERSE));
-            shooterLeftMotor.setPower(1.0);
-            shooterRightMotor.setPower(1.0);
-//            transferServoRight.setPosition(1.0);
-//            transferServoLeft.setPosition(0.0);
-            //push
+            shooterMotor.setDirection((DcMotorSimple.Direction.FORWARD));
+            shooterMotor.setPower(1.0);
             sleep(1000);
-            transferArm.setDirection((Servo.Direction.REVERSE));
-            transferArm.setPosition(1.0);
             //shoot
-
             telemetry.addData("shots fired", "Leg 1: %4.1f S Elapsed", runtime.seconds());
         }
 
-        // Step 2:  Spin left for 0.5 seconds (strafe)
-
+        // Step 3:  Spin left for 0.5 seconds (strafe)
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 3.0)) {
             frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -197,26 +135,6 @@ public class blue_goal extends LinearOpMode {
         }
         sleep(1000);
 
-        // Step 3:  Drive Backward for 1 Second
-
-//        runtime.reset();
-//        while (opModeIsActive() && (runtime.seconds() < 3.0)) //TODO: if this is actually strafe, the directions need to be changed for blue goal
-//        {
-//            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-//            telemetry.update();
-//
-//
-//            frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-//            frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-//            frontLeftDrive.setPower(-TURN_SPEED);
-//            frontRightDrive.setPower(-TURN_SPEED);
-//
-//            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-//            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-//            frontLeftDrive.setPower(TURN_SPEED);
-//            frontRightDrive.setPower(TURN_SPEED);
-//
-//        }
 
         // Step 4:  Stop
 
@@ -227,112 +145,112 @@ public class blue_goal extends LinearOpMode {
 
 
         intakeMotor.setPower(0.0);
-        
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);
 
         // Step 5: revolve and drive to artifacts cycle 1
+        //START OF AMINAS CODE(ADDED SECTION!!)
 
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 4.2)
-        {
-            //revolve
-            frontLeftDrive.setPower(-FORWARD_SPEED);
-            backLeftDrive.setPower(-FORWARD_SPEED);
-            frontRightDrive.setPower(FORWARD_SPEED);
-            backRightDrive.setPower(FORWARD_SPEED);
-            frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-
-            sleep(800);
-
-            //drive forward to collect artifacts
-            frontLeftDrive.setPower(FORWARD_SPEED);
-            backLeftDrive.setPower(-FORWARD_SPEED);
-            frontRightDrive.setPower(-FORWARD_SPEED);
-            backRightDrive.setPower(FORWARD_SPEED);
-            frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-
-            sleep(1300);
-            
-            //backwards to line
-            frontLeftDrive.setPower(-FORWARD_SPEED);
-            backLeftDrive.setPower(FORWARD_SPEED);
-            frontRightDrive.setPower(FORWARD_SPEED);
-            backRightDrive.setPower(-FORWARD_SPEED);
-            frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            
-            sleep(1300);
-            
-            //revolve back to shoot
-            frontLeftDrive.setPower(FORWARD_SPEED);
-            backLeftDrive.setPower(FORWARD_SPEED);
-            frontRightDrive.setPower(-FORWARD_SPEED);
-            backRightDrive.setPower(-FORWARD_SPEED);
-            frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            
-            sleep(800);
-
-        }
-
-    }
-
-    private int amountofmotors = 4;
-    private DcMotor[] motors = new DcMotor[amountofmotors];
-
-    private String[] motorstrings = {"frontLeft", "backLeft", "frontRight", "backRight"};
-
-
-    //function that takes in game state to output motor speed
-    public int motorPower()
-    {
-
-        int game_state = 0;
-        double state_speed = 0.0;
-        switch (game_state)
-        {
-            case 0:
-                state_speed = -FORWARD_SPEED;
-                break;
-            case 1:
-                state_speed = FORWARD_SPEED;
-                break;
-            case 2:
-                
-
-        }
-        for (int i = 0; i < amountofmotors; i++) {
-            motors[i].setPower(state_speed);
-        }
-
-        return game_state;
+//        runtime.reset();
+//        while (opModeIsActive() && runtime.seconds() < 4.2)
+//        {
+//            //revolve
+//            frontLeftDrive.setPower(-FORWARD_SPEED);
+//            backLeftDrive.setPower(-FORWARD_SPEED);
+//            frontRightDrive.setPower(FORWARD_SPEED);
+//            backRightDrive.setPower(FORWARD_SPEED);
+//            frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//
+//            sleep(800);
+//
+//            //drive forward to collect artifacts
+//            frontLeftDrive.setPower(FORWARD_SPEED);
+//            backLeftDrive.setPower(-FORWARD_SPEED);
+//            frontRightDrive.setPower(-FORWARD_SPEED);
+//            backRightDrive.setPower(FORWARD_SPEED);
+//            frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//
+//            sleep(1300);
+//
+//            //backwards to line
+//            frontLeftDrive.setPower(-FORWARD_SPEED);
+//            backLeftDrive.setPower(FORWARD_SPEED);
+//            frontRightDrive.setPower(FORWARD_SPEED);
+//            backRightDrive.setPower(-FORWARD_SPEED);
+//            frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//            sleep(1300);
+//
+//            //revolve back to shoot
+//            frontLeftDrive.setPower(FORWARD_SPEED);
+//            backLeftDrive.setPower(FORWARD_SPEED);
+//            frontRightDrive.setPower(-FORWARD_SPEED);
+//            backRightDrive.setPower(-FORWARD_SPEED);
+//            frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//            backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//            backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//            sleep(800);
+//
+//        }
+//
+//    }
+//
+//    private int amountofmotors = 4;
+//    private DcMotor[] motors = new DcMotor[amountofmotors];
+//
+//    private String[] motorstrings = {"frontLeft", "backLeft", "frontRight", "backRight"};
+//
+//
+//    //function that takes in game state to output motor speed
+//    public int motorPower()
+//    {
+//
+//        int game_state = 0;
+//        double state_speed = 0.0;
+//        switch (game_state)
+//        {
+//            case 0:
+//                state_speed = -FORWARD_SPEED;
+//                break;
+//            case 1:
+//                state_speed = FORWARD_SPEED;
+//                break;
+//            case 2:
+//
+//
+//        }
+//        for (int i = 0; i < amountofmotors; i++) {
+//            motors[i].setPower(state_speed);
+//        }
+//
+//        return game_state;
     }
     void hardwareInit() {
+        //4 motors, 1 servo
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        shooterRightMotor = hardwareMap.get(DcMotor.class, "shooterRightMotor");
-        shooterLeftMotor = hardwareMap.get(DcMotor.class, "shooterLeftMotor");
-        transferServoRight = hardwareMap.get(Servo.class, "transferServoRight");
-        transferServoLeft = hardwareMap.get(Servo.class, "transferServoLeft");
-        transferArm = hardwareMap.get(Servo.class, "transferArm");
+        shooterMotor = hardwareMap.get(DcMotor.class, "shooterMotor");
+        intakeTransferMotor = hardwareMap.get(DcMotor.class, "intakeTransferMotor");
+        turretMotor = hardwareMap.get(DcMotor.class, "turretMotor");
+        hoodServo = hardwareMap.get(Servo.class, "hoodServo");
 
+        //drivetrain motors
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
     }
-
-
 }
 
