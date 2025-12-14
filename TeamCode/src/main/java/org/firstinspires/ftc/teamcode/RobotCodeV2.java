@@ -7,10 +7,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="Other Robot Code", group="Robot")
+@TeleOp(name="Main TeleOp", group="Robot")
 public class RobotCodeV2 extends LinearOpMode {
 
     private DcMotorSimple intake = null; //intake motor
+    private DcMotorSimple intakeTransfer = null;
     private DcMotor shooting = null;
 
     private Servo hood = null;
@@ -39,6 +40,7 @@ public class RobotCodeV2 extends LinearOpMode {
     //logic
     public void runOpMode() throws InterruptedException{
         intake = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeTransfer = hardwareMap.get(DcMotor.class, "intakeMotor2");
         shooting = hardwareMap.get(DcMotor.class, "shootingMotor");
         hood = hardwareMap.get(Servo.class, "hoodServo");
 
@@ -95,44 +97,30 @@ public class RobotCodeV2 extends LinearOpMode {
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-            double lateral =  gamepad1.left_stick_x;
+            double lateral =  gamepad1.left_stick_x*1.5;
             double yaw     =  gamepad1.right_stick_x;
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-            double frontLeftPower  = axial + lateral + yaw;
-            double frontRightPower = axial - lateral - yaw;
-            double backLeftPower   = axial - lateral + yaw;
-            double backRightPower  = axial + lateral - yaw;
+            double denominator = Math.max(Math.abs(axial) + Math.abs(lateral) + Math.abs(yaw), 1);
+            double frontLeftPower = (axial + lateral + yaw) / denominator;
+            double backLeftPower = (axial - lateral + yaw) / denominator;
+            double frontRightPower = (axial - lateral - yaw) / denominator;
+            double backRightPower = (axial + lateral - yaw) / denominator;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
-            max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
-            max = Math.max(max, Math.abs(backLeftPower));
-            max = Math.max(max, Math.abs(backRightPower));
-
-//            double[] powers = {frontLeftPower,
-//                    backLeftPower,
-//                    frontRightPower,
-//                    backRightPower
-//            };
-//            double leftFrontPower = 0.0;
-//            double leftBackPower = 0.0;
-//            double rightFrontPower = 0.0;
-//            double rightBackPower = 0.0;
-
-            if (max > 1.0) {
-
-               frontLeftPower /= max;
-                backLeftPower /= max;
-                frontRightPower /= max;
-                backRightPower /= max;
-
-//                for (int i = 0; i < amount_of_motors; i++)
-//                {
-//                    powers[i] /= max;
-//                }
-            }
+//            max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
+//            max = Math.max(max, Math.abs(backLeftPower));
+//            max = Math.max(max, Math.abs(backRightPower));
+//
+//            if (max > 1.0) {
+//
+//               frontLeftPower /= max;
+//                backLeftPower /= max;
+//                frontRightPower /= max;
+//                backRightPower /= max;
+//            }
 
 
             // This is test code:
@@ -176,10 +164,13 @@ public class RobotCodeV2 extends LinearOpMode {
             } else if (gamepad1.right_trigger > 0f && gamepad1.left_trigger == 0f)
             {
                 intake.setDirection((DcMotorSimple.Direction.REVERSE));
+                intakeTransfer.setDirection((DcMotor.Direction.REVERSE));
                 intake.setPower(1.0);
+                intakeTransfer.setPower(1.0);
             } else
             {
                 intake.setPower(0.0);
+                intakeTransfer.setPower(0.0);
                 leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
