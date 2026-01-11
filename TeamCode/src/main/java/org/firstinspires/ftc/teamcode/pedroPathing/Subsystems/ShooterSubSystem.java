@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
+import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
 
 import java.util.List;
 
@@ -27,6 +31,8 @@ public class ShooterSubSystem{
     private boolean shootingSafe = false;
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
+
+
 
 
     public ShooterSubSystem(HardwareMap hardwareMap) {
@@ -100,8 +106,16 @@ public class ShooterSubSystem{
             if (tags != null) {
                 for (LLResultTypes.FiducialResult tag : tags) {
                     id = tag.getFiducialId();
-                    if (1 == 1) {
+                    if (blue.idNum == 20) {
                         if (id == 20) {
+                            hasTarget = true;
+                            tx = tag.getTargetXDegrees();
+                            ty = tag.getTargetYDegrees();
+                            ta = tag.getTargetArea();
+                        }
+                    }
+                    if (red.idNum == 24) {
+                        if (id == 24) {
                             hasTarget = true;
                             tx = tag.getTargetXDegrees();
                             ty = tag.getTargetYDegrees();

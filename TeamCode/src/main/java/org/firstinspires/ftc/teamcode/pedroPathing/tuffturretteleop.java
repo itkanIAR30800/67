@@ -12,7 +12,7 @@
 
 
         @TeleOp(name="tuff teleop", group="Robot")
-public class tuffteleop extends LinearOpMode {
+public class tuffturretteleop extends LinearOpMode {
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
 
     private int tolerance = 350;

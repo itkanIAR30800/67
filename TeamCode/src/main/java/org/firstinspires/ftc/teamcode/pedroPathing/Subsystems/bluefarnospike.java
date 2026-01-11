@@ -15,9 +15,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "Zeyad 9 red", group = "Autonomous")
+@Autonomous(name = "360 no scope", group = "Autonomous")
 @Configurable // Panels
-public class zeyadtuff9ball extends OpMode {
+public class bluefarnospike extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
 
@@ -28,82 +28,94 @@ public class zeyadtuff9ball extends OpMode {
 
     private enum pathState {
         startToShoot,
-       shoot1,
-        shootToFirst,
-        firstToShoot,
+        shoot1,
+        shootToHuman1,
+        humanToShoot1,
         shoot2,
-        shootToLast,
-        lastToShoot,
+        shootToHuman2,
+        humanToShoot2,
         shoot3,
-        shootToLeave,
+        shootToHuman3,
+        humanToShoot3,
+        shoot4,
+        shootToLeave
     } // Current autonomous path state (state machine)
 
     pathState pathstate;
     private Timer opModeTimer;
     public PathChain startToShoot;
-    public PathChain shootToFirst;
-    public PathChain firstToShoot;
-    public PathChain shootToLast;
-    public PathChain lastToShoot;
+    public PathChain shootToHuman1;
+    public PathChain humanToShoot1;
+    public PathChain shootToHuman2;
+    public PathChain humanToShoot2;
+    public PathChain shootToHuman3;
+    public PathChain humanToShoot3;
     public PathChain shootToLeave;
-
-    public static GoalId red;
+    public static GoalId blue;
 
     public void buildPaths(Follower follower) {
         startToShoot = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(129.561, 110.049), new Pose(88.195, 82.927))
+                        new BezierLine(new Pose(57.756, 9.366), new Pose(59.317, 22.244))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(225))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(115))
                 .build();
 
-        shootToFirst = follower
+        shootToHuman1 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(88.195, 82.927), new Pose(129.000, 82.927))
+                        new BezierLine(new Pose(59.317, 22.244), new Pose(11.122, 10.732))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setTangentHeadingInterpolation()
                 .build();
 
-        firstToShoot = follower
+        humanToShoot1 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(129.000, 82.927), new Pose(88.195, 82.732))
+                        new BezierLine(new Pose(11.122, 10.732), new Pose(59.317, 22.439))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(225))
+                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(115))
                 .build();
 
-        shootToLast = follower
+        shootToHuman2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierCurve(
-                                new Pose(88.195, 82.732),
-                                new Pose(73.951, 40.000),
-                                new Pose(135.220, 31.805)
-                        )
+                        new BezierLine(new Pose(59.317, 22.439), new Pose(11.122, 10.732))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(225), Math.toRadians(0))
+                .setTangentHeadingInterpolation()
                 .build();
 
-        lastToShoot = follower
+        humanToShoot2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierCurve(
-                                new Pose(135.220, 31.805),
-                                new Pose(74.146, 40.000),
-                                new Pose(89.171, 82.732)
-                        )
+                        new BezierLine(new Pose(11.122, 10.732), new Pose(59.317, 22.439))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(225))
+                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(115))
+                .build();
+
+        shootToHuman3 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(59.317, 22.439), new Pose(11.122, 10.732))
+                )
+                .setTangentHeadingInterpolation()
+                .build();
+
+        humanToShoot3 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(11.122, 10.732), new Pose(59.317, 22.439))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(115))
                 .build();
 
         shootToLeave = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(89.171, 82.732), new Pose(89.756, 60.683))
+                        new BezierLine(new Pose(59.317, 22.439), new Pose(51.512, 35.317))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(-80))
+                .setLinearHeadingInterpolation(Math.toRadians(115), Math.toRadians(115))
                 .build();
     }
     ElapsedTime pathTimer;
@@ -119,7 +131,7 @@ public class zeyadtuff9ball extends OpMode {
         shooter = new ShooterSubSystemRed(hardwareMap);
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(129.561, 110.049, Math.toRadians(270)));
+        follower.setStartingPose(new Pose(57.756, 9.366, Math.toRadians(90)));
         pathTimer = new ElapsedTime();
 
         buildPaths(follower); // Build paths
@@ -127,7 +139,7 @@ public class zeyadtuff9ball extends OpMode {
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        red.idNum = 20;
+        blue.idNum = 20;
     }
 
     @Override
@@ -162,63 +174,93 @@ public class zeyadtuff9ball extends OpMode {
                 if(pathTimer.seconds() > 2) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.shootToFirst);
+                    setPathState(pathState.shootToHuman1);
                 }
                 break;
-            case shootToFirst:
+            case shootToHuman1:
                 if (!startedState) {
-                    follower.followPath(shootToFirst);
+                    follower.followPath(shootToHuman1);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.firstToShoot);
+                    setPathState(pathState.humanToShoot1);
                     startedState = false;
                 }
                 break;
-            case firstToShoot:
+            case humanToShoot1:
                 if (!startedState) {
-                    follower.followPath(firstToShoot);
+                    follower.followPath(humanToShoot1);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
                     setPathState(pathState.shoot2);
-                    follower.startTeleOpDrive();
                     startedState = false;
                 }
                 break;
             case shoot2:
-                 turnPower = shooter.updateShootAndAlign();
+                turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 2) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.shootToLast);
+                    setPathState(pathState.shootToHuman2);
                 }
                 break;
-            case shootToLast:
+            case shootToHuman2:
                 if (!startedState) {
-                    follower.followPath(shootToLast);
+                    follower.followPath(shootToHuman2);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.lastToShoot);
+                    setPathState(pathState.humanToShoot2);
                     startedState = false;
                 }
                 break;
-            case lastToShoot:
+            case humanToShoot2:
                 if (!startedState) {
-                    follower.followPath(lastToShoot);
+                    follower.followPath(humanToShoot2);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
                     setPathState(pathState.shoot3);
+                    follower.startTeleOpDrive();
                     startedState = false;
                 }
                 break;
             case shoot3:
-                 turnPower = shooter.updateShootAndAlign();
+                turnPower = shooter.updateShootAndAlign();
+                follower.setTeleOpDrive(0, 0, turnPower);
+                if(pathTimer.seconds() > 2) {
+                    shooter.intake();
+                    shooter.stopShoot();
+                    setPathState(pathState.shootToHuman3);
+                }
+                break;
+            case shootToHuman3:
+                if (!startedState) {
+                    follower.followPath(shootToHuman3);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    setPathState(pathState.humanToShoot3);
+                    startedState = false;
+                }
+                break;
+            case humanToShoot3:
+                if (!startedState) {
+                    follower.followPath(humanToShoot3);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    shooter.stopIntake();
+                    setPathState(pathState.shoot4);
+                    startedState = false;
+                }
+                break;
+            case shoot4:
+                turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 2) {
                     shooter.intake();
