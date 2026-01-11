@@ -106,22 +106,13 @@ public class ShooterSubSystem{
             if (tags != null) {
                 for (LLResultTypes.FiducialResult tag : tags) {
                     id = tag.getFiducialId();
-                    if (blue.idNum == 20) {
                         if (id == 20) {
                             hasTarget = true;
                             tx = tag.getTargetXDegrees();
                             ty = tag.getTargetYDegrees();
                             ta = tag.getTargetArea();
                         }
-                    }
-                    if (red.idNum == 24) {
-                        if (id == 24) {
-                            hasTarget = true;
-                            tx = tag.getTargetXDegrees();
-                            ty = tag.getTargetYDegrees();
-                            ta = tag.getTargetArea();
-                        }
-                    }
+
 
                 }
             }

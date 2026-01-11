@@ -60,7 +60,7 @@ public class balltestnew12 extends OpMode {
     public PathChain lastToZone;
     public PathChain leave;
 
-    public static GoalId blue;
+//    public static GoalId blue;
 
     public void buildPaths(Follower follower) {
         startToShoot = follower
@@ -192,7 +192,7 @@ public class balltestnew12 extends OpMode {
         pathstate = pathState.startToShoot;
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
-        blue.idNum = 20;
+//        blue.idNum = 20;
     }
 
     @Override

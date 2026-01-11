@@ -1,22 +1,24 @@
-
-        package org.firstinspires.ftc.teamcode.pedroPathing;
-
-        import com.qualcomm.hardware.limelightvision.LLResult;
-        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-        import com.qualcomm.robotcore.hardware.DcMotor;
-        import com.qualcomm.robotcore.hardware.DcMotorEx;
-        import com.qualcomm.robotcore.hardware.DcMotorSimple;
-        import com.qualcomm.robotcore.hardware.Servo;
-        import com.qualcomm.robotcore.util.ElapsedTime;
+package org.firstinspires.ftc.teamcode.pedroPathing;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-        @TeleOp(name="tuff teleop", group="Robot")
+import com.qualcomm.hardware.limelightvision.LLResult;
+import java.util.List;
+
+
+@TeleOp(name="triple t teleop", group="Robot")
 public class tuffturretteleop extends LinearOpMode {
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
 
-    private int tolerance = 350;
+    private int tolerance = 50;
     private int targetVelocity = 2000;
+    private Servo turret = null;
     private Servo transferGate = null;
     private DcMotor transfer = null;
     private DcMotor intake = null;
@@ -33,10 +35,9 @@ public class tuffturretteleop extends LinearOpMode {
     double closed = 0.85;
     double open = 0.4;
 
-    long lastShootingSafe = -1;
-
     //logic
     public void runOpMode() throws InterruptedException {
+        turret = hardwareMap.get(Servo.class, "turret");
         transferGate = hardwareMap.get(Servo.class, "gate");
         transfer = hardwareMap.get(DcMotor.class, "transfer");
         intake = hardwareMap.get(DcMotor.class, "intake");
@@ -77,6 +78,7 @@ public class tuffturretteleop extends LinearOpMode {
         runtime.reset();
         transferGate.setPosition(closed);
         while (opModeIsActive()) {
+            turret.setPosition(1.0);
             LLResult result = limelight.getLatestResult();
 
             double ta = 0, tx = 0, ty = 0 ;
@@ -119,30 +121,30 @@ public class tuffturretteleop extends LinearOpMode {
             double currentVelocity = 0;
             if (shoot) {
                 intake.setPower(1);
-                if (targetVelocity < 1800)
+                if(targetVelocity < 1800)
                     transfer.setPower(1);
                 else
                     transfer.setPower(0.6);
-//                telemetry.addData("left velocity:", nearMotor.getVelocity());
-//                telemetry.addData("right velocity:", farMotor.getVelocity());
+                telemetry.addData("left velocity:", nearMotor.getVelocity());
+                telemetry.addData("right velocity:", farMotor.getVelocity());
                 telemetry.update();
 
-                if (hasTarget) {
+                if(hasTarget){
                     double alignmentTolerence = 1;
                     double error = tx; /// because our target is 0 so tx - 0 is tx
                     double kp = 0.01;
-                    double kf = 0.9;
-                    if (Math.abs(tx) > alignmentTolerence) {
+                    double kf = 0.1;
+                    if(Math.abs(tx) > alignmentTolerence){
                         rotate = kp * error + kf * Math.signum(error);
-                    } else {
+                    }
+                    else
+                    {
                         rotate = 0;
                         aligned = true;
                     }
                 }
 
                 currentVelocity = nearMotor.getVelocity();
-                telemetry.addData(String.valueOf(currentVelocity), "ts");
-                telemetry.update();
                 if (nearMotor.getVelocity() > targetVelocity) {
                     nearMotor.setPower(0);
                     farMotor.setPower(0);
@@ -167,7 +169,7 @@ public class tuffturretteleop extends LinearOpMode {
                 /// take more force and more effort to turn and therefore more time kinda)
                 /// good luck :D
 
-                if (targetVelocity - currentVelocity < tolerance - 20) {
+                if (targetVelocity - currentVelocity < tolerance -20){
                     shootingSafe = true;
                     //  transfer.setPower(1);
                 }
@@ -178,18 +180,11 @@ public class tuffturretteleop extends LinearOpMode {
                 // else{
                 //     transfer.setPower(0);
                 // }
-                if (shootingSafe && lastShootingSafe == -1) {
-                    lastShootingSafe = System.currentTimeMillis();
-                } else if(!shootingSafe && lastShootingSafe != -1) {
-                    lastShootingSafe = -1;
-                }
 
-                if (aligned && lastShootingSafe < (System.currentTimeMillis() - 750)) {
+                if(aligned && shootingSafe){
                     transferGate.setPosition(open);
                     // transfer.setPower(1);
                 }
-
-
             }
             else {
                 nearMotor.setPower(0);
@@ -223,3 +218,4 @@ public class tuffturretteleop extends LinearOpMode {
 
     }
 }
+

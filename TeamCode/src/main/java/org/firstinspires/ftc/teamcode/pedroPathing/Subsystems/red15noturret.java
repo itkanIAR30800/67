@@ -62,7 +62,7 @@ public class red15noturret extends OpMode {
     public PathChain intakeThird;
     public PathChain shootThird;
     public PathChain leave;
-    public static GoalId red;
+//    public static GoalId red;
 
     public void buildPaths(Follower follower) {
         goBack2ShootPreload = follower.pathBuilder().addPath(
@@ -217,7 +217,7 @@ public class red15noturret extends OpMode {
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        red.idNum = 20;
+//        red.idNum = 20;
     }
 
     @Override

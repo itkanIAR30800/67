@@ -56,7 +56,7 @@ public class redfarspike extends OpMode {
     public PathChain turnToSpikeIntake;
     public PathChain shootSpike;
     public PathChain leave;
-    public static GoalId red;
+//    public static GoalId red;
 
     public void buildPaths(Follower follower) {
         shootPreLoad = follower.pathBuilder().addPath(
@@ -181,8 +181,8 @@ ElapsedTime pathTimer;
         pathstate = pathState.shootPreLoad;
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
-
-        red.idNum = 20;
+//
+//        red.idNum = 20;
     }
 
     @Override

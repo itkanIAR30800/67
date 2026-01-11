@@ -51,7 +51,7 @@ public class redfarnospike extends OpMode {
     public PathChain goHumanPlayerIntakeThree;
     public PathChain shootIntakeThree;
     public PathChain leave;
-    public static GoalId red;
+//    public static GoalId red;
     public void buildPaths(Follower follower) {
         shootPreLoad = follower.pathBuilder().addPath(
                         new BezierLine(
@@ -155,7 +155,7 @@ ElapsedTime pathTimer;
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        red.idNum = 20;
+//        red.idNum = 20;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class blue15 extends OpMode {
     public PathChain shootToLast;
     public PathChain lastToShootLeave;
 
-    public static GoalId blue;
+//    public static GoalId blue;
 
     public void buildPaths(Follower follower) {
         startToShoot = follower
@@ -174,7 +174,7 @@ public class blue15 extends OpMode {
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        blue.idNum = 24;
+//        blue.idNum = 24;
     }
 
     @Override
@@ -249,19 +249,20 @@ public class blue15 extends OpMode {
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    shooter.stopIntake();
                     setPathState(pathState.gateIntakeToShoot);
-                    follower.startTeleOpDrive();
                     startedState = false;
                 }
                 break;
             case gateIntakeToShoot:
-                turnPower = shooter.updateShootAndAlign();
-                follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
-                    shooter.intake();
-                    shooter.stopShoot();
+                if (!startedState) {
+                    follower.followPath(gateIntakeToShoot);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    shooter.stopIntake();
                     setPathState(pathState.shoot3);
+                    follower.startTeleOpDrive();
+                    startedState = false;
                 }
                 break;
             case shoot3:

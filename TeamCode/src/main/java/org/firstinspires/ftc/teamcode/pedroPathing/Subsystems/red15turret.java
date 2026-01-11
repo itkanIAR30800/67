@@ -56,7 +56,7 @@ public class red15turret extends OpMode {
     public PathChain intakeLastSpike;
     public PathChain shootLastSpike;
     public PathChain leave;
-    public static GoalId red;
+//    public static GoalId red;
 
     public void buildPaths(Follower follower) {
         shootPreLoad = follower.pathBuilder().addPath(
@@ -181,7 +181,7 @@ public class red15turret extends OpMode {
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        red.idNum = 20;
+//        red.idNum = 20;
     }
 
     @Override

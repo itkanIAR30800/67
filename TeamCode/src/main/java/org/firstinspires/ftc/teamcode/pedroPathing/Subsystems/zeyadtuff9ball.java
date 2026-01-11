@@ -47,7 +47,7 @@ public class zeyadtuff9ball extends OpMode {
     public PathChain lastToShoot;
     public PathChain shootToLeave;
 
-    public static GoalId red;
+//    public static GoalId red;
 
     public void buildPaths(Follower follower) {
         startToShoot = follower
@@ -127,7 +127,7 @@ public class zeyadtuff9ball extends OpMode {
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        red.idNum = 20;
+//        red.idNum = 20;
     }
 
     @Override

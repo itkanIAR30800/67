@@ -51,7 +51,7 @@ public class bluefarnospike extends OpMode {
     public PathChain shootToHuman3;
     public PathChain humanToShoot3;
     public PathChain shootToLeave;
-    public static GoalId blue;
+//    public static GoalId blue;
 
     public void buildPaths(Follower follower) {
         startToShoot = follower
@@ -139,7 +139,7 @@ public class bluefarnospike extends OpMode {
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
 
-        blue.idNum = 20;
+//        blue.idNum = 20;
     }
 
     @Override
