@@ -322,7 +322,6 @@ public class blue15 extends OpMode {
                     startedState = true;
                 }
                 break;
-        }  //TODO: heading is a little off for shooting, 2nd to last shooting needs to be flipped (add 180), at the end it may be running out of time or not running the case
 
 
     }
