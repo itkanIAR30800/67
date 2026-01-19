@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "360 no scope", group = "Autonomous")
+@Autonomous(name = "blue far no spike 67", group = "Autonomous")
 @Configurable // Panels
 public class bluefarnospike extends OpMode {
 
@@ -59,13 +59,13 @@ public class bluefarnospike extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(57.756, 9.366), new Pose(59.317, 22.244))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(115))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(205))
                 .build();
 
         shootToHuman1 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(59.317, 22.244), new Pose(11.122, 10.732))
+                        new BezierLine(new Pose(59.317, 22.244), new Pose(8.5, 10.732))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -73,15 +73,15 @@ public class bluefarnospike extends OpMode {
         humanToShoot1 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(11.122, 10.732), new Pose(59.317, 22.439))
+                        new BezierLine(new Pose(8.5, 10.732), new Pose(59.317, 22.439))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(115))
+                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(205))
                 .build();
 
         shootToHuman2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(59.317, 22.439), new Pose(11.122, 10.732))
+                        new BezierLine(new Pose(59.317, 22.439), new Pose(8.5, 10.732))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -89,15 +89,15 @@ public class bluefarnospike extends OpMode {
         humanToShoot2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(11.122, 10.732), new Pose(59.317, 22.439))
+                        new BezierLine(new Pose(8.5, 10.732), new Pose(59.317, 22.439))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(115))
+                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(205))
                 .build();
 
         shootToHuman3 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(59.317, 22.439), new Pose(11.122, 10.732))
+                        new BezierLine(new Pose(59.317, 22.439), new Pose(8.5, 10.732))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -105,9 +105,9 @@ public class bluefarnospike extends OpMode {
         humanToShoot3 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(11.122, 10.732), new Pose(59.317, 22.439))
+                        new BezierLine(new Pose(8.5, 10.732), new Pose(59.317, 22.439))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(115))
+                .setLinearHeadingInterpolation(Math.toRadians(-167), Math.toRadians(205))
                 .build();
 
         shootToLeave = follower
@@ -115,7 +115,7 @@ public class bluefarnospike extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(59.317, 22.439), new Pose(51.512, 35.317))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(115), Math.toRadians(115))
+                .setLinearHeadingInterpolation(Math.toRadians(205), Math.toRadians(205))
                 .build();
     }
     ElapsedTime pathTimer;
@@ -131,7 +131,7 @@ public class bluefarnospike extends OpMode {
         shooter = new ShooterSubSystemRed(hardwareMap);
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(57.756, 9.366, Math.toRadians(90)));
+        follower.setStartingPose(new Pose(57.756, 9.366, Math.toRadians(180)));
         pathTimer = new ElapsedTime();
 
         buildPaths(follower); // Build paths
@@ -171,7 +171,7 @@ public class bluefarnospike extends OpMode {
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.shootToHuman1);
@@ -195,13 +195,14 @@ public class bluefarnospike extends OpMode {
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
                     setPathState(pathState.shoot2);
+                    follower.startTeleOpDrive();
                     startedState = false;
                 }
                 break;
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.shootToHuman2);
@@ -232,7 +233,7 @@ public class bluefarnospike extends OpMode {
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.shootToHuman3);
@@ -256,13 +257,14 @@ public class bluefarnospike extends OpMode {
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
                     setPathState(pathState.shoot4);
+                    follower.startTeleOpDrive();
                     startedState = false;
                 }
                 break;
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.shootToLeave);
@@ -274,6 +276,7 @@ public class bluefarnospike extends OpMode {
                     startedState = true;
                 }
                 break;
+                //changed the headings for shooting, changed the path to go father into loading zone, changed shooting time to 3 seconds
         }
 
 

@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "i drink soda i eat pizza", group = "Autonomous")
+@Autonomous(name = "red 15 turret 67", group = "Autonomous")
 @Configurable // Panels
 public class red15turret extends OpMode {
 

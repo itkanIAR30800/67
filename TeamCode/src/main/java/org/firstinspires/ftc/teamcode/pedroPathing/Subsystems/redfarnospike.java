@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "my name is tung tung tung sahur", group = "Autonomous")
+@Autonomous(name = "red far no spike 67", group = "Autonomous")
 @Configurable // Panels
 public class redfarnospike extends OpMode {
 

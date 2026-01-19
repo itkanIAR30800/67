@@ -15,12 +15,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "12 blue qual boi", group = "Autonomous")
+@Autonomous(name = "12  red qual boi", group = "Autonomous")
 @Configurable // Panels
-public class balltestnew12 extends OpMode {
+public class red12qual extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
-    private ShooterSubSystem shooter;
+    private ShooterSubSystemRed shooter;
     public Follower follower; // Pedro Pathing follower instance
 
     public boolean startedState = false;
@@ -66,23 +66,23 @@ public class balltestnew12 extends OpMode {
         startToShoot = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(14.756, 112.044), new Pose(54.222, 100.556))
+                        new BezierLine(new Pose(129.244, 112.044), new Pose(89.778, 83))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(180-323))
                 .build();
 
         shootRotate = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(54.222, 83.556), new Pose(54.222, 83.556))
+                        new BezierLine(new Pose(89.778, 83), new Pose(89.778, 83))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(323), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(180-323+(-180)), Math.toRadians(180-180 ))
                 .build();
 
         rotateToFirst = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(54.222, 83.556), new Pose(18.133, 83.556))
+                        new BezierLine(new Pose(89.778, 83), new Pose(126.867, 82.556))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -90,37 +90,37 @@ public class balltestnew12 extends OpMode {
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(18.133, 83.556),
-                                new Pose(35.866666666666667, 80.19999999999999),
-                                new Pose(15.644, 69)
+                                new Pose(126.867, 82.556),
+                                new Pose(107.1333, 80.19999999999999),
+                                new Pose(128.356, 72)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(180-180 ), Math.toRadians(180-180))
                 .build();
 
         gateToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(15.644, 72), new Pose(48.711, 87.467))
+                        new BezierLine(new Pose(128.356, 72), new Pose(95.289, 87.467))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(325))
+                .setConstantHeadingInterpolation(Math.toRadians(30+180))
                 .build();
 
         zoneShootRotate = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(48.711, 87.467), new Pose(48.711, 87.467))
+                        new BezierLine(new Pose(95.289, 87.467), new Pose(95.289, 87.467))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(200), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(30+180), Math.toRadians(30-90))
                 .build();
 
         rotateToMiddle = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(48.711, 87.467),
-                                new Pose(51.9111111111111, 66.48888888888888),
-                                new Pose(16.000, 54.133)
+                                new Pose(95.289, 87.467),
+                                new Pose(92.0889, 65.48888888888888),
+                                new Pose(128.750, 54)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -129,17 +129,17 @@ public class balltestnew12 extends OpMode {
         middleToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(16.000, 54.133), new Pose(54.044, 87.466))
+                        new BezierLine(new Pose(128.00, 54), new Pose(89.956, 87.466))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(180-180), Math.toRadians(180-323))
                 .build();
         zoneToLast = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(54.044, 87.466),
-                                new Pose(80.355, 26.555),
-                                new Pose(14.344, 35.444)
+                                new Pose(89.956, 87.466),
+                                new Pose(63.645, 24.555),
+                                new Pose(134.156, 32)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -147,17 +147,17 @@ public class balltestnew12 extends OpMode {
         lastToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(10.844, 36.444), new Pose(54.422, 120.155))
+                        new BezierLine(new Pose(134.156, 33), new Pose(89.578, 110.155))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(327 +200))
+                .setLinearHeadingInterpolation(Math.toRadians(180-180), Math.toRadians(180-327 +170))
                 .setReversed()
                 .build();
         leave = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(57.422, 85.156), new Pose(53.333, 63.822))
+                        new BezierLine(new Pose(89.578, 85.156), new Pose(90.667, 63.822))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setConstantHeadingInterpolation(Math.toRadians(180-180))
                 .build();
 //        lastToZone = follower
 //                .pathBuilder()
@@ -182,10 +182,10 @@ public class balltestnew12 extends OpMode {
 
     @Override
     public void init() {
-        shooter = new ShooterSubSystem(hardwareMap);
+        shooter = new ShooterSubSystemRed(hardwareMap);
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(14.755, 112.044, Math.toRadians(270)));
+        follower.setStartingPose(new Pose(129.244, 112.044, Math.toRadians(270)));
         pathTimer = new ElapsedTime();
 
         buildPaths(follower); // Build paths
@@ -252,7 +252,6 @@ public class balltestnew12 extends OpMode {
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    shooter.stopIntake();
                     setPathState(pathState.firstToGate);
                     startedState = false;
                 }

@@ -42,6 +42,8 @@ public class tuffturretteleop extends LinearOpMode {
         transfer = hardwareMap.get(DcMotor.class, "transfer");
         intake = hardwareMap.get(DcMotor.class, "intake");
 
+        turret.setPosition(0.9);
+
         nearMotor = hardwareMap.get(DcMotorEx.class, "shooterLeft");
         farMotor = hardwareMap.get(DcMotorEx.class, "shooterRight");
         nearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -206,15 +208,15 @@ public class tuffturretteleop extends LinearOpMode {
     }
     int calcVelo(double ty,double ta){
         if(ty == 0)
-            return 1500;
+            return 1400;
         if(ty < 1)
-            return 2000;
+            return 1850;
         if(ty < 5.5){
-            return 1700;
+            return 1600;
         }
         if(ty < 10)
-            return 1600;
-        return 1500;
+            return 1450;
+        return 1350;
 
     }
 }

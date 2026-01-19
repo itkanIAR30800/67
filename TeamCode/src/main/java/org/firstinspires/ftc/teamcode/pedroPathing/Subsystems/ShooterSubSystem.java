@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 
-import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
-import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
+//import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
+//import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
@@ -22,12 +22,12 @@ public class ShooterSubSystem{
     double previousTxError = 0;
     private boolean hasTarget =false;
     private int tolerance = 50;
-    private int targetVelocity = 1550;
+    private int targetVelocity = 1400;
     private DcMotorEx intake = null;
     private DcMotorEx transfer, leftShooter, rightShooter;
 
     private DcMotor leftBack, leftFront, rightBack, rightFront;
-    private Servo transferGate;
+    private Servo transferGate, turret;
     private boolean shootingSafe = false;
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
@@ -36,6 +36,7 @@ public class ShooterSubSystem{
 
 
     public ShooterSubSystem(HardwareMap hardwareMap) {
+        turret = hardwareMap.get(Servo.class, "turret");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");
         leftShooter = hardwareMap.get(DcMotorEx.class, "shooterLeft");
@@ -77,6 +78,10 @@ public class ShooterSubSystem{
     void runTransfer() {
         transfer.setPower(1);
         intake.setPower(1);
+    }
+
+    void lockTurret() {
+        turret.setPosition(0.5);
     }
 
     public void updateShoot() {
@@ -165,7 +170,7 @@ public class ShooterSubSystem{
             rightShooter.setPower(0);
         }
         if (targetVelocity - getShooterVelocity() < tolerance) {
-            openGate();
+            openGate(); //its saying the velocity is right (shooter is at the right velocity)
         }
 
 

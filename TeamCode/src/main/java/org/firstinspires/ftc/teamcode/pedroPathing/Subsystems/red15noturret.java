@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "eventually franklin will show up to defend his home", group = "Autonomous")
+@Autonomous(name = "red 15 no turret 67", group = "Autonomous")
 @Configurable // Panels
 public class red15noturret extends OpMode {
 

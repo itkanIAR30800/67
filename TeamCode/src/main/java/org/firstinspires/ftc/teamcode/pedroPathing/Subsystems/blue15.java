@@ -21,7 +21,7 @@ public class blue15 extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
 
-    private ShooterSubSystemRed shooter;
+    private ShooterSubSystem shooter;
     public Follower follower; // Pedro Pathing follower instance
 
     public boolean startedState = false;
@@ -128,7 +128,7 @@ public class blue15 extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(15.024, 83.707), new Pose(55.220, 93.659))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(-123))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(57))
                 .setReversed()
                 .build();
 
@@ -163,7 +163,7 @@ public class blue15 extends OpMode {
 
     @Override
     public void init() {
-        shooter = new ShooterSubSystemRed(hardwareMap);
+        shooter = new ShooterSubSystem(hardwareMap);
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(new Pose(14.634, 108.293, Math.toRadians(180)));
@@ -194,6 +194,7 @@ public class blue15 extends OpMode {
         switch (pathstate) {
             case startToShoot:
                 if (!startedState) {
+                    shooter.lockTurret();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
@@ -321,7 +322,7 @@ public class blue15 extends OpMode {
                     startedState = true;
                 }
                 break;
-        }
+        }  //TODO: heading is a little off for shooting, 2nd to last shooting needs to be flipped (add 180), at the end it may be running out of time or not running the case
 
 
     }

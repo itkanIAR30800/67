@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 
+//import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
+//import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
 
 import java.util.List;
 
@@ -18,18 +22,21 @@ public class ShooterSubSystemRed{
     double previousTxError = 0;
     private boolean hasTarget =false;
     private int tolerance = 50;
-    private int targetVelocity = 1550;
+    private int targetVelocity = 1400;
     private DcMotorEx intake = null;
     private DcMotorEx transfer, leftShooter, rightShooter;
 
     private DcMotor leftBack, leftFront, rightBack, rightFront;
-    private Servo transferGate;
+    private Servo transferGate, turret;
     private boolean shootingSafe = false;
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
 
 
+
+
     public ShooterSubSystemRed(HardwareMap hardwareMap) {
+        turret = hardwareMap.get(Servo.class, "turret");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");
         leftShooter = hardwareMap.get(DcMotorEx.class, "shooterLeft");
@@ -73,6 +80,10 @@ public class ShooterSubSystemRed{
         intake.setPower(1);
     }
 
+    void lockTurret() {
+        turret.setPosition(0.5);
+    }
+
     public void updateShoot() {
 
         if (targetVelocity - getShooterVelocity() < tolerance * 2) {
@@ -106,6 +117,7 @@ public class ShooterSubSystemRed{
                         ty = tag.getTargetYDegrees();
                         ta = tag.getTargetArea();
                     }
+
 
                 }
             }
@@ -158,7 +170,7 @@ public class ShooterSubSystemRed{
             rightShooter.setPower(0);
         }
         if (targetVelocity - getShooterVelocity() < tolerance) {
-            openGate();
+            openGate(); //its saying the velocity is right (shooter is at the right velocity)
         }
 
 
