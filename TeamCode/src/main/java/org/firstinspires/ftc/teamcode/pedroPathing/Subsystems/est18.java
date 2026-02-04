@@ -15,12 +15,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "actual red 15", group = "Autonomous")
+@Autonomous(name = "18 blue", group = "Autonomous")
 @Configurable // Panels
-public class red15noturret extends OpMode {
+public class est18 extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
-    private ShooterSubSystemRed shooter;
+    private ShooterSubSystem shooter;
     public Follower follower; // Pedro Pathing follower instance
 
     public boolean startedState = false;
@@ -28,21 +28,21 @@ public class red15noturret extends OpMode {
     private enum pathState {
         startToShoot,
         shoot1,
-        shootRotate,
-        rotateToFirst,
-        firstToGate,
-        gateToZone,
-        zoneShootRotate,
+        shootToMiddle,
+        middleToShoot,
         shoot2,
-        rotateToMiddle,
-        middleToZone,
+        ShootToGate1,
+        gateToShoot1,
         shoot3,
-        zoneToLast,
-        lastToZone,
+        ShootToGate2,
+        gateToShoot2,
         shoot4,
-        shootToHP,
-        hpToShoot,
+        ShootToGate3,
+        gateToShoot3,
         shoot5,
+        shootToFirst,
+        firstToShoot,
+        shoot6,
         leave
 
 
@@ -52,153 +52,127 @@ public class red15noturret extends OpMode {
     private Timer opModeTimer;
 
     public PathChain startToShoot;
-    public PathChain shootRotate;
-    public PathChain rotateToFirst;
-    public PathChain firstToGate;
-    public PathChain gateToZone;
-    public PathChain zoneShootRotate;
-    public PathChain rotateToMiddle;
-    public PathChain middleToZone;
-    public PathChain zoneToLast;
-    public PathChain lastToZone;
-    public PathChain shootToHP;
-    public PathChain hpToShoot;
-    public PathChain leave;
-
-//    public static GoalId blue;
+    public PathChain shootToMiddle;
+    public PathChain middleToShoot;
+    public PathChain ShootToGate1;
+    public PathChain gateToShoot1;
+    public PathChain ShootToGate2;
+    public PathChain gateToShoot2;
+    public PathChain ShootToGate3;
+    public PathChain gateToShoot3;
+    public PathChain shootToFirst;
+    public PathChain firstToShoot;
 
     public void buildPaths(Follower follower) {
-        startToShoot = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(129.244, 112.044), new Pose(89.778, 87.556))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(315))
-                .build();
-
-        shootRotate = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(89.778, 83.556), new Pose(89.778, 83.556))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
-                .build();
-
-        rotateToFirst = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(89.778, 87.556), new Pose(122.867, 83.556))
-                )
-                .setTangentHeadingInterpolation()
-                .build();
-
-        gateToZone = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(122.867, 83.556), new Pose(95.289, 87.467))
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(315))
-                .build();
-
-        zoneShootRotate = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(95.289, 87.467), new Pose(95.289, 87.467))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(315))
-                .build();
-
-        rotateToMiddle = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Pose(95.289, 87.467),
-                                new Pose(91.089, 62.48888888888888),
-                                new Pose(129, 55.5)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .build();
-//        firstToGate = follower
-//                .pathBuilder()
-//                .addPath(
-//                        new BezierCurve(
-//                                new Pose(16.000, 54.133),
-//                                new Pose(35.866666666666667, 80.19999999999999),
-//                                new Pose(15.644, 69)
-//                        )
-//                )
-//                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
-//                .build();
-
-        middleToZone = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Pose(129, 55.500),
-                                new Pose(127.488, 79.311),
-                                new Pose(89.956, 87.466)
-                        )
-                ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
-
-                .build();
-        zoneToLast = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Pose(89.956, 87.466),
-                                new Pose(65.645, 22.555),
-                                new Pose(129.656, 35.444)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .build();
-        lastToZone = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(129.656, 35.444), new Pose(99, 90))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
-                .build();
-        shootToHP = follower.pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(99, 90.000),
-                                new Pose(136.956, 63.822),
-                                new Pose(132.267, 10.533)
-                        )
-                ).setTangentHeadingInterpolation()
-
-                .build();
-
-        hpToShoot = follower.pathBuilder().addPath(
+        startToShoot = follower.pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(132.267, 12.533),
+                                new Pose(14.756, 112.044),
 
-                                new Pose(89.556, 110.156)
+                                new Pose(54.901, 100.000)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(223))
+
+                .build();
+
+        shootToMiddle = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(54.901, 100.000),
+                                new Pose(47.373, 63.965),
+                                new Pose(24.560, 59.825)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(223), Math.toRadians(180))
+
+                .build();
+
+        middleToShoot = follower.pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(24.560, 59.825),
+
+                                new Pose(53.697, 79.044)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(223))
+
+                .build();
+
+        ShootToGate1 = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(53.697, 79.044),
+                                new Pose(26.934, 49.738),
+                                new Pose(15.500, 63.647)
                         )
                 ).setTangentHeadingInterpolation()
-                .setReversed()
+
                 .build();
 
-        leave = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(57.422, 85.156), new Pose(53.333, 63.822))
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(0))
-                .build();
-//        lastToZone = follower
-//                .pathBuilder()
-//                .addPath(
-//                        new BezierLine(
-//                                new Pose(11.022, 35.911),
-//                                new Pose(58.311, 103.644)
-//                        )
-//                )
-//                .setConstantHeadingInterpolation(110)
-//                .setReversed()
-//                .build();
+        gateToShoot1 = follower.pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(11.500, 58.647),
 
+                                new Pose(53.157, 79.429)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(148), Math.toRadians(223))
+
+                .build();
+
+        ShootToGate2 = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(53.157, 79.429),
+                                new Pose(26.934, 49.738),
+                                new Pose(15.500, 63.647)
+                        )
+                ).setTangentHeadingInterpolation()
+
+                .build();
+
+        gateToShoot2 = follower.pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(11.500, 58.647),
+
+                                new Pose(53.157, 83.000)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(148), Math.toRadians(225))
+
+                .build();
+
+        ShootToGate3 = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(53.157, 83.000),
+                                new Pose(26.934, 49.738),
+                                new Pose(11.500, 58.647)
+                        )
+                ).setTangentHeadingInterpolation()
+
+                .build();
+
+        gateToShoot3 = follower.pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(11.500, 58.647),
+
+                                new Pose(53.198, 79.481)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(148), Math.toRadians(220))
+
+                .build();
+
+        shootToFirst = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(53.198, 79.481),
+                                new Pose(45.028, 94.787),
+                                new Pose(24.560, 82.706)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
+
+                .build();
+
+        firstToShoot = follower.pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(24.560, 82.706),
+
+                                new Pose(56.586, 106.181)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(240))
+
+                .build();
     }
     ElapsedTime pathTimer;
 
@@ -210,10 +184,10 @@ public class red15noturret extends OpMode {
 
     @Override
     public void init() {
-        shooter = new ShooterSubSystemRed(hardwareMap);
+        shooter = new ShooterSubSystem(hardwareMap);
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(129.244, 112.044, Math.toRadians(270)));
+        follower.setStartingPose(new Pose(15.697, 109.598, Math.toRadians(270)));
         pathTimer = new ElapsedTime();
 
         buildPaths(follower); // Build paths
@@ -260,27 +234,27 @@ public class red15noturret extends OpMode {
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.8) {
+                if(pathTimer.seconds() > 2.0) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.rotateToFirst);
+                    setPathState(pathState.shootToMiddle);
                 }
                 break;
-            case rotateToFirst:
+            case shootToMiddle:
                 if (!startedState) {
-                    follower.followPath(rotateToFirst);
+                    follower.followPath(shootToMiddle);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.gateToZone);
+                    setPathState(pathState.middleToShoot);
                     startedState = false;
                 }
                 break;
 
-            case gateToZone:
+            case middleToShoot:
                 if (!startedState) {
-                    follower.followPath(gateToZone);
+                    follower.followPath(middleToShoot);
                     shooter.intake();
                     startedState = true;
                 }
@@ -293,52 +267,29 @@ public class red15noturret extends OpMode {
                 break;
 
 
-//            case zoneShootRotate:
-//                if (!startedState) {
-//                    follower.followPath(zoneShootRotate);
-//                    startedState = true;
-//                }
-//                if (!follower.isBusy()) {
-//                    shooter.stopIntake();
-//                    setPathState(pathState.shoot2);
-//                    follower.startTeleOpDrive();
-//                    startedState = false;
-//                }
-//                break;
-
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 1.7) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.rotateToMiddle);
+                    setPathState(pathState.ShootToGate1);
                 }
                 break;
-            case rotateToMiddle:
+            case ShootToGate1:
                 if (!startedState) {
                     //shooter.flywheelInit();
-                    follower.followPath(rotateToMiddle);
+                    follower.followPath(ShootToGate1);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.middleToZone);
+                    setPathState(pathState.gateToShoot1);
                     startedState = false;
                 }
                 break;
-            case firstToGate:
+            case gateToShoot1:
                 if (!startedState) {
-                    follower.followPath(firstToGate);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    setPathState(pathState.middleToZone);
-                    startedState = false;
-                }
-                break;
-            case middleToZone:
-                if (!startedState) {
-                    follower.followPath(middleToZone);
+                    follower.followPath(gateToShoot1);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
@@ -347,31 +298,30 @@ public class red15noturret extends OpMode {
                     startedState = false;
                 }
                 break;
-
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 2) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.zoneToLast);
+                    setPathState(pathState.ShootToGate2);
                 }
                 break;
-            case zoneToLast:
+            case ShootToGate2:
                 if (!startedState) {
 //                    shooter.flywheelInit();
-                    follower.followPath(zoneToLast);
+                    follower.followPath(ShootToGate2);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.lastToZone);
+                    setPathState(pathState.gateToShoot2);
                     startedState = false;
                 }
                 break;
-            case lastToZone:
+            case gateToShoot2:
                 if (!startedState) {
-                    follower.followPath(lastToZone);
+                    follower.followPath(gateToShoot2);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
@@ -387,25 +337,24 @@ public class red15noturret extends OpMode {
                 if(pathTimer.seconds() > 2.2) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.shootToHP);
+                    setPathState(pathState.ShootToGate3);
                 }
                 break;
-            case shootToHP:
+            case ShootToGate3:
                 //shooter.flywheelInit();
                 if (!startedState) {
-                    follower.followPath(shootToHP);
+                    follower.followPath(ShootToGate3);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    shooter.stopIntake();
-                    setPathState(pathState.hpToShoot);
+                    setPathState(pathState.gateToShoot3);
                     startedState = false;
                 }
                 break;
-            case hpToShoot:
+            case gateToShoot3:
                 if (!startedState) {
-                    follower.followPath(hpToShoot);
+                    follower.followPath(gateToShoot3);
 //                    shooter.shoot5turret();
                     startedState = true;
                 }
@@ -421,13 +370,39 @@ public class red15noturret extends OpMode {
                 if(pathTimer.seconds() > 1.7) {
                     shooter.stopShoot();
                     shooter.stopIntake();
-
+                    setPathState(pathState.shootToFirst);
                 }
                 break;
-            case leave:
+            case shootToFirst:
+                //shooter.flywheelInit();
                 if (!startedState) {
-                    follower.followPath(zoneToLast);
+                    follower.followPath(shootToFirst);
                     startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    follower.startTeleOpDrive();
+                    setPathState(pathState.firstToShoot);
+                    startedState = false;
+                }
+                break;
+            case firstToShoot:
+                if (!startedState) {
+                    follower.followPath(firstToShoot);
+//                    shooter.shoot5turret();
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    follower.startTeleOpDrive();
+                    setPathState(pathState.shoot6);
+                    startedState = false;
+                }
+                break;
+            case shoot6:
+                turnPower = shooter.updateShootAndAlign();
+                follower.setTeleOpDrive(0, 0, turnPower);
+                if(pathTimer.seconds() > 1.7) {
+                    shooter.stopShoot();
+                    shooter.stopIntake();
                 }
                 break;
 

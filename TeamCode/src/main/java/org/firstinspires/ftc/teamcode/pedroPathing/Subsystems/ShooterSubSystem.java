@@ -5,10 +5,12 @@ package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
 
 
 import java.util.List;
@@ -27,7 +29,8 @@ public class ShooterSubSystem{
     private DcMotorEx transfer, leftShooter, rightShooter;
 
     private DcMotor leftBack, leftFront, rightBack, rightFront;
-    private Servo transferGate, turret;
+    private Servo transferGate;
+    private CRServo turret;
     private boolean shootingSafe = false;
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
@@ -36,7 +39,7 @@ public class ShooterSubSystem{
 
 
     public ShooterSubSystem(HardwareMap hardwareMap) {
-        turret = hardwareMap.get(Servo.class, "turret");
+        turret = hardwareMap.get(CRServo.class, "turret");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");
         leftShooter = hardwareMap.get(DcMotorEx.class, "shooterLeft");
@@ -72,16 +75,23 @@ public class ShooterSubSystem{
     public void intake() {
         closeGate();
         intake.setPower(1);
-        transfer.setPower(1);
+        transfer.setPower(-1);
     }
+//    public void shoot5turret() {
+//        turret.setPosition(0.25);
+//    }
 
     void runTransfer() {
-        transfer.setPower(1);
+        transfer.setPower(-1);
         intake.setPower(1);
     }
 
     void lockTurret() {
-        turret.setPosition(0.5);
+        turret.setPower(0.01);
+    }
+    public void flywheelInit() {
+        leftShooter.setPower(0.4);
+        rightShooter.setPower(0.4);
     }
 
     public void updateShoot() {
@@ -111,12 +121,12 @@ public class ShooterSubSystem{
             if (tags != null) {
                 for (LLResultTypes.FiducialResult tag : tags) {
                     id = tag.getFiducialId();
-                        if (id == 20) {
-                            hasTarget = true;
-                            tx = tag.getTargetXDegrees();
-                            ty = tag.getTargetYDegrees();
-                            ta = tag.getTargetArea();
-                        }
+                    if (id == 20) {
+                        hasTarget = true;
+                        tx = tag.getTargetXDegrees();
+                        ty = tag.getTargetYDegrees();
+                        ta = tag.getTargetArea();
+                    }
 
 
                 }

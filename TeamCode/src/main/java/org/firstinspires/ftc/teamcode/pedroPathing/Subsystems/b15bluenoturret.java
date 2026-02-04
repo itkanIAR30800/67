@@ -15,12 +15,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "12 piece OLD", group = "Autonomous")
+@Autonomous(name = "actual blue 15", group = "Autonomous")
 @Configurable // Panels
-public class balltest12 extends OpMode {
+public class b15bluenoturret extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
-
     private ShooterSubSystem shooter;
     public Follower follower; // Pedro Pathing follower instance
 
@@ -31,16 +30,19 @@ public class balltest12 extends OpMode {
         shoot1,
         shootRotate,
         rotateToFirst,
-         firstToGate,
-         gateToZone,
+        firstToGate,
+        gateToZone,
         zoneShootRotate,
         shoot2,
-       rotateToMiddle,
+        rotateToMiddle,
         middleToZone,
         shoot3,
-       zoneToLast,
+        zoneToLast,
         lastToZone,
         shoot4,
+        shootToHP,
+        hpToShoot,
+        shoot5,
         leave
 
 
@@ -59,50 +61,43 @@ public class balltest12 extends OpMode {
     public PathChain middleToZone;
     public PathChain zoneToLast;
     public PathChain lastToZone;
+    public PathChain shootToHP;
+    public PathChain hpToShoot;
     public PathChain leave;
+
+//    public static GoalId blue;
 
     public void buildPaths(Follower follower) {
         startToShoot = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(14.756, 112.044), new Pose(62.222, 83.556))
+                        new BezierLine(new Pose(14.756, 112.044), new Pose(54.222, 100.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(323-90))
                 .build();
 
         shootRotate = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(62.222, 83.556), new Pose(62.222, 83.556))
+                        new BezierLine(new Pose(54.222, 83.556), new Pose(54.222, 83.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(323), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(323-90), Math.toRadians(180))
                 .build();
 
         rotateToFirst = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(62.222, 83.556), new Pose(18.133, 83.556))
+                        new BezierLine(new Pose(54.222, 83.556), new Pose(24.133, 83.556))
                 )
                 .setTangentHeadingInterpolation()
-                .build();
-        firstToGate = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Pose(18.133, 83.556),
-                                new Pose(29.867, 75.200),
-                                new Pose(16.889, 75.200)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
                 .build();
 
         gateToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(16.889, 75.200), new Pose(48.711, 87.467))
+                        new BezierLine(new Pose(24.133, 83.556), new Pose(48.711, 87.467))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(200))
+                .setConstantHeadingInterpolation(Math.toRadians(325-90))
                 .build();
 
         zoneShootRotate = follower
@@ -113,64 +108,47 @@ public class balltest12 extends OpMode {
                 .setLinearHeadingInterpolation(Math.toRadians(200), Math.toRadians(323))
                 .build();
 
-
-//        firstToGate = follower
-//                .pathBuilder()
-//                .addPath(
-//                        new BezierCurve(
-//                                new Pose(18.133, 83.556),
-//                                new Pose(29.866666666666667, 75.19999999999999),
-//                                new Pose(15.644, 70.222)
-//                        )
-//                )
-//                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
-//                .build();
-//
-//        gateToZone = follower
-//                .pathBuilder()
-//                .addPath(
-//                        new BezierLine(new Pose(15.644, 70.222), new Pose(48.711, 87.467))
-//                )
-//                .setConstantHeadingInterpolation(Math.toRadians(325))
-//                .build();
-//
-//        zoneShootRotate = follower
-//                .pathBuilder()
-//                .addPath(
-//                        new BezierLine(new Pose(48.711, 87.467), new Pose(48.711, 87.467))
-//                )
-//                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(330))
-//                .build();
-
         rotateToMiddle = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
                                 new Pose(48.711, 87.467),
-                                new Pose(66.488, 57.066),
-                                new Pose(11.733333333333334, 55)
+                                new Pose(51.9111111111111, 66.48888888888888),
+                                new Pose(16.000, 56.5)
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .build();
-
+//        firstToGate = follower
+//                .pathBuilder()
+//                .addPath(
+//                        new BezierCurve(
+//                                new Pose(16.000, 54.133),
+//                                new Pose(35.866666666666667, 80.19999999999999),
+//                                new Pose(15.644, 69)
+//                        )
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+//                .build();
 
         middleToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(11.733333333333334, 55), new Pose(54.044, 87.466))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(323+180))
-                .setReversed()
-                .build();
+                        new BezierCurve(
+                                new Pose(16.000, 56.500),
+                                new Pose(16.512, 79.311),
+                                new Pose(54.044, 87.466)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(235))
 
+                .build();
         zoneToLast = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
                                 new Pose(54.044, 87.466),
-                                new Pose(80.355, 27.555),
-                                new Pose(10.844, 36.444)
+                                new Pose(80.355, 26.555),
+                                new Pose(17.344, 35.444)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -178,11 +156,30 @@ public class balltest12 extends OpMode {
         lastToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(10.844, 36.444), new Pose(57.422, 85.155))
+                        new BezierLine(new Pose(17.344, 35.444), new Pose(45, 90))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(327 +180))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(235))
+                .build();
+        shootToHP = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(45.000, 90.000),
+                                new Pose(6.044, 63.822),
+                                new Pose(11.733, 12.533)
+                        )
+                ).setTangentHeadingInterpolation()
+
+                .build();
+
+        hpToShoot = follower.pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(11.733, 12.533),
+
+                                new Pose(54.444, 110.156)
+                        )
+                ).setTangentHeadingInterpolation()
                 .setReversed()
                 .build();
+
         leave = follower
                 .pathBuilder()
                 .addPath(
@@ -223,6 +220,8 @@ public class balltest12 extends OpMode {
         pathstate = pathState.startToShoot;
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
+
+//        blue.idNum = 20;
     }
 
     @Override
@@ -245,7 +244,10 @@ public class balltest12 extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
+                shooter.flywheelInit();
                 if (!startedState) {
+                    shooter.flywheelInit();
+                    shooter.lockTurret();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
@@ -258,20 +260,10 @@ public class balltest12 extends OpMode {
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToFirst);
-                }
-                break;
-            case shootRotate:
-                if (!startedState) {
-                    follower.followPath(shootRotate);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    setPathState(pathState.rotateToFirst);
-                    startedState = false;
                 }
                 break;
             case rotateToFirst:
@@ -281,53 +273,43 @@ public class balltest12 extends OpMode {
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.firstToGate);
-                    startedState = false;
-                }
-                break;
-            case firstToGate:
-                if (!startedState) {
-                    follower.followPath(firstToGate);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
                     setPathState(pathState.gateToZone);
                     startedState = false;
                 }
                 break;
 
             case gateToZone:
-             if (!startedState) {
-                follower.followPath(gateToZone);
-                startedState = true;
-                }
-             if (!follower.isBusy()) {
-                setPathState(pathState.shoot2);
-                follower.startTeleOpDrive();
-                startedState = false;
-                shooter.stopIntake();
-             }
-             break;
-
-
-            case zoneShootRotate:
                 if (!startedState) {
-                    follower.followPath(zoneShootRotate);
+                    follower.followPath(gateToZone);
+                    shooter.intake();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    shooter.stopIntake();
                     setPathState(pathState.shoot2);
                     follower.startTeleOpDrive();
-
                     startedState = false;
+                    shooter.stopIntake();
                 }
                 break;
+
+
+//            case zoneShootRotate:
+//                if (!startedState) {
+//                    follower.followPath(zoneShootRotate);
+//                    startedState = true;
+//                }
+//                if (!follower.isBusy()) {
+//                    shooter.stopIntake();
+//                    setPathState(pathState.shoot2);
+//                    follower.startTeleOpDrive();
+//                    startedState = false;
+//                }
+//                break;
 
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 1.7) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToMiddle);
@@ -335,7 +317,18 @@ public class balltest12 extends OpMode {
                 break;
             case rotateToMiddle:
                 if (!startedState) {
+                    //shooter.flywheelInit();
                     follower.followPath(rotateToMiddle);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    setPathState(pathState.middleToZone);
+                    startedState = false;
+                }
+                break;
+            case firstToGate:
+                if (!startedState) {
+                    follower.followPath(firstToGate);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
@@ -356,7 +349,7 @@ public class balltest12 extends OpMode {
                 break;
 
             case shoot3:
-                 turnPower = shooter.updateShootAndAlign();
+                turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 2) {
                     shooter.stopShoot();
@@ -366,6 +359,7 @@ public class balltest12 extends OpMode {
                 break;
             case zoneToLast:
                 if (!startedState) {
+//                    shooter.flywheelInit();
                     follower.followPath(zoneToLast);
                     startedState = true;
                 }
@@ -390,17 +384,52 @@ public class balltest12 extends OpMode {
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 2.2) {
+                    shooter.stopShoot();
+                    shooter.intake();
+                    setPathState(pathState.shootToHP);
+                }
+                break;
+            case shootToHP:
+                //shooter.flywheelInit();
+                if (!startedState) {
+                    follower.followPath(shootToHP);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    follower.startTeleOpDrive();
+                    setPathState(pathState.hpToShoot);
+                    startedState = false;
+                }
+                break;
+            case hpToShoot:
+                if (!startedState) {
+                    follower.followPath(hpToShoot);
+//                    shooter.shoot5turret();
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    follower.startTeleOpDrive();
+                    setPathState(pathState.shoot5);
+                    startedState = false;
+                }
+                break;
+            case shoot5:
+                turnPower = shooter.updateShootAndAlign();
+                follower.setTeleOpDrive(0, 0, turnPower);
+                if(pathTimer.seconds() > 1.7) {
                     shooter.stopShoot();
                     shooter.stopIntake();
+
                 }
                 break;
             case leave:
                 if (!startedState) {
-                    follower.followPath(leave);
+                    follower.followPath(zoneToLast);
                     startedState = true;
                 }
                 break;
+
         }
 
 

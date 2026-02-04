@@ -217,7 +217,7 @@ public class red12qual extends OpMode {
         switch (pathstate) {
             case startToShoot:
                 if (!startedState) {
-                    shooter.lockTurret();
+//                    shooter.lockTurret();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }

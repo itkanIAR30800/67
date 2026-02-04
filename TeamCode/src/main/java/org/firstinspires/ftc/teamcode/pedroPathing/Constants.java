@@ -21,8 +21,8 @@ public class Constants {
             .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.02, 0))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.03,0.0,0.01,0.6,0.0))
             .centripetalScaling(0.005)
-            .forwardZeroPowerAcceleration(-26.606354601058996)
-            .lateralZeroPowerAcceleration(-58.80521529219228);
+            .forwardZeroPowerAcceleration(-100.606354601058996)
+            .lateralZeroPowerAcceleration(-100.80521529219228);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99,
             100,
@@ -56,8 +56,8 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(80.31524706262303)
-            .yVelocity(59.36037895623154);
+            .xVelocity(5.31524706262303)
+            .yVelocity(5.36037895623154);
 
 
 }

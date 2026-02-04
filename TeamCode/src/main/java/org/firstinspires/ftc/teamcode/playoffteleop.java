@@ -1,8 +1,6 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
-import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
-
-import com.pedropathing.geometry.Pose;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -15,13 +13,14 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import java.util.List;
 
 
-@TeleOp(name="triple t teleop", group="Robot")
-public class tuffturretteleop extends LinearOpMode {
+@TeleOp(name="2 1 Main Playoff Teleop", group="Robot")
+public class playoffteleop extends LinearOpMode {
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
 
     private int tolerance = 50;
     private int targetVelocity = 2000;
-    private Servo turret = null;
+    private int idleVelo = 200;
+    private CRServo turret = null;
     private Servo transferGate = null;
     private DcMotor transfer = null;
     private DcMotor intake = null;
@@ -38,20 +37,12 @@ public class tuffturretteleop extends LinearOpMode {
     double closed = 0.85;
     double open = 0.4;
 
-    double initX = 14.755;
-    double initY = 112.044;
-    Pose getPose = follower.getPose();
-
-
-
     //logic
     public void runOpMode() throws InterruptedException {
-        turret = hardwareMap.get(Servo.class, "turret");
+        turret = hardwareMap.get(CRServo.class, "turret");
         transferGate = hardwareMap.get(Servo.class, "gate");
         transfer = hardwareMap.get(DcMotor.class, "transfer");
         intake = hardwareMap.get(DcMotor.class, "intake");
-
-        turret.setPosition(0.9);
 
         nearMotor = hardwareMap.get(DcMotorEx.class, "shooterLeft");
         farMotor = hardwareMap.get(DcMotorEx.class, "shooterRight");
@@ -76,12 +67,7 @@ public class tuffturretteleop extends LinearOpMode {
         rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
 
-
-        follower.setStartingPose(new Pose(initX, initY, Math.toRadians(270)));
-
-
         limelight = hardwareMap.get(com.qualcomm.hardware.limelightvision.Limelight3A.class, "limelight");
-        //SIX SEVENNNNNNNNNNNN
         limelight.setPollRateHz(10);
         limelight.start();
         limelight.pipelineSwitch(0);
@@ -93,12 +79,8 @@ public class tuffturretteleop extends LinearOpMode {
         runtime.reset();
         transferGate.setPosition(closed);
         while (opModeIsActive()) {
-            follower.startTeleOpDrive(true);
-            follower.getPose();
-            telemetry.addData("x: " + getPose, "y: " + getPose );
-            telemetry.update(); //printing values of
+            //turret.setPosition(0.5);
 
-            turret.setPosition(1.0);
             LLResult result = limelight.getLatestResult();
 
             double ta = 0, tx = 0, ty = 0 ;
@@ -107,10 +89,10 @@ public class tuffturretteleop extends LinearOpMode {
                 ta = result.getTa();
                 tx = result.getTx();
                 ty = result.getTy();
-//                telemetry.addData("value tx:", tx);
-//                telemetry.addData("value ty:", ty);
-//                telemetry.addData("value ta:", ta);
-//                telemetry.update();
+                telemetry.addData("value tx:", tx);
+                telemetry.addData("value ty:", ty);
+                telemetry.addData("value ta:", ta);
+                telemetry.update();
             }
             //START DRIVETRAIN ----------------------------------------------------------------------
 
@@ -125,29 +107,37 @@ public class tuffturretteleop extends LinearOpMode {
 
             if (gamepad1.right_trigger > 0.05) {
                 intake.setPower(1.0);
-                transfer.setPower(1.0);
+                transfer.setPower(-1.0);
                 transferGate.setPosition(closed);
 
             } else if(gamepad1.left_trigger > 0.05) {
                 intake.setPower(-1.0);
-                transfer.setPower(-1.0);
+                transfer.setPower(1.0);
             } else {
                 intake.setPower(0.0);
                 transfer.setPower(0.0);
             }
+
+            if (gamepad1.left_bumper) {
+                turret.setPower(-0.2);
+            } else if (gamepad1.right_bumper) {
+                turret.setPower(0.2);
+            } else {
+                turret.setPower(0.0);
+            }
             targetVelocity = calcVelo(ty,ta);
-            boolean shoot = gamepad1.square || gamepad1.circle;
+            boolean shoot = gamepad1.square;
             boolean aligned = false;
             double currentVelocity = 0;
             if (shoot) {
                 intake.setPower(1);
                 if(targetVelocity < 1800)
-                    transfer.setPower(1);
+                    transfer.setPower(-1);
                 else
-                    transfer.setPower(0.6);
-//                telemetry.addData("left velocity:", nearMotor.getVelocity());
-//                telemetry.addData("right velocity:", farMotor.getVelocity());
-//                telemetry.update();
+                    transfer.setPower(-0.6);
+                telemetry.addData("left velocity:", nearMotor.getVelocity());
+                telemetry.addData("right velocity:", farMotor.getVelocity());
+                telemetry.update();
 
                 if(hasTarget){
                     double alignmentTolerence = 1;
@@ -201,14 +191,18 @@ public class tuffturretteleop extends LinearOpMode {
                 //     transfer.setPower(0);
                 // }
 
+                // if(aligned && shootingSafe){
+                //  transferGate.setPosition(open);
+                // transfer.setPower(1);
+                //}
                 if(aligned && shootingSafe){
                     transferGate.setPosition(open);
                     // transfer.setPower(1);
                 }
             }
-            else {
-                nearMotor.setPower(0);
-                farMotor.setPower(0);
+            else if (!shoot) {
+                nearMotor.setPower(0.5);
+                farMotor.setPower(0.5);
                 //  transferGate.setPosition(closed);
             }
 
@@ -224,18 +218,55 @@ public class tuffturretteleop extends LinearOpMode {
             rightBack.setPower(backRightPower);
         }
     }
-    int calcVelo(double ty,double ta){
-        if(ty == 0)
-            return 1400;
-        if(ty < 1)
-            return 1850;
-        if(ty < 5.5){
+    int calcVelo(double ty, double ta) {
+
+        if (ty >= 15.0) {
+            return 1375;
+        }
+
+        if (ty >= 12.0) {
+            return 1375;
+        }
+
+        // ---------- NEAR ----------
+        if (ty >= 9.0) {
+            return 1450;
+        }
+
+        if (ty >= 6.0) {
+            return 1475;
+        }
+
+        if (ty >= 4.0) {
+            return 1575;
+        }
+
+        if (ty >= 3.0) {
             return 1600;
         }
-        if(ty < 10)
-            return 1450;
-        return 1350;
 
-    }
-}
+        if (ty >= 2.5) {
+            return 1665;
+        }
 
+        if (ty >= 1.65) {
+            return 1650;
+        }
+
+        if (ty >= 1.4) {
+            return 1700;
+        }
+
+        // ---------- FAR ----------
+        if (ty >= 0.5) {
+            return 1750;
+        }
+
+        if (ty >= 0.1) {
+            return 1825;
+        }
+        if (nearMotor.getVelocity() < idleVelo) //if ts doesnt work do !gamepad1.square
+            return 200;
+        // ---------- VERY FAR / BELOW TARGET ----------
+        return 1850;
+}}
