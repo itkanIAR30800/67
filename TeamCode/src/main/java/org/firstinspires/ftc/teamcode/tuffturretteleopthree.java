@@ -1,28 +1,24 @@
 package org.firstinspires.ftc.teamcode;
-//import static com.acmerobotics.roadrunner.Math.clamp;
-
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import com.qualcomm.hardware.limelightvision.LLResult;
+import java.util.List;
 
 
-@TeleOp(name="triple t teleop 3", group="Robot")
+@TeleOp(name="3 1 Main Playoff Teleop", group="Robot")
 public class tuffturretteleopthree extends LinearOpMode {
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
 
     private int tolerance = 50;
     private int targetVelocity = 2000;
-
     private int idleVelo = 200;
     private CRServo turret = null;
     private Servo transferGate = null;
@@ -33,35 +29,12 @@ public class tuffturretteleopthree extends LinearOpMode {
     private DcMotorEx farMotor = null;
 
     private ElapsedTime runtime = new ElapsedTime();
-    private ElapsedTime turretReset = new ElapsedTime();
-
     private DcMotor leftFront = null;
     private DcMotor leftBack = null;
     private DcMotor rightFront = null;
     private DcMotor rightBack = null;
     double closed = 0.85;
-    double open = 0.4; //TODO: change ts to be faster
-
-    Gamepad lastGamepad1 = new Gamepad();
-    Gamepad currentGamepad1 = new Gamepad();
-
-
-    double initX = 14.755;
-    double initY = 112.044;
-    double kP = 0.02;          // power per degree (start small)
-    double maxPower = 0.35;    // keep it tame
-    double deadbandDeg = 15.0;  // stop when within 1 degree
-    double maxDeltaPerLoop = 0.05; // slew limit on power changes
-    double lastPower = 0.0;
-
-//    private double slew(double target, double last, double maxDelta) {
-//        return clamp(
-//                target,
-//                last - maxDelta,
-//                last + maxDelta
-//        );
-//    }
-
+    double open = 0.4;
 
     //logic
     public void runOpMode() throws InterruptedException {
@@ -69,8 +42,6 @@ public class tuffturretteleopthree extends LinearOpMode {
         transferGate = hardwareMap.get(Servo.class, "gate");
         transfer = hardwareMap.get(DcMotor.class, "transfer");
         intake = hardwareMap.get(DcMotor.class, "intake");
-
-//        turret.setPosition(0.9);
 
         nearMotor = hardwareMap.get(DcMotorEx.class, "shooterLeft");
         farMotor = hardwareMap.get(DcMotorEx.class, "shooterRight");
@@ -95,9 +66,7 @@ public class tuffturretteleopthree extends LinearOpMode {
         rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
 
-
         limelight = hardwareMap.get(com.qualcomm.hardware.limelightvision.Limelight3A.class, "limelight");
-        //SIX SEVENNNNNNNNNNNN
         limelight.setPollRateHz(10);
         limelight.start();
         limelight.pipelineSwitch(0);
@@ -107,36 +76,28 @@ public class tuffturretteleopthree extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-        turretReset.reset();
-        turretReset.startTime();
         transferGate.setPosition(closed);
         while (opModeIsActive()) {
-            telemetry.addData("speed", nearMotor.getVelocity());
-            telemetry.update();
-            telemetry.update();
+            //turret.setPosition(0.5);
 
             LLResult result = limelight.getLatestResult();
 
-             while(turretReset.seconds() < 2.5){
-                 turret.setPower(1);
-             }
-
-            double ta = 0, tx = 0, ty = 0;
+            double ta = 0, tx = 0, ty = 0 ;
             boolean hasTarget = result != null && result.isValid();
             if (hasTarget) {
                 ta = result.getTa();
                 tx = result.getTx();
                 ty = result.getTy();
-//                telemetry.addData("value tx:", tx);
-//                telemetry.addData("value ty:", ty);
-//                telemetry.addData("value ta:", ta);
-//                telemetry.update();
+                telemetry.addData("value tx:", tx);
+                telemetry.addData("value ty:", ty);
+                telemetry.addData("value ta:", ta);
+                telemetry.update();
             }
             //START DRIVETRAIN ----------------------------------------------------------------------
 
             double max;
             double drive = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-            double strafe = gamepad1.left_stick_x * 1.5;
+            double strafe = gamepad1.left_stick_x * 1.5 ;
             double rotate = gamepad1.right_stick_x;
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
@@ -148,7 +109,7 @@ public class tuffturretteleopthree extends LinearOpMode {
                 transfer.setPower(-1.0);
                 transferGate.setPosition(closed);
 
-            } else if (gamepad1.left_trigger > 0.05) {
+            } else if(gamepad1.left_trigger > 0.05) {
                 intake.setPower(-1.0);
                 transfer.setPower(1.0);
             } else {
@@ -163,115 +124,36 @@ public class tuffturretteleopthree extends LinearOpMode {
             } else {
                 turret.setPower(0.0);
             }
-
-            lastGamepad1.copy(currentGamepad1);
-            currentGamepad1.copy(gamepad1);
-            boolean leftBumper = !lastGamepad1.left_bumper && currentGamepad1.left_bumper;
-            boolean rightBumper = !lastGamepad1.right_bumper && currentGamepad1.right_bumper;
-            // Update current with newest data
-
-
-//            if (leftBumper || rightBumper) {
-//                if (hasTarget) {
-//                    telemetry.addData("tx", Math.abs(tx)); //after adding ts: limelight blinking when it sees target but not detecting
-//                    telemetry.update(); //bc ts not printing to telemetry
-//                    double tolerance2 = 1.0;
-//                    double kp = 0.01;
-//                    if (Math.abs(tx) > tolerance2) {
-//                        if (Math.abs(tx) < 10) {
-//                            kp = 0.01;
-//                        }
-//                        turret.setPower(kp * tx);
-//                        telemetry.addData("tx", tx);
-//                        telemetry.update();
-//                    } else {
-//                        turret.setPower(0.0);
-//                        //TODO: add auto shoot
-//                    }
-//                } else {
-//                    if (gamepad1.left_bumper) {
-//                        turret.setPower(-0.23);
-//                    } else if (gamepad1.right_bumper) {
-//                        turret.setPower(0.23);
-//                    } else {
-//                        turret.setPower(0.0);
-//                    }
-//                }
-//            } else {
-//                nearMotor.setPower(0.2);
-//                farMotor.setPower(0.8);
-//            }
-
-            targetVelocity = calcVelo(ty, ta);
+            targetVelocity = calcVelo(ty,ta);
             boolean shoot = gamepad1.square;
             boolean aligned = false;
             double currentVelocity = 0;
-            if (shoot) { //TODO: goalid
-
-
-
+            if (shoot) {
                 intake.setPower(1);
-                if (targetVelocity < 1800)
+                if(targetVelocity < 1800)
                     transfer.setPower(-1);
                 else
                     transfer.setPower(-0.6);
+                telemetry.addData("left velocity:", nearMotor.getVelocity());
+                telemetry.addData("right velocity:", farMotor.getVelocity());
+                telemetry.update();
 
-
-                if(hasTarget) {
-                    double alignmentTolerence = 1; //TODO: manual override shooting button
+                if(hasTarget){
+                    double alignmentTolerence = 1;
                     double error = tx; /// because our target is 0 so tx - 0 is tx
                     double kp = 0.01;
                     double kf = 0.1;
-                    if (Math.abs(tx) > alignmentTolerence) {
+                    if(Math.abs(tx) > alignmentTolerence){
                         rotate = kp * error + kf * Math.signum(error);
-                    } else {
+                    }
+                    else
+                    {
                         rotate = 0;
                         aligned = true;
-                    }
-
-                    if (!gamepad1.left_bumper) {
-                        turret.setPower(0);
-                        lastPower = 0;
-                    } else {
-                        // Read limelight
-                        ta = result.getTa();
-                        tx = result.getTx();
-                        ty = result.getTy();// area
-                        // 0/1 if you can
-
-                        // preferred
-                        // fallback if tv not available:
-                        // boolean valid = ta > 0.1;
-
-//                        double powerCmd = 0.0;
-//
-//                            if (Math.abs(tx) <= deadbandDeg) {
-//                                powerCmd = 0.0;
-//                                aligned = true;
-//                                telemetry.addData("aligned?","six seven");
-//                                powerCmd = slew(powerCmd, lastPower, maxDeltaPerLoop);
-//                                turret.setPower(powerCmd);
-//                                lastPower = powerCmd;
-//                            } else {
-//                                powerCmd = clamp(kP * (-tx), -maxPower, maxPower);
-//                                telemetry.addData("aligning","six seven");
-//                                powerCmd = slew(powerCmd, lastPower, maxDeltaPerLoop);
-//                                turret.setPower(-powerCmd);
-//                                lastPower = powerCmd;
-//                            }
-//
-//                            powerCmd = 0.0;
-
-                        // Slew limit
-
-
-                        // CAN_SHOOT example:
-
                     }
                 }
 
                 currentVelocity = nearMotor.getVelocity();
-
                 if (nearMotor.getVelocity() > targetVelocity) {
                     nearMotor.setPower(0);
                     farMotor.setPower(0);
@@ -281,7 +163,6 @@ public class tuffturretteleopthree extends LinearOpMode {
 
                 }
                 boolean shootingSafe = false;
-
                 /// this is not really a tolerance at this point it's basically if we're meeting the target or higher
                 /// we're depending on the bang-bang + flywheel weight to roughly maintain the velocity
                 /// feel free to give it a push (increasing or decreasing this constant to the side of tolerance in this condition to shoot higher or lower for all values)
@@ -297,12 +178,15 @@ public class tuffturretteleopthree extends LinearOpMode {
                 /// take more force and more effort to turn and therefore more time kinda)
                 /// good luck :D
 
-                if (targetVelocity - currentVelocity < tolerance - 20) {
+                if (targetVelocity - currentVelocity < tolerance -20){
                     shootingSafe = true;
                     //  transfer.setPower(1);
                 }
 
-
+                if (gamepad1.x) {
+                    aligned = true;
+                    shootingSafe = true;
+                }
 
                 // if(targetVelocity - currentVelocity < tolerance * 2){
                 //     transfer.setPower(1);
@@ -311,25 +195,27 @@ public class tuffturretteleopthree extends LinearOpMode {
                 //     transfer.setPower(0);
                 // }
 
-                if (/*aligned && */shootingSafe) {
+                // if(aligned && shootingSafe){
+                //  transferGate.setPosition(open);
+                // transfer.setPower(1);
+                //}
+                if(aligned && shootingSafe){
                     transferGate.setPosition(open);
                     // transfer.setPower(1);
                 }
-
-            } else if (!shoot) {
+            }
+            else if (!shoot) {
                 nearMotor.setPower(0.5);
                 farMotor.setPower(0.5);
-            } //else {
-//                nearMotor.setPower(0);
-//                farMotor.setPower(0);
-//                //  transferGate.setPosition(closed);
-//            }
+                //  transferGate.setPosition(closed);
+            }
 
 
             double frontLeftPower = (drive + strafe + rotate);
             double backLeftPower = (drive - strafe + rotate);
             double frontRightPower = (drive - strafe - rotate);
             double backRightPower = (drive + strafe - rotate);
+
             leftFront.setPower(frontLeftPower);
             rightFront.setPower(frontRightPower);
             leftBack.setPower(backLeftPower);
@@ -386,7 +272,5 @@ public class tuffturretteleopthree extends LinearOpMode {
         if (nearMotor.getVelocity() < idleVelo) //if ts doesnt work do !gamepad1.square
             return 200;
         // ---------- VERY FAR / BELOW TARGET ----------
-        return 2000;
-    }
-}
-
+        return 1850;
+    }}

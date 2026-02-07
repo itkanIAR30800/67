@@ -200,12 +200,14 @@ public class balltestnew12 extends OpMode {
     public void loop() {
         follower.update();
         autonomousPathUpdate();
+        shooter.flywheelInit();
         // Log values to Panels and Driver Station
         Pose currentPosition = follower.getPose();
 
         telemetry.addData("pathTimer: ", pathTimer.seconds());
         telemetry.addData("Started State: ", startedState);
         telemetry.addData("TX>   ", shooter.tx);
+        telemetry.addData("speed", shooter.getShooterVelocity());
         panelsTelemetry.debug("Path State", pathstate);
         panelsTelemetry.debug("X", currentPosition.getX());
         panelsTelemetry.debug("Y", currentPosition.getY());
@@ -330,7 +332,7 @@ public class balltestnew12 extends OpMode {
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 2.5) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(pathState.zoneToLast);

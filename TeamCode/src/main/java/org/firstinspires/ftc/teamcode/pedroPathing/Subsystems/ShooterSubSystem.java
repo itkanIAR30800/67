@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -24,7 +26,7 @@ public class ShooterSubSystem{
     double previousTxError = 0;
     private boolean hasTarget =false;
     private int tolerance = 50;
-    private int targetVelocity = 1400;
+    private int targetVelocity = 1500;
     private DcMotorEx intake = null;
     private DcMotorEx transfer, leftShooter, rightShooter;
 
@@ -34,9 +36,6 @@ public class ShooterSubSystem{
     private boolean shootingSafe = false;
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
-
-
-
 
     public ShooterSubSystem(HardwareMap hardwareMap) {
         turret = hardwareMap.get(CRServo.class, "turret");
@@ -70,6 +69,8 @@ public class ShooterSubSystem{
         limelight.setPollRateHz(10);
         limelight.start();
         limelight.pipelineSwitch(0);
+
+
     }
 
     public void intake() {
@@ -90,8 +91,8 @@ public class ShooterSubSystem{
         turret.setPower(0.01);
     }
     public void flywheelInit() {
-        leftShooter.setPower(0.4);
-        rightShooter.setPower(0.4);
+        leftShooter.setPower(0.8);
+        rightShooter.setPower(0.8);
     }
 
     public void updateShoot() {
@@ -135,6 +136,8 @@ public class ShooterSubSystem{
     }
 
     public double updateShootAndAlign() {
+//        telemetry.addData("speed", leftShooter.getVelocity());
+//        telemetry.update();
         // Alignment stuff
         update_Limelight();
         boolean aligned = false;
@@ -170,7 +173,7 @@ public class ShooterSubSystem{
         if (targetVelocity - getShooterVelocity() < tolerance * 2) {
             runTransfer();
         } else {
-            stopIntake();
+            //stopIntake();
         }
         if (getShooterVelocity() < targetVelocity) {
             leftShooter.setPower(1);

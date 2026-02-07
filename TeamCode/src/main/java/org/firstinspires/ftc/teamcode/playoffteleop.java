@@ -29,7 +29,6 @@ public class playoffteleop extends LinearOpMode {
     private DcMotorEx farMotor = null;
 
     private ElapsedTime runtime = new ElapsedTime();
-
     private DcMotor leftFront = null;
     private DcMotor leftBack = null;
     private DcMotor rightFront = null;
@@ -127,6 +126,7 @@ public class playoffteleop extends LinearOpMode {
             }
             targetVelocity = calcVelo(ty,ta);
             boolean shoot = gamepad1.square;
+            boolean override = gamepad1.triangle;
             boolean aligned = false;
             double currentVelocity = 0;
             if (shoot) {
@@ -182,6 +182,11 @@ public class playoffteleop extends LinearOpMode {
                 if (targetVelocity - currentVelocity < tolerance -20){
                     shootingSafe = true;
                     //  transfer.setPower(1);
+                }
+
+                if (override) {
+                    aligned = true;
+                    shootingSafe = true;
                 }
 
                 // if(targetVelocity - currentVelocity < tolerance * 2){

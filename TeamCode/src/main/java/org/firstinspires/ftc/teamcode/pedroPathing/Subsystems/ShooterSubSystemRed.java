@@ -89,8 +89,8 @@ public class ShooterSubSystemRed{
         turret.setPower(0.01);
     }
     public void flywheelInit() {
-        leftShooter.setPower(0.4);
-        rightShooter.setPower(0.4);
+        leftShooter.setPower(1.0);
+        rightShooter.setPower(1.0);
     }
 
     public void updateShoot() {
