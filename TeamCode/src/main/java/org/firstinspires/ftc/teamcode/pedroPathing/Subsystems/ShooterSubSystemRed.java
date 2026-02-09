@@ -22,7 +22,7 @@ public class ShooterSubSystemRed{
     LLResult result;
     double previousTxError = 0;
     private boolean hasTarget =false;
-    private int tolerance = 50;
+    private int tolerance = 20;
     private int targetVelocity = 1400;
     private DcMotorEx intake = null;
     private DcMotorEx transfer, leftShooter, rightShooter;
@@ -89,8 +89,8 @@ public class ShooterSubSystemRed{
         turret.setPower(0.01);
     }
     public void flywheelInit() {
-        leftShooter.setPower(1.0);
-        rightShooter.setPower(1.0);
+        leftShooter.setPower(0.42);
+        rightShooter.setPower(0.42);
     }
 
     public void updateShoot() {
@@ -178,7 +178,7 @@ public class ShooterSubSystemRed{
             leftShooter.setPower(0);
             rightShooter.setPower(0);
         }
-        if (targetVelocity - getShooterVelocity() < tolerance) {
+        if (Math.abs(targetVelocity - getShooterVelocity()) < tolerance) {
             openGate(); //its saying the velocity is right (shooter is at the right velocity)
         }
 

@@ -68,7 +68,7 @@ public class balltestnew12 extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(14.756, 112.044), new Pose(54.222, 100.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(328))
                 .build();
 
         shootRotate = follower
@@ -76,13 +76,13 @@ public class balltestnew12 extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(54.222, 83.556), new Pose(54.222, 83.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(323), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(330), Math.toRadians(180))
                 .build();
 
         rotateToFirst = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(54.222, 83.556), new Pose(18.133, 83.556))
+                        new BezierLine(new Pose(54.222, 83.556), new Pose(17.133, 83.556))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -90,7 +90,7 @@ public class balltestnew12 extends OpMode {
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(18.133, 83.556),
+                                new Pose(17.133, 83.556),
                                 new Pose(35.866666666666667, 80.19999999999999),
                                 new Pose(15.644, 69)
                         )
@@ -103,7 +103,7 @@ public class balltestnew12 extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(15.644, 72), new Pose(48.711, 87.467))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(325))
+                .setConstantHeadingInterpolation(Math.toRadians(328))
                 .build();
 
         zoneShootRotate = follower
@@ -120,7 +120,7 @@ public class balltestnew12 extends OpMode {
                         new BezierCurve(
                                 new Pose(48.711, 87.467),
                                 new Pose(51.9111111111111, 66.48888888888888),
-                                new Pose(16.000, 54.133)
+                                new Pose(16.000, 53.133)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -129,17 +129,17 @@ public class balltestnew12 extends OpMode {
         middleToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(16.000, 54.133), new Pose(54.044, 87.466))
+                        new BezierLine(new Pose(16.000, 53.133), new Pose(54.044, 87.466))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(330))
                 .build();
         zoneToLast = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
                                 new Pose(54.044, 87.466),
-                                new Pose(80.355, 26.555),
-                                new Pose(14.344, 35.444)
+                                new Pose(90.355, 24.555),
+                                new Pose(14.344, 30.444)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -147,10 +147,9 @@ public class balltestnew12 extends OpMode {
         lastToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(10.844, 36.444), new Pose(54.422, 120.155))
+                        new BezierLine(new Pose(14.844, 30.444), new Pose(54.422, 107.155))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(327 +200))
-                .setReversed()
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(345))
                 .build();
         leave = follower
                 .pathBuilder()
@@ -200,7 +199,6 @@ public class balltestnew12 extends OpMode {
     public void loop() {
         follower.update();
         autonomousPathUpdate();
-        shooter.flywheelInit();
         // Log values to Panels and Driver Station
         Pose currentPosition = follower.getPose();
 
@@ -220,6 +218,7 @@ public class balltestnew12 extends OpMode {
             case startToShoot:
                 if (!startedState) {
                     shooter.lockTurret();
+                    shooter.flywheelInit();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
@@ -232,7 +231,7 @@ public class balltestnew12 extends OpMode {
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 2.6) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToFirst);
@@ -261,6 +260,7 @@ public class balltestnew12 extends OpMode {
                 break;
             case firstToGate:
                 if (!startedState) {
+                    shooter.flywheelInit();
                     follower.followPath(firstToGate);
                     startedState = true;
                 }
@@ -301,7 +301,7 @@ public class balltestnew12 extends OpMode {
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.5) {
+                if(pathTimer.seconds() > 2.3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToMiddle);
@@ -319,6 +319,7 @@ public class balltestnew12 extends OpMode {
                 break;
             case middleToZone:
                 if (!startedState) {
+                    shooter.flywheelInit();
                     follower.followPath(middleToZone);
                     startedState = true;
                 }
@@ -332,7 +333,7 @@ public class balltestnew12 extends OpMode {
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.5) {
+                if(pathTimer.seconds() > 2.3) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(pathState.zoneToLast);
@@ -351,6 +352,8 @@ public class balltestnew12 extends OpMode {
                 break;
             case lastToZone:
                 if (!startedState) {
+                    shooter.flywheelInit();
+                    shooter.stopIntake();
                     follower.followPath(lastToZone);
                     startedState = true;
                 }
@@ -365,8 +368,6 @@ public class balltestnew12 extends OpMode {
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 2.5) {
-                    shooter.stopShoot();
-                    shooter.stopIntake();
                 }
                 break;
             case leave:

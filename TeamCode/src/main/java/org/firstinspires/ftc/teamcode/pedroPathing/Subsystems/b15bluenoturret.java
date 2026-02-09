@@ -103,7 +103,7 @@ public class b15bluenoturret extends OpMode {
         zoneShootRotate = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(48.711, 87.467), new Pose(48.711, 87.467))
+                        new BezierLine(new Pose(48.711, 87.467), new Pose(50.711, 89.467))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(200), Math.toRadians(323))
                 .build();
@@ -112,7 +112,7 @@ public class b15bluenoturret extends OpMode {
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(48.711, 87.467),
+                                new Pose(50.711, 89.467),
                                 new Pose(51.9111111111111, 66.48888888888888),
                                 new Pose(16.000, 56.5)
                         )
@@ -136,7 +136,7 @@ public class b15bluenoturret extends OpMode {
                 .addPath(
                         new BezierCurve(
                                 new Pose(16.000, 56.500),
-                                new Pose(16.512, 79.311),
+                                new Pose(19.512, 79.311),
                                 new Pose(54.044, 87.466)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(235))
@@ -263,7 +263,7 @@ public class b15bluenoturret extends OpMode {
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.1) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToFirst);

@@ -30,6 +30,7 @@ public class jiarredqual extends OpMode {
         shoot1,
         shootRotate,
         rotateToFirst,
+        firstToGate,
         firstToZone,
         zoneShootRotate,
         shoot2,
@@ -52,6 +53,7 @@ public class jiarredqual extends OpMode {
     public PathChain startToShoot;
     public PathChain shootRotate;
     public PathChain rotateToFirst;
+    public PathChain firstToGate;
     public PathChain firstToZone;
     public PathChain zoneShootRotate;
     public PathChain rotateToMiddle;
@@ -87,7 +89,16 @@ public class jiarredqual extends OpMode {
                 )
                 .setTangentHeadingInterpolation()
                 .build();
-
+        firstToGate = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Pose(89.778, 83),
+                                new Pose(97, 67.48888888888888),
+                                new Pose(128.750, 75))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .build();
         firstToZone = follower
                 .pathBuilder()
                 .addPath(
@@ -129,7 +140,7 @@ public class jiarredqual extends OpMode {
         gateToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(128.750, 75), new Pose(89.956, 87.466))
+                        new BezierLine(new Pose(128.750, 75), new Pose(89.956, 105.466))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180-180), Math.toRadians(180-323))
                 .build();
@@ -216,6 +227,7 @@ public class jiarredqual extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
+                shooter.flywheelInit();
                 if (!startedState) {
                     shooter.flywheelInit();
 //                    shooter.lockTurret();
@@ -253,11 +265,20 @@ public class jiarredqual extends OpMode {
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
+                    setPathState(pathState.firstToGate);
+                    startedState = false;
+                }
+                break;
+            case firstToGate:
+                if (!startedState) {
+                    follower.followPath(firstToGate);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
                     setPathState(pathState.firstToZone);
                     startedState = false;
                 }
                 break;
-
             case firstToZone:
                 if (!startedState) {
                     follower.followPath(firstToZone);
@@ -290,7 +311,7 @@ public class jiarredqual extends OpMode {
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.5) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToMiddle);
@@ -337,55 +358,55 @@ public class jiarredqual extends OpMode {
                     setPathState(pathState.shootToGateIntake);
                 }
                 break;
-            case shootToGateIntake:
-                if (!startedState) {
-                    follower.followPath(shootToGateIntake);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    shooter.flywheelInit();
-                    setPathState(pathState.wait);
-                    startedState = false;
-                }
-                break;
-            case wait:
-                if (!startedState) {
-                    shooter.intake();
-                    if(pathTimer.seconds() > 1.5)
-                        setPathState(pathState.gateIntakeToShoot);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    follower.startTeleOpDrive();
-                    setPathState(pathState.gateIntakeToShoot);
-                    startedState = false;
-                }
-            case gateIntakeToShoot:
-                if (!startedState) {
-                    follower.followPath(gateIntakeToShoot);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    follower.startTeleOpDrive();
-                    setPathState(pathState.shoot4);
-                    startedState = false;
-                }
-                break;
-            case shoot4:
-                turnPower = shooter.updateShootAndAlign();
-                follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
-                    shooter.stopShoot();
-                    shooter.intake();
-                    setPathState(pathState.leave);
-                }
-                break;
-            case leave:
-                if (!startedState) {
-                    follower.followPath(leave);
-                    startedState = true;
-                }
-                break;
+//            case shootToGateIntake:
+//                if (!startedState) {
+//                    follower.followPath(shootToGateIntake);
+//                    startedState = true;
+//                }
+//                if (!follower.isBusy()) {
+//                    shooter.flywheelInit();
+//                    setPathState(pathState.wait);
+//                    startedState = false;
+//                }
+//                break;
+//            case wait:
+//                if (!startedState) {
+//                    shooter.intake();
+//                    if(pathTimer.seconds() > 3)
+//                        setPathState(pathState.gateIntakeToShoot);
+//                    startedState = true;
+//                }
+//                if (!follower.isBusy()) {
+//                    follower.startTeleOpDrive();
+//                    setPathState(pathState.gateIntakeToShoot);
+//                    startedState = false;
+//                }
+//            case gateIntakeToShoot:
+//                if (!startedState) {
+//                    follower.followPath(gateIntakeToShoot);
+//                    startedState = true;
+//                }
+//                if (!follower.isBusy()) {
+//                    follower.startTeleOpDrive();
+//                    setPathState(pathState.shoot4);
+//                    startedState = false;
+//                }
+//                break;
+//            case shoot4:
+//                turnPower = shooter.updateShootAndAlign();
+//                follower.setTeleOpDrive(0, 0, turnPower);
+//                if(pathTimer.seconds() > 3) {
+//                    shooter.stopShoot();
+//                    shooter.intake();
+//                    setPathState(pathState.leave);
+//                }
+//                break;
+//            case leave:
+//                if (!startedState) {
+//                    follower.followPath(leave);
+//                    startedState = true;
+//                }
+//                break;
 
         }
 

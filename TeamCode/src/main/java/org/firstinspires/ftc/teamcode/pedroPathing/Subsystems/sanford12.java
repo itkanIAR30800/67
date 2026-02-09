@@ -15,12 +15,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "12 jiar blue qual", group = "Autonomous")
+@Autonomous(name = "sanford 12 red boi", group = "Autonomous")
 @Configurable // Panels
-public class jiarbluequal extends OpMode {
+public class sanford12 extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
-    private ShooterSubSystem shooter;
+    private ShooterSubSystemRed shooter;
     public Follower follower; // Pedro Pathing follower instance
 
     public boolean startedState = false;
@@ -29,17 +29,16 @@ public class jiarbluequal extends OpMode {
         startToShoot,
         shoot1,
         shootRotate,
-        firstToGate,
         rotateToFirst,
-        firstToZone,
+        firstToGate,
+        gateToZone,
         zoneShootRotate,
         shoot2,
         rotateToMiddle,
-        middleToGate,
-        gateToZone,
+        middleToZone,
         shoot3,
-        shootToGateIntake,
-        gateIntakeToShoot,
+        zoneToLast,
+        lastToZone,
         shoot4,
         leave
 
@@ -53,13 +52,12 @@ public class jiarbluequal extends OpMode {
     public PathChain shootRotate;
     public PathChain rotateToFirst;
     public PathChain firstToGate;
-    public PathChain firstToZone;
+    public PathChain gateToZone;
     public PathChain zoneShootRotate;
     public PathChain rotateToMiddle;
-    public PathChain middleToGate;
-    public PathChain gateToZone;
-    public PathChain shootToGateIntake;
-    public PathChain gateIntakeToShoot;
+    public PathChain middleToZone;
+    public PathChain zoneToLast;
+    public PathChain lastToZone;
     public PathChain leave;
 
 //    public static GoalId blue;
@@ -68,23 +66,23 @@ public class jiarbluequal extends OpMode {
         startToShoot = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(14.576, 114.044), new Pose(54.222, 83))
+                        new BezierLine(new Pose(144-14.756, 112.044), new Pose(144-54.222, 100.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(180-328))
                 .build();
 
         shootRotate = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(54.222, 83), new Pose(54.222, 83))
+                        new BezierLine(new Pose(144-54.222, 83.556), new Pose(144-54.222, 81.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(323), Math.toRadians(323 ))
+                .setLinearHeadingInterpolation(Math.toRadians(180-330+(-180)), Math.toRadians(180-180))
                 .build();
 
         rotateToFirst = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(54.222, 83), new Pose(20.133, 82.556))
+                        new BezierLine(new Pose(144-54.222, 81.556), new Pose(144-21.133, 81.556))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -92,82 +90,71 @@ public class jiarbluequal extends OpMode {
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(20.133, 82.556),
-                                new Pose(35.866666666666667, 80.19999999999999),
-                                new Pose(15.644, 69)
+                                new Pose(144-21.133, 81.556),
+                                new Pose(144-35.866666666666667, 80.19999999999999),
+                                new Pose(144-18.644, 72)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(180-180), Math.toRadians(180-180))
                 .build();
 
-        firstToZone = follower
+        gateToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(15.644, 69), new Pose(48.711, 87.467))
+                        new BezierLine(new Pose(144-18.644, 72), new Pose(144-48.711, 87.467))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(323))
+                .setConstantHeadingInterpolation(Math.toRadians(30+180))//328
                 .build();
 
         zoneShootRotate = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(48.711, 87.467), new Pose(48.711, 87.467))
+                        new BezierLine(new Pose(144-48.711, 87.467), new Pose(144-48.711, 87.467))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(323), Math.toRadians(323))
+                .setLinearHeadingInterpolation(Math.toRadians(30+180), Math.toRadians(30-90)) //328, 323
                 .build();
 
         rotateToMiddle = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(48.711, 87.467),
-                                new Pose(51.912, 65.48888888888888),
-                                new Pose(15.25, 54)
+                                new Pose(144-48.711, 87.467),
+                                new Pose(144-51.9111111111111, 66.48888888888888),
+                                new Pose(144-16.000, 53.133)
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .build();
-        middleToGate = follower
+
+        middleToZone = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(144-16.000, 53.133), new Pose(144-54.044, 87.466))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(180-180), Math.toRadians(180-330))
+                .build();
+        zoneToLast = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(15.25, 54),
-                                new Pose(47, 67.48888888888888),
-                                new Pose(15.25, 75)
+                                new Pose(144-54.044, 87.466),
+                                new Pose(144-80.355, 26.555),
+                                new Pose(144-13.344, 32.444)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                .setTangentHeadingInterpolation()
                 .build();
-        gateToZone = follower
+        lastToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(15.25, 75), new Pose(54.044, 105.466))
+                        new BezierLine(new Pose(144-13.844, 32.444), new Pose(144-54.422, 110.155))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(340))
-                .build();
-        shootToGateIntake = follower.pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(54.044, 87.466),
-                                new Pose(50.777, 30.533),
-                                new Pose(15.444, 57.756)
-                        )
-                ).setTangentHeadingInterpolation()
-
-                .build();
-
-        gateIntakeToShoot = follower.pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(15.444, 57.756),
-                                new Pose(30.278, 48.722),
-                                new Pose(54.689, 113.88888888888889)
-                        )
-                ).setLinearHeadingInterpolation(Math.toRadians(142), Math.toRadians(310))
-
+                .setLinearHeadingInterpolation(Math.toRadians(180-180), Math.toRadians(180-345))
                 .build();
         leave = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(54.689, 85.156), new Pose(53.333, 63.822))
+                        new BezierLine(new Pose(144-57.422, 85.156), new Pose(144-53.333, 63.822))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180-180))
                 .build();
@@ -194,10 +181,10 @@ public class jiarbluequal extends OpMode {
 
     @Override
     public void init() {
-        shooter = new ShooterSubSystem(hardwareMap);
+        shooter = new ShooterSubSystemRed  (hardwareMap);
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(14.576, 112.044, Math.toRadians(270)));
+        follower.setStartingPose(new Pose(144-14.756, 112.044, Math.toRadians(270)));
         pathTimer = new ElapsedTime();
 
         buildPaths(follower); // Build paths
@@ -218,6 +205,7 @@ public class jiarbluequal extends OpMode {
         telemetry.addData("pathTimer: ", pathTimer.seconds());
         telemetry.addData("Started State: ", startedState);
         telemetry.addData("TX>   ", shooter.tx);
+        telemetry.addData("speed", shooter.getShooterVelocity());
         panelsTelemetry.debug("Path State", pathstate);
         panelsTelemetry.debug("X", currentPosition.getX());
         panelsTelemetry.debug("Y", currentPosition.getY());
@@ -228,10 +216,9 @@ public class jiarbluequal extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
-                shooter.flywheelInit();
                 if (!startedState) {
-                    shooter.updateShoot();
-//                    shooter.lockTurret();
+                    shooter.lockTurret();
+                    shooter.flywheelInit();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
@@ -244,7 +231,7 @@ public class jiarbluequal extends OpMode {
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 2.6) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToFirst);
@@ -266,6 +253,7 @@ public class jiarbluequal extends OpMode {
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
+                    shooter.stopIntake();
                     setPathState(pathState.firstToGate);
                     startedState = false;
                 }
@@ -277,22 +265,21 @@ public class jiarbluequal extends OpMode {
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.firstToZone);
+                    setPathState(pathState.gateToZone);
                     startedState = false;
                 }
                 break;
 
-            case firstToZone:
+            case gateToZone:
                 if (!startedState) {
-                    follower.followPath(firstToZone);
-                    shooter.intake();
+                    follower.followPath(gateToZone);
+                    shooter.stopIntake();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     setPathState(pathState.shoot2);
                     follower.startTeleOpDrive();
                     startedState = false;
-                    shooter.stopIntake();
                 }
                 break;
 
@@ -313,7 +300,7 @@ public class jiarbluequal extends OpMode {
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 2.5) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToMiddle);
@@ -325,28 +312,20 @@ public class jiarbluequal extends OpMode {
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.middleToGate);
+                    setPathState(pathState.middleToZone);
                     startedState = false;
                 }
                 break;
-            case middleToGate:
+            case middleToZone:
                 if (!startedState) {
-                    follower.followPath(middleToGate);
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    setPathState(pathState.gateToZone);
-                    startedState = false;
-                }
-                break;
-            case gateToZone:
-                if (!startedState) {
-                    follower.followPath(gateToZone);
+                    shooter.flywheelInit();
+                    follower.followPath(middleToZone);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
                     setPathState(pathState.shoot3);
+                    shooter.stopIntake();
                     startedState = false;
                 }
                 break;
@@ -354,49 +333,49 @@ public class jiarbluequal extends OpMode {
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 2.3) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.shootToGateIntake);
+                    setPathState(pathState.zoneToLast);
                 }
                 break;
-//            case shootToGateIntake:
-//                if (!startedState) {
-//                    follower.followPath(shootToGateIntake);
-//                    startedState = true;
-//                }
-//                if (!follower.isBusy()) {
-//                    follower.startTeleOpDrive();
-//                    setPathState(pathState.gateIntakeToShoot);
-//                    startedState = false;
-//                }
-//                break;
-//            case gateIntakeToShoot:
-//                if (!startedState) {
-//                    follower.followPath(gateIntakeToShoot);
-//                    startedState = true;
-//                }
-//                if (!follower.isBusy()) {
-//                    follower.startTeleOpDrive();
-//                    setPathState(pathState.shoot4);
-//                    startedState = false;
-//                }
-//                break;
-//            case shoot4:
-//                turnPower = shooter.updateShootAndAlign();
-//                follower.setTeleOpDrive(0, 0, turnPower);
-//                if(pathTimer.seconds() > 3) {
-//                    shooter.stopShoot();
-//                    shooter.intake();
-//                    setPathState(pathState.leave);
-//                }
-//                break;
-//            case leave:
-//                if (!startedState) {
-//                    follower.followPath(leave);
-//                    startedState = true;
-//                }
-//                break;
+            case zoneToLast:
+                if (!startedState) {
+                    shooter.flywheelInit();
+                    follower.followPath(zoneToLast);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    shooter.stopIntake();
+                    setPathState(pathState.lastToZone);
+                    startedState = false;
+                }
+                break;
+            case lastToZone:
+                if (!startedState) {
+                    follower.followPath(lastToZone);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    shooter.stopIntake();
+                    follower.startTeleOpDrive();
+                    setPathState(pathState.shoot4);
+                    startedState = false;
+                }
+                break;
+
+            case shoot4:
+                turnPower = shooter.updateShootAndAlign();
+                follower.setTeleOpDrive(0, 0, turnPower);
+                if(pathTimer.seconds() > 2.5) {
+                }
+                break;
+            case leave:
+                if (!startedState) {
+                    follower.followPath(zoneToLast);
+                    startedState = true;
+                }
+                break;
 
         }
 
@@ -410,3 +389,11 @@ public class jiarbluequal extends OpMode {
         //switch for autonomous path update after reset for stuff that only happens once (such as intake running)
     }
 }
+
+
+
+
+
+
+
+
