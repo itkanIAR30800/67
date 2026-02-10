@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -10,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
 
 
 import java.util.List;
@@ -29,13 +32,10 @@ public class ShooterSubSystemRed{
 
     private DcMotor leftBack, leftFront, rightBack, rightFront;
     private Servo transferGate;
-        private CRServo turret;
+    private CRServo turret;
     private boolean shootingSafe = false;
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
-
-
-
 
     public ShooterSubSystemRed(HardwareMap hardwareMap) {
         turret = hardwareMap.get(CRServo.class, "turret");
@@ -69,6 +69,8 @@ public class ShooterSubSystemRed{
         limelight.setPollRateHz(10);
         limelight.start();
         limelight.pipelineSwitch(0);
+
+
     }
 
     public void intake() {
@@ -77,7 +79,7 @@ public class ShooterSubSystemRed{
         transfer.setPower(-1);
     }
 //    public void shoot5turret() {
-//        turret.setPosition(0);
+//        turret.setPosition(0.25);
 //    }
 
     void runTransfer() {
@@ -89,8 +91,8 @@ public class ShooterSubSystemRed{
         turret.setPower(0.01);
     }
     public void flywheelInit() {
-        leftShooter.setPower(0.42);
-        rightShooter.setPower(0.42);
+        leftShooter.setPower(0.45);
+        rightShooter.setPower(0.45);
     }
 
     public void updateShoot() {
@@ -107,6 +109,7 @@ public class ShooterSubSystemRed{
             leftShooter.setPower(0);
             rightShooter.setPower(0);
         }
+
         if (targetVelocity - getShooterVelocity() < tolerance) {
             openGate();
         }
@@ -125,6 +128,9 @@ public class ShooterSubSystemRed{
                         tx = tag.getTargetXDegrees();
                         ty = tag.getTargetYDegrees();
                         ta = tag.getTargetArea();
+                        if (ty >= 8) {
+                            aligned = true;
+                        }
                     }
 
 
@@ -134,42 +140,10 @@ public class ShooterSubSystemRed{
     }
 
     public double updateShootAndAlign() {
-        // Alignment stuff
-        update_Limelight();
-        boolean aligned = false;
-//        if (result != null && result.isValid()) {
-//            List<LLResultTypes.FiducialResult> tags = result.getFiducialResults();
-//            if (tags != null) {
-//                for (LLResultTypes.FiducialResult tag : tags) {
-//                    id = tag.getFiducialId();
-//                    if (id == 20) {
-//                        hasTarget = true;
-//                        tx = tag.getTargetXDegrees();
-//                        ty = tag.getTargetYDegrees();
-//                        ta = tag.getTargetArea();
-//                    }
-//
-//                }
-//            }
-////            double alignmentTolerence = 1;
-////            if (Math.abs(tx) > alignmentTolerence) {
-////                rotate = calculateAimAssistPower(0, hasTarget);
-////            } else {
-////                rotate = 0;
-////                aligned = true;
-////            }
-////          //  leftFront.setPower(frontLeftPower);
-////            rightFront.setPower(frontRightPower);
-////            leftBack.setPower(backLeftPower);
-////            rightBack.setPower(backRightPower);
-//
-//
-//        }
 
+        update_Limelight();
         if (targetVelocity - getShooterVelocity() < tolerance * 2) {
             runTransfer();
-        } else {
-            stopIntake();
         }
         if (getShooterVelocity() < targetVelocity) {
             leftShooter.setPower(1);
@@ -178,12 +152,21 @@ public class ShooterSubSystemRed{
             leftShooter.setPower(0);
             rightShooter.setPower(0);
         }
-        if (Math.abs(targetVelocity - getShooterVelocity()) < tolerance) {
-            openGate(); //its saying the velocity is right (shooter is at the right velocity)
-        }
+
+
+        //what doesnt work: last if inside of hastarget == true, last if inside of aligned == true when aligned means ty <= 15,
 
 
         return calculateAimAssistPower(0, hasTarget);
+    }
+
+    public void gate() {
+        update_Limelight();
+        if (aligned) {
+            if (Math.abs(targetVelocity - getShooterVelocity()) < tolerance) {
+                openGate(); //its saying the velocity is right (shooter is at the right velocity)
+            }
+        }
     }
 
 
