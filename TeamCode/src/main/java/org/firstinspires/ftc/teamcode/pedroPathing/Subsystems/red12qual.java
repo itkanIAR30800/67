@@ -92,7 +92,7 @@ public class red12qual extends OpMode {
                         new BezierCurve(
                                 new Pose(126.867, 82.556),
                                 new Pose(107.1333, 80.19999999999999),
-                                new Pose(128.356, 72)
+                                new Pose(130.356, 72)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180-180 ), Math.toRadians(180-180))
@@ -216,65 +216,74 @@ public class red12qual extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
-//                    shooter.lockTurret();
+                    shooter.lockTurret();
+//                    //shooter.flywheelInit();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.shoot1);
+                    setPathState(red12qual.pathState.shoot1);
                     startedState = false;
                     follower.startTeleOpDrive();
                 }
                 break;
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.rotateToFirst);
+                    setPathState(red12qual.pathState.rotateToFirst);
                 }
                 break;
             case shootRotate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(shootRotate);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.rotateToFirst);
+                    setPathState(red12qual.pathState.rotateToFirst);
                     startedState = false;
                 }
                 break;
             case rotateToFirst:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(rotateToFirst);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.firstToGate);
+                    shooter.stopIntake();
+                    setPathState(red12qual.pathState.firstToGate);
                     startedState = false;
                 }
                 break;
             case firstToGate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
+                    //shooter.flywheelInit();
                     follower.followPath(firstToGate);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.gateToZone);
+                    setPathState(red12qual.pathState.gateToZone);
                     startedState = false;
                 }
                 break;
 
             case gateToZone:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(gateToZone);
                     shooter.intake();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.shoot2);
+                    setPathState(red12qual.pathState.shoot2);
                     follower.startTeleOpDrive();
                     startedState = false;
                     shooter.stopIntake();
@@ -283,13 +292,14 @@ public class red12qual extends OpMode {
 
 
             case zoneShootRotate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(zoneShootRotate);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.shoot2);
+                    setPathState(red12qual.pathState.shoot2);
                     follower.startTeleOpDrive();
                     startedState = false;
                 }
@@ -297,73 +307,81 @@ public class red12qual extends OpMode {
 
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.5) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.rotateToMiddle);
+                    setPathState(red12qual.pathState.rotateToMiddle);
                 }
                 break;
             case rotateToMiddle:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(rotateToMiddle);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.middleToZone);
+                    setPathState(red12qual.pathState.middleToZone);
                     startedState = false;
                 }
                 break;
             case middleToZone:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
+                    //shooter.flywheelInit();
                     follower.followPath(middleToZone);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot3);
+                    setPathState(red12qual.pathState.shoot3);
                     startedState = false;
                 }
                 break;
 
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.zoneToLast);
+                    setPathState(red12qual.pathState.zoneToLast);
                 }
                 break;
             case zoneToLast:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(zoneToLast);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.lastToZone);
+                    setPathState(red12qual.pathState.lastToZone);
                     startedState = false;
                 }
                 break;
             case lastToZone:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
+                    //shooter.flywheelInit();
+                    shooter.stopIntake();
                     follower.followPath(lastToZone);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot4);
+                    setPathState(red12qual.pathState.shoot4);
                     startedState = false;
                 }
                 break;
 
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.5) {
-                    shooter.stopShoot();
-                    shooter.stopIntake();
+                if(pathTimer.seconds() > 1.8) {
                 }
                 break;
             case leave:
@@ -374,7 +392,7 @@ public class red12qual extends OpMode {
                 break;
 
         }
-
+        //commented out flywheel init and added updateshootandalign to every case except preexisting shoot cases
 
     }
 

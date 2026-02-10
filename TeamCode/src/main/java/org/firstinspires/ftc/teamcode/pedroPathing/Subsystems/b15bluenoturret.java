@@ -228,7 +228,7 @@ public class b15bluenoturret extends OpMode {
     public void loop() {
         follower.update();
         autonomousPathUpdate();
-        shooter.flywheelInit();
+        //shooter.flywheelInit();
         // Log values to Panels and Driver Station
         Pose currentPosition = follower.getPose();
 
@@ -246,30 +246,34 @@ public class b15bluenoturret extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
-                shooter.flywheelInit();
+                shooter.updateShootAndAlign();
+                //shooter.flywheelInit();
                 if (!startedState) {
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
                     shooter.lockTurret();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     setPathState(pathState.shoot1);
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
                     startedState = false;
                     follower.startTeleOpDrive();
                 }
                 break;
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToFirst);
                 }
                 break;
             case rotateToFirst:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(rotateToFirst);
                     startedState = true;
@@ -282,6 +286,8 @@ public class b15bluenoturret extends OpMode {
                 break;
 
             case gateToZone:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(gateToZone);
                     shooter.intake();
@@ -311,16 +317,19 @@ public class b15bluenoturret extends OpMode {
 
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.9) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToMiddle);
                 }
                 break;
             case rotateToMiddle:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
-                    //shooter.flywheelInit();
+                    ////shooter.flywheelInit();
                     follower.followPath(rotateToMiddle);
                     startedState = true;
                 }
@@ -330,6 +339,8 @@ public class b15bluenoturret extends OpMode {
                 }
                 break;
             case firstToGate:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(firstToGate);
                     startedState = true;
@@ -340,6 +351,8 @@ public class b15bluenoturret extends OpMode {
                 }
                 break;
             case middleToZone:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(middleToZone);
                     startedState = true;
@@ -353,14 +366,17 @@ public class b15bluenoturret extends OpMode {
 
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.2) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(pathState.zoneToLast);
                 }
                 break;
             case zoneToLast:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(zoneToLast);
                     startedState = true;
@@ -372,6 +388,8 @@ public class b15bluenoturret extends OpMode {
                 }
                 break;
             case lastToZone:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(lastToZone);
                     startedState = true;
@@ -385,14 +403,17 @@ public class b15bluenoturret extends OpMode {
 
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.4) {
+                if(pathTimer.seconds() > 2) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(pathState.shootToHP);
                 }
                 break;
             case shootToHP:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(shootToHP);
                     startedState = true;
@@ -404,6 +425,8 @@ public class b15bluenoturret extends OpMode {
                 }
                 break;
             case hpToShoot:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     shooter.stopIntake();
                     follower.followPath(hpToShoot);
@@ -418,8 +441,9 @@ public class b15bluenoturret extends OpMode {
                 break;
             case shoot5:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.7) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.stopShoot();
                     shooter.stopIntake();
 

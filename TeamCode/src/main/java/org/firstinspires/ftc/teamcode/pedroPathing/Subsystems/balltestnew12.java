@@ -216,9 +216,10 @@ public class balltestnew12 extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     shooter.lockTurret();
-                    shooter.flywheelInit();
+//                    //shooter.flywheelInit();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
@@ -230,14 +231,16 @@ public class balltestnew12 extends OpMode {
                 break;
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.6) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToFirst);
                 }
                 break;
             case shootRotate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(shootRotate);
                     startedState = true;
@@ -248,6 +251,7 @@ public class balltestnew12 extends OpMode {
                 }
                 break;
             case rotateToFirst:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(rotateToFirst);
                     startedState = true;
@@ -259,8 +263,9 @@ public class balltestnew12 extends OpMode {
                 }
                 break;
             case firstToGate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
                     follower.followPath(firstToGate);
                     startedState = true;
                 }
@@ -271,6 +276,7 @@ public class balltestnew12 extends OpMode {
                 break;
 
             case gateToZone:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(gateToZone);
                     shooter.intake();
@@ -286,6 +292,7 @@ public class balltestnew12 extends OpMode {
 
 
             case zoneShootRotate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(zoneShootRotate);
                     startedState = true;
@@ -300,14 +307,16 @@ public class balltestnew12 extends OpMode {
 
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.3) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(pathState.rotateToMiddle);
                 }
                 break;
             case rotateToMiddle:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(rotateToMiddle);
                     startedState = true;
@@ -318,8 +327,9 @@ public class balltestnew12 extends OpMode {
                 }
                 break;
             case middleToZone:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
                     follower.followPath(middleToZone);
                     startedState = true;
                 }
@@ -332,14 +342,16 @@ public class balltestnew12 extends OpMode {
 
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.3) {
+                if(pathTimer.seconds() > 1.8) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(pathState.zoneToLast);
                 }
                 break;
             case zoneToLast:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
                     follower.followPath(zoneToLast);
                     startedState = true;
@@ -351,8 +363,9 @@ public class balltestnew12 extends OpMode {
                 }
                 break;
             case lastToZone:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
                     shooter.stopIntake();
                     follower.followPath(lastToZone);
                     startedState = true;
@@ -366,8 +379,9 @@ public class balltestnew12 extends OpMode {
 
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.5) {
+                if(pathTimer.seconds() > 1.8) {
                 }
                 break;
             case leave:
@@ -378,7 +392,7 @@ public class balltestnew12 extends OpMode {
                 break;
 
         }
-
+        //commented out flywheel init and added updateshootandalign to every case except preexisting shoot cases
 
     }
 
@@ -386,7 +400,7 @@ public class balltestnew12 extends OpMode {
         pathstate = pState;
         startedState = false;
         pathTimer.reset();
-        //switch for autonomous path update after reset for stuff that only happens once (such as intake running)
+        //switch for autonomous path update after reset for stuff th    at only happens once (such as intake running)
     }
 }
 

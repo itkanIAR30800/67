@@ -244,48 +244,55 @@ public class red15noturret extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
-                shooter.flywheelInit();
+                shooter.updateShootAndAlign();
+                //shooter.flywheelInit();
                 if (!startedState) {
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
                     shooter.lockTurret();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.shoot1);
+                    setPathState(red15noturret.pathState.shoot1);
+                    //shooter.flywheelInit();
                     startedState = false;
                     follower.startTeleOpDrive();
                 }
                 break;
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.8) {
+                if(pathTimer.seconds() > 3) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.rotateToFirst);
+                    setPathState(red15noturret.pathState.rotateToFirst);
                 }
                 break;
             case rotateToFirst:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(rotateToFirst);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.gateToZone);
+                    setPathState(red15noturret.pathState.gateToZone);
                     startedState = false;
                 }
                 break;
 
             case gateToZone:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(gateToZone);
                     shooter.intake();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.shoot2);
+                    setPathState(red15noturret.pathState.shoot2);
                     follower.startTeleOpDrive();
                     startedState = false;
                     shooter.stopIntake();
@@ -308,115 +315,131 @@ public class red15noturret extends OpMode {
 
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.7) {
+                if(pathTimer.seconds() > 1.9) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.rotateToMiddle);
+                    setPathState(red15noturret.pathState.rotateToMiddle);
                 }
                 break;
             case rotateToMiddle:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
-                    //shooter.flywheelInit();
+                    ////shooter.flywheelInit();
                     follower.followPath(rotateToMiddle);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.middleToZone);
+                    setPathState(red15noturret.pathState.middleToZone);
                     startedState = false;
                 }
                 break;
             case firstToGate:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(firstToGate);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.middleToZone);
+                    setPathState(red15noturret.pathState.middleToZone);
                     startedState = false;
                 }
                 break;
             case middleToZone:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(middleToZone);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot3);
+                    setPathState(red15noturret.pathState.shoot3);
                     startedState = false;
                 }
                 break;
 
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 2.2) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.zoneToLast);
+                    setPathState(red15noturret.pathState.zoneToLast);
                 }
                 break;
             case zoneToLast:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
-//                    shooter.flywheelInit();
                     follower.followPath(zoneToLast);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.lastToZone);
+                    setPathState(red15noturret.pathState.lastToZone);
                     startedState = false;
                 }
                 break;
             case lastToZone:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(lastToZone);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot4);
+                    setPathState(red15noturret.pathState.shoot4);
                     startedState = false;
                 }
                 break;
 
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.2) {
+                if(pathTimer.seconds() > 2.4) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.shootToHP);
+                    setPathState(red15noturret.pathState.shootToHP);
                 }
                 break;
             case shootToHP:
-                //shooter.flywheelInit();
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(shootToHP);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    follower.startTeleOpDrive();
-                    shooter.stopIntake();
-                    setPathState(pathState.hpToShoot);
+                    // follower.startTeleOpDrive();
+                    setPathState(red15noturret.pathState.hpToShoot);
                     startedState = false;
                 }
                 break;
             case hpToShoot:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
+                    shooter.stopIntake();
                     follower.followPath(hpToShoot);
 //                    shooter.shoot5turret();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot5);
+                    setPathState(red15noturret.pathState.shoot5);
                     startedState = false;
                 }
                 break;
             case shoot5:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
                 if(pathTimer.seconds() > 1.7) {
                     shooter.stopShoot();
