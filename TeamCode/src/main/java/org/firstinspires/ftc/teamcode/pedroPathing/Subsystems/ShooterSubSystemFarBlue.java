@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.pedroPathing.Subsystems;
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.balltestnew12.blue;
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Subsystems.zeyadtuff9ball.red;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -13,11 +11,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
-
 import java.util.List;
 
-public class ShooterSubSystemRed{
+public class ShooterSubSystemFarBlue {
     double MAX_DRIVE_POWER = 1;
     double tx = 0, ty = 0, ta = 0, id = 0;
     double rotate = 0;
@@ -26,7 +22,7 @@ public class ShooterSubSystemRed{
     double previousTxError = 0;
     private boolean hasTarget =false;
     private int tolerance = 20;
-    private int targetVelocity = 1400;
+    private int targetVelocity = 1900;
     private DcMotorEx intake = null;
     private DcMotorEx transfer, leftShooter, rightShooter;
 
@@ -37,7 +33,7 @@ public class ShooterSubSystemRed{
 
     private com.qualcomm.hardware.limelightvision.Limelight3A limelight;
 
-    public ShooterSubSystemRed(HardwareMap hardwareMap) {
+    public ShooterSubSystemFarBlue(HardwareMap hardwareMap) {
         turret = hardwareMap.get(CRServo.class, "turret");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");
@@ -123,7 +119,7 @@ public class ShooterSubSystemRed{
             if (tags != null) {
                 for (LLResultTypes.FiducialResult tag : tags) {
                     id = tag.getFiducialId();
-                    if (id == 24) {
+                    if (id == 20) {
                         hasTarget = true;
                         tx = tag.getTargetXDegrees();
                         ty = tag.getTargetYDegrees();
@@ -178,6 +174,8 @@ public class ShooterSubSystemRed{
 
     public void tuff() {
         System.out.println("tuff");
+
+
     }
 
     public void stopIntake() {

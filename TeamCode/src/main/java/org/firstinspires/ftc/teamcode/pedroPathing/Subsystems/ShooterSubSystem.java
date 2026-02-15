@@ -142,6 +142,7 @@ public class ShooterSubSystem{
     public double updateShootAndAlign() {
 
         update_Limelight();
+        runTransfer();
         if (targetVelocity - getShooterVelocity() < tolerance * 2) {
             runTransfer();
         }
@@ -177,6 +178,8 @@ public class ShooterSubSystem{
 
     public void tuff() {
         System.out.println("tuff");
+
+
     }
 
     public void stopIntake() {

@@ -33,12 +33,15 @@ public class sanford15 extends OpMode {
         ShootToGate,
         gateToShoot,
         shoot3,
+        shootToGate2,
+        gateToShoot2,
+        shoot4,
         shootToFirst,
         firstToShoot,
-        shoot4,
+        shoot5,
         shootToLast,
         lastToShoot,
-        shoot5,
+        shoot6,
         leave
 
 
@@ -52,6 +55,8 @@ public class sanford15 extends OpMode {
     public PathChain middleToShoot;
     public PathChain shootToGate;
     public PathChain gateToShoot;
+    public PathChain shootToGate2;
+    public PathChain gateToShoot2;
     public PathChain shootToFirst;
     public PathChain firstToShoot;
     public PathChain shootToLast;
@@ -71,70 +76,88 @@ public class sanford15 extends OpMode {
                         new BezierCurve(
                                 new Pose(55.610, 91.024),
                                 new Pose(60.427, 54.085),
-                                new Pose(22.244, 54.780)
+                                new Pose(23.244, 51.780)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(225), Math.toRadians(180))
 
                 .build();
         middleToShoot = follower.pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(22.244, 59.780),
+                                new Pose(23.244, 51.780),
                                 new Pose(65, 70),
-                                new Pose(55.561, 90.585)
+                                new Pose(60.561, 90.585)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(-163), Math.toRadians(225))
+                ).setLinearHeadingInterpolation(Math.toRadians(-163), Math.toRadians(235))
 
                 .build();
         shootToGate = follower.pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(55.561, 90.585),
-                                new Pose(55.329, 37.146),
-                                new Pose(11.341, 53.927)
+                                new Pose(60.561, 90.585),
+                                new Pose(55.329, 33.146),
+                                new Pose(12.25, 51)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(225), Math.toRadians(145))
+                ).setLinearHeadingInterpolation(Math.toRadians(230), Math.toRadians(132))
 
                 .build();
         gateToShoot = follower.pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(11.341, 53.927),
+                                new Pose(12.25, 51),
                                 new Pose(70.756, 66.610),
                                 new Pose(56.268, 85.024)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(150), Math.toRadians(228))
+                ).setLinearHeadingInterpolation(Math.toRadians(132), Math.toRadians(233))
+
+                .build();
+        shootToGate2 = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(56.268, 85.024),
+                                new Pose(55.329, 33.146),
+                                new Pose(12.55, 52)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(226), Math.toRadians(132))
+
+                .build();
+        gateToShoot2 = follower.pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(12.55, 52),
+                                new Pose(70.756, 66.610),
+                                new Pose(56.268, 85.024)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(132), Math.toRadians(233))
 
                 .build();
         shootToFirst = follower.pathBuilder().addPath(
                         new BezierLine(
                                 new Pose(56.268, 85.024),
 
-                                new Pose(20.439, 86.659)
+                                new Pose(23.439, 81.659)
                         )
                 ).setTangentHeadingInterpolation()
 
                 .build();
         firstToShoot = follower.pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(20.439, 86.659),
+                                new Pose(23.439, 81.659),
 
-                                new Pose(56.146, 84.780)
+                                new Pose(50.146, 84.780)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(225))
 
                 .build();
         shootToLast = follower.pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(56.146, 84.780),
+                                new Pose(50.146, 84.780),
                                 new Pose(58.488, 37.049),
-                                new Pose(25.415, 28.634)
+                                new Pose(20.415, 26.634)
                         )
                 ).setTangentHeadingInterpolation()
 
                 .build();
         lastToShoot = follower.pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(25.415, 28.634),
+                                new Pose(20.415, 26.634),
 
-                                new Pose(53.463, 111.317)
+                                new Pose(53.463, 105.317)
                         )
                 ).setTangentHeadingInterpolation()
                 .setReversed()
@@ -168,13 +191,13 @@ public class sanford15 extends OpMode {
     public void loop() {
         follower.update();
         autonomousPathUpdate();
-        shooter.flywheelInit();
         // Log values to Panels and Driver Station
         Pose currentPosition = follower.getPose();
 
         telemetry.addData("pathTimer: ", pathTimer.seconds());
         telemetry.addData("Started State: ", startedState);
         telemetry.addData("TX>   ", shooter.tx);
+        telemetry.addData("speed", shooter.getShooterVelocity());
         panelsTelemetry.debug("Path State", pathstate);
         panelsTelemetry.debug("X", currentPosition.getX());
         panelsTelemetry.debug("Y", currentPosition.getY());
@@ -186,50 +209,56 @@ public class sanford15 extends OpMode {
     public void autonomousPathUpdate()  {
         switch (pathstate) {
             case startToShoot:
-                shooter.flywheelInit();
+                shooter.updateShootAndAlign();
+                //shooter.flywheelInit();
                 if (!startedState) {
-                    shooter.flywheelInit();
+                    //shooter.flywheelInit();
+                    shooter.updateShootAndAlign();
                     shooter.lockTurret();
-                    shooter.intake();
                     follower.followPath(startToShoot);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.shoot1);
+                    setPathState(sanford15.pathState.shoot1);
+                    //shooter.flywheelInit();
                     startedState = false;
                     follower.startTeleOpDrive();
                 }
                 break;
             case shoot1:
                 double turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2) {
+                if(pathTimer.seconds() > 1.35) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.shootToMiddle);
+                    setPathState(sanford15.pathState.    shootToMiddle);
                 }
                 break;
-            case shootToMiddle:
+            case     shootToMiddle:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
-                    shooter.intake();
-                    follower.followPath(shootToMiddle);
+                    follower.followPath(    shootToMiddle);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     shooter.stopIntake();
-                    setPathState(pathState.middleToShoot);
+                    setPathState(sanford15.pathState.middleToShoot);
                     startedState = false;
                 }
                 break;
 
             case middleToShoot:
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(middleToShoot);
                     shooter.intake();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.shoot2);
+                    setPathState(sanford15.pathState.shoot2);
                     follower.startTeleOpDrive();
                     startedState = false;
                     shooter.stopIntake();
@@ -237,108 +266,176 @@ public class sanford15 extends OpMode {
                 break;
 
 
+//            case zoneShootRotate:
+//                if (!startedState) {
+//                    follower.followPath(zoneShootRotate);
+//                    startedState = true;
+//                }
+//                if (!follower.isBusy()) {
+//                    shooter.stopIntake();
+//                    setPathState(pathState.shoot2);
+//                    follower.startTeleOpDrive();
+//                    startedState = false;
+//                }
+//                break;
+
             case shoot2:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.1) {
+                if(pathTimer.seconds() > 0.93) {
                     shooter.intake();
                     shooter.stopShoot();
-                    setPathState(pathState.ShootToGate);
+                    setPathState(sanford15.pathState.ShootToGate);
                 }
                 break;
             case ShootToGate:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
-                    //shooter.flywheelInit();
                     follower.followPath(shootToGate);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    setPathState(pathState.gateToShoot);
-                    startedState = false;
+                    if(pathTimer.seconds() > 3.2) {
+                        setPathState(sanford15.pathState.gateToShoot);
+                        startedState = false;
+                    }
                 }
                 break;
             case gateToShoot:
+                shooter.stopIntake();
                 if (!startedState) {
                     follower.followPath(gateToShoot);
+                    if(pathTimer.seconds() > 1){
+                        shooter.updateShootAndAlign();
+                    }
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot3);
+                    setPathState(sanford15.pathState.shoot3);
                     startedState = false;
                 }
                 break;
             case shoot3:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.2) {
+                if(pathTimer.seconds() > 0.93) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.shootToFirst);
+                    setPathState(sanford15.pathState.shootToGate2);
                 }
                 break;
-            case shootToFirst:
-                //shooter.flywheelInit();
+            case shootToGate2:
+                shooter.updateShootAndAlign();
                 if (!startedState) {
-                    follower.followPath(shootToFirst);
+                    follower.followPath(shootToGate2);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    if(pathTimer.seconds() > 3.2) {
+                        setPathState(sanford15.pathState.gateToShoot2);
+                        startedState = false;
+                    }
+                }
+                break;
+            case gateToShoot2:
+                if (!startedState) {
+                    shooter.updateShootAndAlign();
+                    follower.followPath(gateToShoot2);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.firstToShoot);
-                    startedState = false;
-                }
-                break;
-            case firstToShoot:
-                if (!startedState) {
-                    follower.followPath(firstToShoot);
-//                    shooter.shoot5turret();
-                    startedState = true;
-                }
-                if (!follower.isBusy()) {
-                    follower.startTeleOpDrive();
-                    setPathState(pathState.shoot4);
+                    setPathState(sanford15.pathState.shoot4);
                     startedState = false;
                 }
                 break;
             case shoot4:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.1) {
+                if(pathTimer.seconds() > 0.93) {
                     shooter.stopShoot();
                     shooter.intake();
-                    setPathState(pathState.shootToLast);
+                    setPathState(sanford15.pathState.shootToFirst);
+                }
+                break;
+            case shootToFirst:
+                shooter.updateShootAndAlign();
+
+                if (!startedState) {
+                    follower.followPath(shootToFirst);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    shooter.stopIntake();
+                    setPathState(sanford15.pathState.firstToShoot);
+                    startedState = false;
+                }
+                break;
+            case firstToShoot:
+                shooter.updateShootAndAlign();
+                shooter.stopIntake();
+                if (!startedState) {
+                    follower.followPath(firstToShoot);
+                    startedState = true;
+                }
+                if (!follower.isBusy()) {
+                    follower.startTeleOpDrive();
+                    setPathState(sanford15.pathState.shoot5);
+                    startedState = false;
+                }
+                break;
+
+            case shoot5:
+                turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
+                follower.setTeleOpDrive(0, 0, turnPower);
+                if(pathTimer.seconds() > 0.93) {
+                    shooter.stopShoot();
+                    shooter.intake();
+                    setPathState(sanford15.pathState.shootToLast);
                 }
                 break;
             case shootToLast:
-                //shooter.flywheelInit();
+                shooter.updateShootAndAlign();
+
                 if (!startedState) {
                     follower.followPath(shootToLast);
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
-                    follower.startTeleOpDrive();
-                    setPathState(pathState.lastToShoot);
+                    // follower.startTeleOpDrive();
+                    setPathState(sanford15.pathState.lastToShoot);
+                    shooter.stopIntake();
                     startedState = false;
                 }
                 break;
             case lastToShoot:
+
+
                 if (!startedState) {
                     shooter.stopIntake();
                     follower.followPath(lastToShoot);
+                    if (pathTimer.seconds() > 1){
+                        shooter.updateShootAndAlign();
+                    }
 //                    shooter.shoot5turret();
                     startedState = true;
                 }
                 if (!follower.isBusy()) {
                     follower.startTeleOpDrive();
-                    setPathState(pathState.shoot5);
+                    setPathState(sanford15.pathState.shoot6);
                     startedState = false;
                 }
                 break;
-            case shoot5:
+            case shoot6:
                 turnPower = shooter.updateShootAndAlign();
+                shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.7) {
+                if(pathTimer.seconds() > 10) {
                     shooter.stopShoot();
                     shooter.stopIntake();
                 }

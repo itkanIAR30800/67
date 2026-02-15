@@ -71,9 +71,9 @@ public class red15noturret extends OpMode {
         startToShoot = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(129.244, 112.044), new Pose(89.778, 87.556))
+                        new BezierLine(new Pose(129.244, 112.044), new Pose(89.778, 84.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(315))
+                .setLinearHeadingInterpolation(Math.toRadians(270), Math.toRadians(312))
                 .build();
 
         shootRotate = follower
@@ -81,13 +81,13 @@ public class red15noturret extends OpMode {
                 .addPath(
                         new BezierLine(new Pose(89.778, 83.556), new Pose(89.778, 83.556))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(315), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(312), Math.toRadians(0))
                 .build();
 
         rotateToFirst = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(89.778, 87.556), new Pose(122.867, 83.556))
+                        new BezierLine(new Pose(89.778, 84.556), new Pose(126.867, 82.556))
                 )
                 .setTangentHeadingInterpolation()
                 .build();
@@ -95,9 +95,9 @@ public class red15noturret extends OpMode {
         gateToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(122.867, 83.556), new Pose(95.289, 87.467))
+                        new BezierLine(new Pose(126.867, 82.556), new Pose(95.289, 87.467))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(315))
+                .setConstantHeadingInterpolation(Math.toRadians(312))
                 .build();
 
         zoneShootRotate = follower
@@ -136,10 +136,10 @@ public class red15noturret extends OpMode {
                 .addPath(
                         new BezierCurve(
                                 new Pose(129, 55.500),
-                                new Pose(127.488, 79.311),
+                                new Pose(128.5, 79.311),
                                 new Pose(89.956, 87.466)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
+                ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(310))
 
                 .build();
         zoneToLast = follower
@@ -148,7 +148,7 @@ public class red15noturret extends OpMode {
                         new BezierCurve(
                                 new Pose(89.956, 87.466),
                                 new Pose(65.645, 22.555),
-                                new Pose(129.656, 35.444)
+                                new Pose(129.656, 33)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -156,28 +156,28 @@ public class red15noturret extends OpMode {
         lastToZone = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(129.656, 35.444), new Pose(99, 90))
+                        new BezierLine(new Pose(129.656, 33), new Pose(99, 90))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(310))
                 .build();
         shootToHP = follower.pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(99, 90.000),
                                 new Pose(136.956, 63.822),
-                                new Pose(132.267, 10.533)
+                                new Pose(133.267, 9.533)
                         )
-                ).setTangentHeadingInterpolation()
+                ).setLinearHeadingInterpolation(Math.toRadians(312), Math.toRadians(280))
 
                 .build();
 
         hpToShoot = follower.pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(132.267, 12.533),
+                                new Pose(133.267, 9.533),
 
                                 new Pose(89.556, 110.156)
                         )
-                ).setTangentHeadingInterpolation()
-                .setReversed()
+                ).setLinearHeadingInterpolation(Math.toRadians(280), Math.toRadians(283))
+
                 .build();
 
         leave = follower
@@ -263,7 +263,7 @@ public class red15noturret extends OpMode {
                 double turnPower = shooter.updateShootAndAlign();
                 shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 3) {
+                if(pathTimer.seconds() > 2) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(red15noturret.pathState.rotateToFirst);
@@ -317,7 +317,7 @@ public class red15noturret extends OpMode {
                 turnPower = shooter.updateShootAndAlign();
                 shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 1.9) {
+                if(pathTimer.seconds() > 1.7) {
                     shooter.intake();
                     shooter.stopShoot();
                     setPathState(red15noturret.pathState.rotateToMiddle);
@@ -366,7 +366,7 @@ public class red15noturret extends OpMode {
                 turnPower = shooter.updateShootAndAlign();
                 shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.2) {
+                if(pathTimer.seconds() > 1.7) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(red15noturret.pathState.zoneToLast);
@@ -403,7 +403,7 @@ public class red15noturret extends OpMode {
                 turnPower = shooter.updateShootAndAlign();
                 shooter.gate();
                 follower.setTeleOpDrive(0, 0, turnPower);
-                if(pathTimer.seconds() > 2.4) {
+                if(pathTimer.seconds() > 1.7) {
                     shooter.stopShoot();
                     shooter.intake();
                     setPathState(red15noturret.pathState.shootToHP);
@@ -424,7 +424,7 @@ public class red15noturret extends OpMode {
                 break;
             case hpToShoot:
                 shooter.updateShootAndAlign();
-
+                shooter.stopIntake();
                 if (!startedState) {
                     shooter.stopIntake();
                     follower.followPath(hpToShoot);
